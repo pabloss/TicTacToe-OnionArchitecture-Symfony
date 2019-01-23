@@ -22,7 +22,12 @@ doctrine:
         auto_mapping: true
         mappings:
             App:
+#                is_bundle: false
+#                type: xml
+#                dir: '%kernel.project_dir%/config/domain/doctrine'
+#                prefix: 'App\Core\Domain'
+                type: annotation
+                dir: '%kernel.project_dir%/src/Entity'
                 is_bundle: false
-                type: xml
-                dir: '%kernel.project_dir%/config/domain/doctrine'
-                prefix: 'App\Core\Domain'
+                prefix: App\Entity
+                alias: App
