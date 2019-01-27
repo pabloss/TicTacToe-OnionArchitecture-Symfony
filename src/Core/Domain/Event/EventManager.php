@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Event;
 
-use App\Core\Application\EventSubscriber\TakeTileEventSubscriber;
+use App\Core\Application\EventSubscriber\EventSubscriberInterface;
 
 /**
  * Example:
@@ -26,14 +26,23 @@ class EventManager
     /** @var Event[] */
     private $events = array();
 
-    private function __construct()
+    /** @var EventSubscriberInterface[] */
+    private function __construct(array $subscribers)
     {
-        $this->attach(
-            TileTakenEvent::NAME,
-            function (Event $e) {
-                TakeTileEventSubscriber::onTakenTile($e->getParams()[0], $e->getParams()[1], $e->getParams()[2]);
+        /** @var EventSubscriberInterface $implementation */
+        foreach ($subscribers as $implementation) {
+            $handlers = (new $implementation)->getEventHandlers();
+            foreach ($handlers as $eventName => $methodName) {
+                $this->attach(
+                    $eventName,
+                    function (Event $e) use ($implementation, $methodName) {
+                        if (\method_exists($implementation, $methodName)) {
+                            $implementation::{$methodName}($e);
+                        }
+                    }
+                );
             }
-        );
+        }
     }
 
     /**
@@ -45,10 +54,14 @@ class EventManager
         $this->events[$name][] = $callback;
     }
 
-    public static function getInstance(): self
+    /**
+     * @param EventSubscriberInterface[] $subscribers
+     * @return EventManager
+     */
+    public static function getInstance(array $subscribers): self
     {
         if (null === self::$instance) {
-            self::$instance = new self();
+            self::$instance = new self($subscribers);
         }
 
         return self::$instance;

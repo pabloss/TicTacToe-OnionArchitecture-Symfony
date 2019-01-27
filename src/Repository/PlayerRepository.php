@@ -37,21 +37,12 @@ class PlayerRepository extends ServiceEntityRepository implements PlayerReposito
         $this->objectManager = $objectManager;
     }
 
-    /**
-     * @param
-     * @return
-     */
-    public function findByVO(PlayerVO $player): PlayerEntity
-    {
-        return $this->findOneBy(['valueObject' => $player]);
-    }
-
     public function savePlayer(PlayerVO $player, GameVO $game)
     {
         $playerEntity = new PlayerEntity();
         $playerEntity->setValueObject($player);
 
-        if(empty($this->gameRepository->findByVO($game))){
+        if (empty($this->gameRepository->findByVO($game))) {
             $gameEntity = new GameEntity();
             $gameEntity->setValueObject($game);
 
@@ -64,7 +55,7 @@ class PlayerRepository extends ServiceEntityRepository implements PlayerReposito
             $this->objectManager->persist($historyEntity);
             $this->objectManager->persist($gameEntity);
 
-        } else{
+        } else {
             $gameEntity = $this->gameRepository->findByVO($game);
             $playerEntity->setGame($gameEntity);
             $playerEntity->setValueObject($player);
@@ -76,5 +67,14 @@ class PlayerRepository extends ServiceEntityRepository implements PlayerReposito
     public function getPlayer(PlayerVO $player): PlayerVO
     {
         return $this->findByVO($player)->getValueObject();
+    }
+
+    /**
+     * @param
+     * @return
+     */
+    public function findByVO(PlayerVO $player): PlayerEntity
+    {
+        return $this->findOneBy(['valueObject' => $player]);
     }
 }

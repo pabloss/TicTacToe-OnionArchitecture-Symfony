@@ -34,12 +34,17 @@ class HistoryMapper implements EntityMapperInterface
      */
     public function toEntity(ValueObjectInterface $history): EntityInterface
     {
-        if(!($history instanceof HistoryVO)){
-            throw  new \InvalidArgumentException(\sprintf(
+        if (!($history instanceof HistoryVO)) {
+            throw  new \InvalidArgumentException(
+                \sprintf(
                     "\$%s should be %s instance, %s given.",
-                    'history', HistoryVO::class, \get_class($history))
+                    'history',
+                    HistoryVO::class,
+                    \get_class($history)
+                )
             );
         }
+
         return $this->historyRepository->findByVO($history);
     }
 }

@@ -33,12 +33,17 @@ class GameMapper implements EntityMapperInterface
      */
     public function toEntity(ValueObjectInterface $game): EntityInterface
     {
-        if(!($game instanceof GameVO)){
-            throw  new \InvalidArgumentException(\sprintf(
+        if (!($game instanceof GameVO)) {
+            throw  new \InvalidArgumentException(
+                \sprintf(
                     "\$%s should be %s instance, %s given.",
-                    'game', GameVO::class, \get_class($game))
+                    'game',
+                    GameVO::class,
+                    \get_class($game)
+                )
             );
         }
+
         return $this->gameRepository->findByVO($game);
     }
 }

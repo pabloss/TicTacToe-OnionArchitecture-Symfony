@@ -6,7 +6,6 @@ namespace App\Core\Domain\Model\TicTacToe\AI;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 
-
 /**
  * Class AI
  * @package App\Core\Domain\Model\TicTacToe\AI

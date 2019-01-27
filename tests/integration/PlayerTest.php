@@ -33,22 +33,30 @@ class PlayerTest extends TestCase
         ) {
             $player->takeTile($ai->takeRandomFreeTile(), $game);
             $notUsedPlayer->takeTile($this->simulate_choosing_tiles_of_real_player(), $game);
-            $actualFilledCount = \array_reduce($game->board()->contents(), function ($carry, $item) {
-                if (\is_null($item) === false) {
-                    $carry++;
-                }
-                return $carry;
-            }, 0);
+            $actualFilledCount = \array_reduce(
+                $game->board()->contents(),
+                function ($carry, $item) {
+                    if (\is_null($item) === false) {
+                        $carry++;
+                    }
+
+                    return $carry;
+                },
+                0
+            );
 
             $allFreeTileIndexes = [];
             $allFilledTileIndexes = [];
-            \array_walk($game->board()->contents(), function ($value, $key) use (&$allFreeTileIndexes, &$allFilledTileIndexes) {
-                if (\is_null($value) === true) {
-                    $allFreeTileIndexes[] = $key;
-                } else {
-                    $allFilledTileIndexes[] = $key;
+            \array_walk(
+                $game->board()->contents(),
+                function ($value, $key) use (&$allFreeTileIndexes, &$allFilledTileIndexes) {
+                    if (\is_null($value) === true) {
+                        $allFreeTileIndexes[] = $key;
+                    } else {
+                        $allFilledTileIndexes[] = $key;
+                    }
                 }
-            });
+            );
             self::assertEquals(0, \count(\array_intersect($allFreeTileIndexes, $allFilledTileIndexes)));
             self::assertEquals(9, \count($allFreeTileIndexes) + \count($allFilledTileIndexes));
             self::assertEquals(
@@ -61,6 +69,7 @@ class PlayerTest extends TestCase
     private function simulate_choosing_tiles_of_real_player()
     {
         $ai = new AI($this->game);
+
         return $ai->takeRandomFreeTile();
     }
 }

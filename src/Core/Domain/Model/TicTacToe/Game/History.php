@@ -39,22 +39,6 @@ class History
     }
 
     /**
-     * @param $value
-     */
-    public function set($value): void
-    {
-        $this->timeLine[$this->length() % self::LIMIT] = $value;
-    }
-
-    /**
-     * @return int
-     */
-    public function length(): int
-    {
-        return \count($this->timeLine);
-    }
-
-    /**
      * @return array
      */
     public function getLast(): array
@@ -108,5 +92,21 @@ class History
     public function saveTurnToHistory(Tile $tile): void
     {
         $this->set([$tile->row(), $tile->column()]);
+    }
+
+    /**
+     * @param $value
+     */
+    public function set($value): void
+    {
+        $this->timeLine[$this->length() % self::LIMIT] = $value;
+    }
+
+    /**
+     * @return int
+     */
+    public function length(): int
+    {
+        return \count($this->timeLine);
     }
 }

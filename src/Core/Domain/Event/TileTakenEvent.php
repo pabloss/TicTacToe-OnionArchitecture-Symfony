@@ -20,6 +20,4 @@ class TileTakenEvent extends Event
     {
         parent::__construct(self::NAME, $params);
     }
-
-
 }

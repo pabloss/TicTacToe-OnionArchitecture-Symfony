@@ -38,15 +38,23 @@ class PlayingAgainstAISimulationTest extends TestCase
             $game->winner()->symbol()->value() === 'X' ||
             $game->winner()->symbol()->value() === '0'
         );
-        self::assertTrue(\array_reduce($game->board()->contents(), function ($carry, $value) {
-            $carry = $carry || (\is_null($value) === false);
-            return $carry;
-        }, false));
+        self::assertTrue(
+            \array_reduce(
+                $game->board()->contents(),
+                function ($carry, $value) {
+                    $carry = $carry || (\is_null($value) === false);
+
+                    return $carry;
+                },
+                false
+            )
+        );
     }
 
     private function simulate_choosing_tiles_of_real_player()
     {
         $ai = new AI($this->game);
+
         return $ai->takeRandomFreeTile();
     }
 }

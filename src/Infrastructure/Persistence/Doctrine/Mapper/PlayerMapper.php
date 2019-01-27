@@ -33,12 +33,17 @@ class PlayerMapper implements EntityMapperInterface
      */
     public function toEntity(ValueObjectInterface $player): EntityInterface
     {
-        if(!($player instanceof PlayerVO)){
-            throw  new \InvalidArgumentException(\sprintf(
-                "\$%s should be %s instance, %s given.",
-                'player', PlayerVO::class, \get_class($player))
+        if (!($player instanceof PlayerVO)) {
+            throw  new \InvalidArgumentException(
+                \sprintf(
+                    "\$%s should be %s instance, %s given.",
+                    'player',
+                    PlayerVO::class,
+                    \get_class($player)
+                )
             );
         }
+
         return $this->playerRepository->findByVO($player);
     }
 }

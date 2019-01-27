@@ -45,7 +45,7 @@ class Game
      */
     private $errors;
     /**
-     * @var array
+     * @var Player[]
      */
     private $players;
 

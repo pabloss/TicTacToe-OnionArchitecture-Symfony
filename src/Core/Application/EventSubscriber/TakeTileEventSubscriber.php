@@ -1,9 +1,10 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Core\Application\EventSubscriber;
 
 use App\Core\Application\Service\AccessControl;
+use App\Core\Domain\Event\Event;
+use App\Core\Domain\Event\TileTakenEvent;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
@@ -12,20 +13,21 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
  * Class TakeTileEventSubscriber
  * @package App\Core\Application\EventSubscriber
  */
-class TakeTileEventSubscriber
+class TakeTileEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @param Player $player
-     * @param Tile $tile
-     * @param Game $game
+     * @param Event $event
      * @return Tile
      * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
      */
-    public static function onTakenTile(Player $player, Tile $tile, Game $game)
+    public static function onTakenTile(Event $event)
     {
+        /** @var $game Game */
+        list($player, $tile, $game) = $event->getParams();
         if (false === AccessControl::isPlayerAllowed($player, $game)) {
             $game->addError(Game::PLAYER_IS_NOT_ALLOWED, $player);
         }
+        /** @var $player Player */
         if (
             empty($game->history()->getLastTurn()) &&
             $player->symbol() != $game->history()->getStartingPlayerSymbol()
@@ -43,5 +45,12 @@ class TakeTileEventSubscriber
         }
 
         return $tile;
+    }
+
+    public function getEventHandlers()
+    {
+        return [
+            TileTakenEvent::NAME => 'onTakenTile',
+        ];
     }
 }

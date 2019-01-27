@@ -2,10 +2,10 @@
 
 namespace App\Repository;
 
+use App\Core\Domain\Model\TicTacToe\Game\History as HistoryVO;
 use App\Entity\History as HistoryEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use App\Core\Domain\Model\TicTacToe\Game\History as HistoryVO;
 
 /**
  * @method HistoryEntity|null find($id, $lockMode = null, $lockVersion = null)
