@@ -3,10 +3,16 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Mapper;
 
+use App\Core\Domain\Model\TicTacToe\Game\Game as GameVO;
+use App\Core\Domain\Model\TicTacToe\ValueObject\ValueObjectInterface;
 use App\Entity\EntityInterface;
 use App\Entity\Game as GameEntity;
 use App\Repository\GameRepository;
 
+/**
+ * Class GameMapper
+ * @package App\Infrastructure\Persistence\Doctrine\Mapper
+ */
 class GameMapper implements EntityMapperInterface
 {
     /** @var GameRepository */
@@ -22,11 +28,17 @@ class GameMapper implements EntityMapperInterface
     }
 
     /**
-     * @param array $valueObjects
+     * @param \App\Core\Domain\Model\TicTacToe\ValueObject\ValueObjectInterface $game
      * @return GameEntity
      */
-    public function toEntity(... $valueObjects): EntityInterface
+    public function toEntity(ValueObjectInterface $game): EntityInterface
     {
-        return $this->gameRepository->findByVO(\func_get_arg(0));
+        if(!($game instanceof GameVO)){
+            throw  new \InvalidArgumentException(\sprintf(
+                    "\$%s should be %s instance, %s given.",
+                    'game', GameVO::class, \get_class($game))
+            );
+        }
+        return $this->gameRepository->findByVO($game);
     }
 }

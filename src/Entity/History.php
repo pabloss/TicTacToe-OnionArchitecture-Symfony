@@ -77,12 +77,12 @@ class History implements EntityInterface
         return $this;
     }
 
-    public function getValueObject()
+    public function getValueObject(): object
     {
         return $this->valueObject;
     }
 
-    public function setValueObject($valueObject): self
+    public function setValueObject(object $valueObject): EntityInterface
     {
         $this->valueObject = $valueObject;
 

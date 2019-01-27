@@ -17,11 +17,6 @@ class Player implements EntityInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $symbol;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="players")
      */
     private $game;
@@ -36,18 +31,6 @@ class Player implements EntityInterface
         return $this->id;
     }
 
-    public function getSymbol(): ?string
-    {
-        return $this->symbol;
-    }
-
-    public function setSymbol(string $symbol): self
-    {
-        $this->symbol = $symbol;
-
-        return $this;
-    }
-
     public function getGame(): ?Game
     {
         return $this->game;
@@ -60,12 +43,12 @@ class Player implements EntityInterface
         return $this;
     }
 
-    public function getValueObject()
+    public function getValueObject(): object
     {
         return $this->valueObject;
     }
 
-    public function setValueObject($valueObject): self
+    public function setValueObject($valueObject): EntityInterface
     {
         $this->valueObject = $valueObject;
 

@@ -2,41 +2,43 @@
 
 namespace App\Infrastructure\Persistence\Doctrine\Mapper;
 
+use App\Core\Domain\Model\TicTacToe\ValueObject\Player as PlayerVO;
+use App\Core\Domain\Model\TicTacToe\ValueObject\ValueObjectInterface;
 use App\Entity\EntityInterface;
 use App\Entity\Player as PlayerEntity;
+use App\Repository\PlayerRepository;
+
 
 /**
  * Class PlayerMapper
+ * @package App\Infrastructure\Persistence\Doctrine\Mapper
  */
 class PlayerMapper implements EntityMapperInterface
 {
-    /** @var GameMapper */
-    private $gameMapper;
+    /** @var PlayerRepository */
+    private $playerRepository;
 
     /**
      * PlayerMapper constructor.
-     * @param GameMapper $gameMapper
+     * @param PlayerRepository $playerRepository
      */
-    public function __construct(GameMapper $gameMapper)
+    public function __construct(PlayerRepository $playerRepository)
     {
-        $this->gameMapper = $gameMapper;
+        $this->playerRepository = $playerRepository;
     }
 
     /**
-     * @param array $valueObjects
+     * @param ValueObjectInterface $player
      * @return PlayerEntity
      */
-    public function toEntity(... $valueObjects): EntityInterface
+    public function toEntity(ValueObjectInterface $player): EntityInterface
     {
-        $playerVO = \func_get_arg(0);
-        $gameVO = \func_get_arg(1);
-        $gameEntity = $this->gameMapper->toEntity($gameVO);
-
-        $playerEntity = new PlayerEntity();
-        $playerEntity->setSymbol($playerVO->symbol()->value());
-        $playerEntity->setValueObject($playerVO);
-        $playerEntity->setGame($gameEntity);
-
-        return $playerEntity;
+        if(!($player instanceof PlayerVO)){
+            throw  new \InvalidArgumentException(\sprintf(
+                "\$%s should be %s instance, %s given.",
+                'player', PlayerVO::class, \get_class($player))
+            );
+        }
+        return $this->playerRepository->findByVO($player);
     }
 }
