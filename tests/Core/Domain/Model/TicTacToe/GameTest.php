@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTests\Core\Domain\Model\TicTacToe;
+namespace App\Tests\Core\Domain\Model\TicTacToe;
 
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
@@ -9,6 +9,8 @@ use App\Core\Domain\Model\TicTacToe\Game\History;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
+use App\Tests\Stubs\Event\EventManager;
+use App\Tests\Stubs\EventSubscriber\TakeTileEventSubscriber;
 use PHPUnit\Framework\TestCase;
 
 class GameTest extends TestCase
@@ -19,7 +21,7 @@ class GameTest extends TestCase
      */
     public function game_should_record_correct_turns()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $playerX->takeTile(new \App\Core\Domain\Model\TicTacToe\ValueObject\Tile(0, 0), $game);
         $player0->takeTile(new \App\Core\Domain\Model\TicTacToe\ValueObject\Tile(0, 1), $game);
@@ -35,7 +37,7 @@ class GameTest extends TestCase
      */
     public function game_should_not_produce_new_players_if_ones_already_exist()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         list(Symbol::PLAYER_X_SYMBOL => $playerX1, Symbol::PLAYER_0_SYMBOL => $player01) = $game->players();
         list(Symbol::PLAYER_X_SYMBOL => $playerX2, Symbol::PLAYER_0_SYMBOL => $player02) = $game->players();
 

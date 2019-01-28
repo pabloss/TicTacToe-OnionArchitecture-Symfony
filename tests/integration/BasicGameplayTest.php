@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTests\integration;
+namespace App\Tests\integration;
 
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
@@ -10,6 +10,8 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
+use App\Tests\Stubs\Event\EventManager;
+use App\Tests\Stubs\EventSubscriber\TakeTileEventSubscriber;
 use PHPUnit\Framework\TestCase;
 
 class BasicGameplayTest extends TestCase
@@ -28,7 +30,7 @@ class BasicGameplayTest extends TestCase
      */
     public function complete_happy_path_gameplay()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $playerX->takeTile(new Tile(1, 1), $game);
         $player0->takeTile(new Tile(0, 0), $game);
@@ -44,7 +46,7 @@ class BasicGameplayTest extends TestCase
     public function complete_happy_path_gameplay_other_player_wins()
     {
         // We are swapping players
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $playerX->takeTile(new Tile(2, 2), $game);
         $player0->takeTile(new Tile(1, 1), $game);

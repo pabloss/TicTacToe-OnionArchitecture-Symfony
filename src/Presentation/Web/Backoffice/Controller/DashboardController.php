@@ -3,7 +3,7 @@
 namespace App\Presentation\Web\Backoffice\Controller;
 
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class DashboardController
  * @package App\Presentation\Web\Backoffice\Controller
  */
-final class DashboardController extends Controller
+final class DashboardController extends AbstractController
 {
     /**
      * @Route("/", name="dashboard")

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTests\Core\Domain\Model\TicTacToe;
+namespace App\Tests\Core\Domain\Model\TicTacToe;
 
 use App\Core\Domain\Model\TicTacToe\Game\History;
 use PHPUnit\Framework\TestCase;

@@ -1,13 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Event;
+namespace App\Tests\Stubs\Event;
+
+use App\Core\Domain\Event\EventInterface;
 
 /**
  * Class Event
  * @package App\Core\Domain\Event
  */
-class Event
+class Event implements EventInterface
 {
     /** @var string */
     private $name;

@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Event;
+namespace App\Tests\Stubs\Event;
 
 use App\Core\Application\EventSubscriber\EventSubscriberInterface;
+use App\Core\Domain\Event\EventManagerInterface;
 
 /**
  * Example:
@@ -19,7 +20,7 @@ use App\Core\Application\EventSubscriber\EventSubscriberInterface;
  * Class EventManager
  * @package App\Core\Domain\Event
  */
-class EventManager
+class EventManager implements EventManagerInterface
 {
     /** @var self */
     private static $instance;
@@ -49,7 +50,7 @@ class EventManager
      * @param string $name
      * @param callable $callback
      */
-    public function attach(string $name, callable $callback)
+    public function attach(string $name, callable $callback): void
     {
         $this->events[$name][] = $callback;
     }
@@ -58,7 +59,7 @@ class EventManager
      * @param EventSubscriberInterface[] $subscribers
      * @return EventManager
      */
-    public static function getInstance(array $subscribers): self
+    public static function getInstance(array $subscribers): EventManagerInterface
     {
         if (null === self::$instance) {
             self::$instance = new self($subscribers);
@@ -71,7 +72,7 @@ class EventManager
      * @param string $name
      * @param array $params
      */
-    public function trigger(string $name, $params = array())
+    public function trigger(string $name, array $params = array()): void
     {
         foreach ($this->events[$name] as $event => $callback) {
             $e = new Event($name, $params);

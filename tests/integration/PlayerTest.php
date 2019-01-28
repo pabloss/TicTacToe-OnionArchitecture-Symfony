@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTests\integration;
+namespace App\Tests\integration;
 
 use App\Core\Domain\Model\TicTacToe\AI\AI;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
@@ -10,6 +10,8 @@ use App\Core\Domain\Model\TicTacToe\Game\History;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
+use App\Tests\Stubs\Event\EventManager;
+use App\Tests\Stubs\EventSubscriber\TakeTileEventSubscriber;
 use PHPUnit\Framework\TestCase;
 
 class PlayerTest extends TestCase
@@ -22,7 +24,7 @@ class PlayerTest extends TestCase
      */
     public function looping_AI_player_fills_whole_board_in_9_turns()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         $ai = new AI($game);
         $this->game = $game;
         list(Symbol::PLAYER_X_SYMBOL => $player, Symbol::PLAYER_0_SYMBOL => $notUsedPlayer) = $game->players();

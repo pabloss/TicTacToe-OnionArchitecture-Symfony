@@ -1,0 +1,11 @@
+{% extends '@Pub/base.html.twig' %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+{% block body %}
+    <div id="app">
+        {% for i in 1..9 %}
+            <div id="tile_{{ i }}" class="tile"></div>
+        {% endfor %}
+    </div>
+{% endblock %}

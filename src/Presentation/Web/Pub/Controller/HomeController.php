@@ -4,7 +4,7 @@
 namespace App\Presentation\Web\Pub\Controller;
 
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class HomeController
  * @package App\Presentation\Web\Pub\Controller
  */
-final class HomeController extends Controller
+final class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home")
@@ -21,5 +21,14 @@ final class HomeController extends Controller
     public function index(): Response
     {
         return $this->render('@Pub/home/index.html.twig');
+    }
+
+    /**
+     * @Route("/game", name="home")
+     * @return Response
+     */
+    public function game(): Response
+    {
+        return $this->render('@Pub/home/game.html.twig');
     }
 }

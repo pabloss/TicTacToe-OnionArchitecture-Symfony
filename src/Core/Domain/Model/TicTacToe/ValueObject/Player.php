@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Model\TicTacToe\ValueObject;
 
-use App\Core\Application\EventSubscriber\TakeTileEventSubscriber;
-use App\Core\Domain\Event\EventManager;
-use App\Core\Domain\Event\TileTakenEvent;
+use App\Core\Domain\Event\EventManagerInterface;
+use App\Core\Domain\Event\TileTakenEventInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 
 /**
@@ -17,7 +16,7 @@ class Player implements ValueObjectInterface
     /** @var Symbol */
     private $symbol;
 
-    /** @var EventManager */
+    /** @var EventManagerInterface */
     private $eventManger;
 
     /** @var string */
@@ -26,11 +25,12 @@ class Player implements ValueObjectInterface
     /**
      * Player constructor.
      * @param Symbol $symbol
+     * @param EventManagerInterface $eventManager
      */
-    public function __construct(Symbol $symbol)
+    public function __construct(Symbol $symbol, EventManagerInterface $eventManager)
     {
         $this->symbol = $symbol;
-        $this->eventManger = EventManager::getInstance([TakeTileEventSubscriber::class]);
+        $this->eventManger = $eventManager;
         $this->uuid = \uniqid();
     }
 
@@ -57,7 +57,7 @@ class Player implements ValueObjectInterface
      */
     public function takeTile(Tile $tile, Game $game): Tile
     {
-        $this->eventManger->trigger(TileTakenEvent::NAME, [$this, $tile, $game]);
+        $this->eventManger->trigger(TileTakenEventInterface::NAME, [$this, $tile, $game]);
 
         return $tile;
     }

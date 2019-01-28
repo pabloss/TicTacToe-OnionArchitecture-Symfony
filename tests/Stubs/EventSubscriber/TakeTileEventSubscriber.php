@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Core\Application\EventSubscriber;
+namespace App\Tests\Stubs\EventSubscriber;
 
+use App\Core\Application\EventSubscriber\EventSubscriberInterface;
 use App\Core\Application\Service\AccessControl;
-use App\Core\Domain\Event\Event;
-use App\Core\Domain\Event\TileTakenEvent;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Tests\Stubs\Event\Event;
+use App\Tests\Stubs\Event\TileTakenEvent;
 
 /**
  * Class TakeTileEventSubscriber

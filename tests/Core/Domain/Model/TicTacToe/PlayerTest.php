@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTests\Core\Domain\Model\TicTacToe;
+namespace App\Tests\Core\Domain\Model\TicTacToe;
 
-use App\Core\Application\EventSubscriber\TakeTileEventSubscriber;
-use App\Core\Domain\Event\EventManager;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
+use App\Tests\Stubs\Event\EventManager;
+use App\Tests\Stubs\EventSubscriber\TakeTileEventSubscriber;
 use PHPUnit\Framework\TestCase;
 
 class PlayerTest extends TestCase

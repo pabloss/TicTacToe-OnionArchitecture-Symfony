@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTests\Core\Domain\Model\TicTacToe\Domain\Type;
+namespace App\Tests\Core\Domain\Model\TicTacToe\Domain\Type;
 
 use App\Core\Domain\Model\TicTacToe\Type\PlayerType;
 use PHPUnit\Framework\TestCase;

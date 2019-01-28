@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTests\integration;
+namespace App\Tests\integration;
 
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
@@ -11,6 +11,8 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
+use App\Tests\Stubs\Event\EventManager;
+use App\Tests\Stubs\EventSubscriber\TakeTileEventSubscriber;
 use PHPUnit\Framework\TestCase;
 
 class GameTest extends TestCase
@@ -21,7 +23,7 @@ class GameTest extends TestCase
      */
     public function create_players()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         self::assertInstanceOf(Player::class, $playerX);
         self::assertInstanceOf(Player::class, $player0);
@@ -32,7 +34,7 @@ class GameTest extends TestCase
      */
     public function factor_players()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         self::assertEquals('X', $playerX->symbol()->value());
         self::assertEquals('0', $player0->symbol()->value());
@@ -44,7 +46,7 @@ class GameTest extends TestCase
      */
     public function players_take_turns()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $playerX->takeTile(new Tile(0, 0), $game);
         $playerX->takeTile(new Tile(1, 1), $game);
@@ -59,7 +61,7 @@ class GameTest extends TestCase
      */
     public function game_could_not_allow_to_be_started_by_player0()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $player0->takeTile(new Tile(0, 0), $game);
 

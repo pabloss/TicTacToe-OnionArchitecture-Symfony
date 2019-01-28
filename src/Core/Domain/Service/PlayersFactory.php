@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Service;
 
-use App\Core\Application\EventSubscriber\TakeTileEventSubscriber;
-use App\Core\Domain\Event\EventManager;
+use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
@@ -14,6 +13,18 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
  */
 class PlayersFactory
 {
+    /** @var EventManagerInterface */
+    private $eventManager;
+
+    /**
+     * PlayersFactory constructor.
+     * @param EventManagerInterface $eventManager
+     */
+    public function __construct(EventManagerInterface $eventManager)
+    {
+        $this->eventManager = $eventManager;
+    }
+
 
     /**
      * @return Player[]
@@ -32,8 +43,8 @@ class PlayersFactory
     private function players(Symbol $symbolX, Symbol $symbol0)
     {
         return [
-            $symbolX->value() => new Player($symbolX, EventManager::getInstance([TakeTileEventSubscriber::class])),
-            $symbol0->value() => new Player($symbol0, EventManager::getInstance([TakeTileEventSubscriber::class])),
+            $symbolX->value() => new Player($symbolX, $this->eventManager),
+            $symbol0->value() => new Player($symbol0, $this->eventManager),
         ];
     }
 }
