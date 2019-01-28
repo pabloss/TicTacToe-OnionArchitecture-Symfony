@@ -1,27 +1,31 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Tests\Stubs\EventSubscriber;
+namespace App\Tests\Stubs\EventSubscriber\Framework;
 
 use App\Core\Application\EventSubscriber\EventSubscriberInterface;
 use App\Core\Application\Service\AccessControl;
 use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Tests\Stubs\Event\TileTakenEvent;
+use App\Tests\Stubs\Event\Framework\TileTakenEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface as SymfonyEventSubscriberInterface;
 
-/**
- * Class TakeTileEventSubscriber
- * @package App\Core\Application\EventSubscriber
- */
-class TakeTileEventSubscriber implements EventSubscriberInterface
+class TakeTileEventSubscriber implements SymfonyEventSubscriberInterface, EventSubscriberInterface
 {
-    /**
-     * @param EventInterface $event
-     * @return Tile
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
-     */
-    public static function onTakenTile(EventInterface $event)
+    public function getEventHandlers()
+    {
+        return self::getSubscribedEvents();
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            TileTakenEvent::NAME => 'onTakenTile',
+        ];
+    }
+
+    public function onTakenTile(EventInterface $event)
     {
         /** @var $game Game */
         list($player, $tile, $game) = $event->getParams();
@@ -46,12 +50,5 @@ class TakeTileEventSubscriber implements EventSubscriberInterface
         }
 
         return $tile;
-    }
-
-    public function getEventHandlers()
-    {
-        return [
-            TileTakenEvent::NAME => 'onTakenTile',
-        ];
     }
 }
