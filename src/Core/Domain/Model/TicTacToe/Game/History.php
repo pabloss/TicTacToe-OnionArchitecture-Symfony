@@ -6,12 +6,13 @@ namespace App\Core\Domain\Model\TicTacToe\Game;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Tests\Stubs\History\HistoryItem;
 
 /**
  * Class History
  * @package App\Core\Domain\Model\TicTacToe\Game
  */
-class History
+class History implements HistoryInterface
 {
     const LIMIT = 9;
 
@@ -47,19 +48,21 @@ class History
     }
 
     /**
+     * @param Game $game
      * @return array
      */
-    public function &content(): array
+    public function &content(Game $game): array
     {
         return $this->timeLine;
     }
 
     /**
+     * @param Game $game
      * @return mixed
      */
-    public function getLastTurn(): ?Symbol
+    public function getLastTurn(Game $game): ?HistoryItem
     {
-        return $this->lastTurn;
+        return $this->timeLine[$game->uuid()][($this->length($game) - 1) % self::LIMIT] ?? null;
     }
 
     /**
@@ -70,20 +73,16 @@ class History
         return $this->startingPlayerSymbol;
     }
 
+
     /**
      * @param Player $player
+     * @param Tile $tile
      * @param Game $game
      * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
      */
-    public function saveLastTurn(Player $player, Game $game): void
+    public function saveTurn(Player $player, Tile $tile, Game $game): void
     {
-        if (
-            !empty($this->lastTurn) &&
-            $player->symbol() === $this->lastTurn
-        ) {
-            $game->addError(Game::DUPLICATED_TURNS_ERROR, $player);
-        }
-        $this->lastTurn = $player->symbol();
+        $this->timeLine[$game->uuid()][$this->length($game) % self::LIMIT] = new HistoryItem($player, $tile, $game);
     }
 
     /**
@@ -103,10 +102,15 @@ class History
     }
 
     /**
+     * @param Game $game
      * @return int
      */
-    public function length(): int
+    public function length(Game $game): int
     {
-        return \count($this->timeLine);
+        if (isset($this->timeLine[$game->uuid()])) {
+            return \count($this->timeLine[$game->uuid()]);
+        }
+
+        return 0;
     }
 }

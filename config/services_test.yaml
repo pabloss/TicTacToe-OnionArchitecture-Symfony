@@ -38,9 +38,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Tests\Stubs\EventSubscriber\Framework\TakeTileEventSubscriber:
-        public: true
     App\Tests\Stubs\Event\Framework\EventManager:
         public: true
-        arguments:
-            $subscribers: ['@App\Tests\Stubs\EventSubscriber\Framework\TakeTileEventSubscriber']
+    App\Presentation\Web\Pub\Event\EventManager:
+        public: true
+    App\Presentation\Web\Pub\History\History:
+        public: true

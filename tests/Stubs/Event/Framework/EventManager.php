@@ -5,10 +5,11 @@ namespace App\Tests\Stubs\Event\Framework;
 
 use App\Core\Application\EventSubscriber\EventSubscriberInterface;
 use App\Core\Domain\Event\EventManagerInterface;
+use App\Core\Domain\Event\Params\ParamsInterface;
 use App\Tests\Stubs\Event\TileTakenEvent;
-use App\Tests\Stubs\EventSubscriber\Framework\TakeTileEventSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Presentation\Web\Pub\Event\TakeTileEventSubscriber;
 
 class EventManager implements EventManagerInterface
 {
@@ -23,25 +24,11 @@ class EventManager implements EventManagerInterface
     /**
      * EventManager constructor.
      * @param EventDispatcherInterface $dispatcher
-     * @param EventSubscriberInterface[] $subscribers
      */
-    public function __construct(EventDispatcherInterface $dispatcher, array $subscribers)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         self::$dispatcher = $dispatcher;
         /** @var EventSubscriberInterface[] $subscribers */
-        foreach ($subscribers as $implementation) {
-            $handlers = (new $implementation)->getEventHandlers();
-            foreach ($handlers as $eventName => $methodName) {
-                $this->attach(
-                    $eventName,
-                    function (Event $e) use ($implementation, $methodName) {
-                        if (\method_exists($implementation, $methodName)) {
-                            $implementation::{$methodName}($e);
-                        }
-                    }
-                );
-            }
-        }
     }
 
     public function attach(string $name, callable $callback): void
@@ -52,16 +39,16 @@ class EventManager implements EventManagerInterface
         };
     }
 
-    public static function getInstance(array $subscribers): EventManagerInterface
+    public static function getInstance(): EventManagerInterface
     {
         if (null === self::$instance) {
-            self::$instance = new self(self::$dispatcher, $subscribers);
+            self::$instance = new self(self::$dispatcher);
         }
 
         return self::$instance;
     }
 
-    public function trigger(string $name, array $params = array()): void
+    public function trigger(string $name, ParamsInterface $params = null): void
     {
         self::$dispatcher->dispatch($name, new Event($name, $params));
     }

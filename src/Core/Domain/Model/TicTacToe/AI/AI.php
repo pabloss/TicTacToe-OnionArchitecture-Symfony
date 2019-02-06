@@ -45,13 +45,13 @@ class AI
      * @param array $board
      * @return array
      */
-    private function takeFreeTileIndexes(array $board)
+    private function takeFreeTileIndexes(array &$board)
     {
         $freeTileIndexes = [];
         \array_walk(
             $board,
             function ($value, $key) use (&$freeTileIndexes) {
-                if (\is_null($value)) {
+                if (null === $value) {
                     $freeTileIndexes[] = $key;
                 }
             }

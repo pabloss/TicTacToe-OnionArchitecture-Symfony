@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
+use App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber;
+use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\AI\AI;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
@@ -10,8 +12,8 @@ use App\Core\Domain\Model\TicTacToe\Game\History;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
+use App\Presentation\Web\Pub\Event\Event;
 use App\Tests\Stubs\Event\EventManager;
-use App\Tests\Stubs\EventSubscriber\TakeTileEventSubscriber;
 use PHPUnit\Framework\TestCase;
 
 class PlayerTest extends TestCase
@@ -24,7 +26,16 @@ class PlayerTest extends TestCase
      */
     public function looping_AI_player_fills_whole_board_in_9_turns()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
+            TakeTileEventSubscriber::$counter = 0;
+        $eventManager = EventManager::getInstance();
+        $eventManager->detach(Event::NAME);
+        $eventManager->attach(Event::NAME, function (EventInterface $event){
+            TakeTileEventSubscriber::onTakenTile($event);
+        });
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($eventManager), new FindWinner(),
+            $eventManager,
+            \uniqid()
+            );
         $ai = new AI($game);
         $this->game = $game;
         list(Symbol::PLAYER_X_SYMBOL => $player, Symbol::PLAYER_0_SYMBOL => $notUsedPlayer) = $game->players();
@@ -38,7 +49,7 @@ class PlayerTest extends TestCase
             $actualFilledCount = \array_reduce(
                 $game->board()->contents(),
                 function ($carry, $item) {
-                    if (\is_null($item) === false) {
+                    if (null !== $item) {
                         $carry++;
                     }
 
@@ -52,7 +63,7 @@ class PlayerTest extends TestCase
             \array_walk(
                 $game->board()->contents(),
                 function ($value, $key) use (&$allFreeTileIndexes, &$allFilledTileIndexes) {
-                    if (\is_null($value) === true) {
+                    if (null === $value) {
                         $allFreeTileIndexes[] = $key;
                     } else {
                         $allFilledTileIndexes[] = $key;

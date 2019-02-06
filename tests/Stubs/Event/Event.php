@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\Stubs\Event;
 
 use App\Core\Domain\Event\EventInterface;
+use App\Core\Domain\Event\Params\ParamsInterface;
 
 /**
  * Class Event
@@ -19,9 +20,9 @@ class Event implements EventInterface
     /**
      * Event constructor.
      * @param string $name
-     * @param array $params
+     * @param ParamsInterface $params
      */
-    public function __construct(string $name, $params = array())
+    public function __construct(string $name, ParamsInterface $params = null)
     {
         $this->name = $name;
         $this->params = $params;
@@ -36,9 +37,9 @@ class Event implements EventInterface
     }
 
     /**
-     * @return array
+     * @return ParamsInterface
      */
-    public function getParams(): array
+    public function getParams(): ?ParamsInterface
     {
         return $this->params;
     }

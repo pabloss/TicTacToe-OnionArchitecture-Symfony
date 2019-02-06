@@ -43,8 +43,8 @@ class PlayersFactory
     private function players(Symbol $symbolX, Symbol $symbol0)
     {
         return [
-            $symbolX->value() => new Player($symbolX, $this->eventManager),
-            $symbol0->value() => new Player($symbol0, $this->eventManager),
+            $symbolX->value() => new Player($symbolX, \uniqid()),
+            $symbol0->value() => new Player($symbol0, \uniqid()),
         ];
     }
 }

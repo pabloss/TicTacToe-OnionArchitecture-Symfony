@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
+use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\History;
@@ -10,8 +11,8 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
+use App\Presentation\Web\Pub\Event\Event;
 use App\Tests\Stubs\Event\EventManager;
-use App\Tests\Stubs\EventSubscriber\TakeTileEventSubscriber;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BasicGameplayTest extends WebTestCase
@@ -30,7 +31,14 @@ class BasicGameplayTest extends WebTestCase
      */
     public function complete_happy_path_gameplay()
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
+        $eventManager = EventManager::getInstance();
+        $eventManager->attach(Event::NAME, function (EventInterface $event){
+            \App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber::onTakenTile($event);
+        });
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($eventManager), new FindWinner(),
+            EventManager::getInstance(),
+            \uniqid()
+        );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $playerX->takeTile(new Tile(1, 1), $game);
         $player0->takeTile(new Tile(0, 0), $game);
@@ -46,7 +54,10 @@ class BasicGameplayTest extends WebTestCase
     public function complete_happy_path_gameplay_other_player_wins()
     {
         // We are swapping players
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance([new TakeTileEventSubscriber()])), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(EventManager::getInstance()), new FindWinner(),
+            EventManager::getInstance(),
+            \uniqid()
+        );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $playerX->takeTile(new Tile(2, 2), $game);
         $player0->takeTile(new Tile(1, 1), $game);
@@ -72,7 +83,10 @@ class BasicGameplayTest extends WebTestCase
     {
         $client = self::createClient();
 
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($client->getContainer()->get('App\Tests\Stubs\Event\Framework\EventManager')), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($client->getContainer()->get('App\Tests\Stubs\Event\Framework\EventManager')), new FindWinner(),
+            $client->getContainer()->get('App\Tests\Stubs\Event\Framework\EventManager'),
+            \uniqid()
+        );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $playerX->takeTile(new Tile(1, 1), $game);
         $player0->takeTile(new Tile(0, 0), $game);
@@ -88,9 +102,13 @@ class BasicGameplayTest extends WebTestCase
     public function complete_happy_path_gameplay_other_player_wins_use_another_implementation()
     {
         $client = self::createClient();
-        
+
         // We are swapping players
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($client->getContainer()->get('App\Tests\Stubs\Event\Framework\EventManager')), new FindWinner());
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($client->getContainer()->get('App\Tests\Stubs\Event\Framework\EventManager')),
+            new FindWinner(),
+            EventManager::getInstance(),
+            \uniqid()
+        );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $playerX->takeTile(new Tile(2, 2), $game);
         $player0->takeTile(new Tile(1, 1), $game);

@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace App\Core\Domain\Model\TicTacToe\Game;
 
 use App\Core\Application\Service\AccessControl;
+use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Model\TicTacToe\Exception;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
+use App\Tests\Stubs\History\History;
 
 /**
  * Class Game
@@ -49,22 +51,31 @@ class Game
      */
     private $players;
 
+    /** @var string $uuid */
+    private $uuid;
+
+    /** @var EventManagerInterface $eventManager */
+    private $eventManager;
+
     /**
      * Game constructor.
      * @param Board $board
-     * @param History $history
+     * @param HistoryInterface $history
      * @param PlayersFactory $factory
      * @param FindWinner $findWinner
+     * @param EventManagerInterface $eventManager
+     * @param string $uuid
      */
-    public function __construct(Board $board, History $history, PlayersFactory $factory, FindWinner $findWinner)
+    public function __construct(Board $board, HistoryInterface $history, PlayersFactory $factory, FindWinner $findWinner, EventManagerInterface $eventManager, string $uuid)
     {
         $this->board = $board;
         $this->history = $history;
         $this->factory = $factory;
         $this->findWinner = $findWinner;
-
         $this->players = [];
         $this->errors = self::OK; // Just to remember: such representation of start value explains initial state
+        $this->eventManager = $eventManager;
+        $this->uuid = $uuid;
     }
 
     /**
@@ -89,9 +100,9 @@ class Game
     }
 
     /**
-     * @return History
+     * @return HistoryInterface
      */
-    public function &history(): History
+    public function history(): HistoryInterface
     {
         return $this->history;
     }
@@ -128,5 +139,18 @@ class Game
     public function errors()
     {
         return $this->errors;
+    }
+
+    public function uuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @return EventManagerInterface
+     */
+    public function eventManger(): EventManagerInterface
+    {
+        return  $this->eventManager;
     }
 }

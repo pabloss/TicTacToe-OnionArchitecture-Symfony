@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
-use App\Core\Domain\Model\TicTacToe\Game\History as HistoryVO;
+use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Entity\History as HistoryEntity;
+use App\Entity\History;
+use App\Tests\Stubs\History\History as HistoryVO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -31,5 +33,46 @@ class HistoryRepository extends ServiceEntityRepository
     public function findByVO(HistoryVO $history): HistoryEntity
     {
         return $this->findOneBy(['valueObject' => $history]);
+    }
+
+    public function getLastByGame(Game $game): ?History
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('h')
+            ->from(History::class, 'h')
+            ->where('h.gameUuid = :gameUuid')
+            ->orderBy('h.createdAt', 'DESC')
+            ->setMaxResults(1)
+            ->setParameter('gameUuid', $game->uuid())
+        ;
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function getLastByGameAndIndex(Game $game, int $index): ?History
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('h')
+            ->from(History::class, 'h')
+            ->where('h.gameUuid = :gameUuid')
+            ->orderBy('h.createdAt', 'DESC')
+            ->setMaxResults($index+1)
+            ->setParameter('gameUuid', $game->uuid())
+        ;
+        $result = $qb->getQuery()->getResult();
+
+        return \end($result);
+    }
+
+
+
+    /**
+     * @param HistoryEntity $history
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(HistoryEntity $history)
+    {
+        $this->getEntityManager()->persist($history);
+        $this->getEntityManager()->flush();
     }
 }

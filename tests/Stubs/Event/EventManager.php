@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Stubs\Event;
 
-use App\Core\Application\EventSubscriber\EventSubscriberInterface;
+use App\Core\Application\Event\Event;
+use App\Core\Application\Event\EventSubscriber\EventSubscriberInterface;
 use App\Core\Domain\Event\EventManagerInterface;
+use App\Core\Domain\Event\Params\ParamsInterface;
 
 /**
  * Example:
@@ -27,24 +29,6 @@ class EventManager implements EventManagerInterface
     /** @var Event[] */
     private $events = array();
 
-    /** @var EventSubscriberInterface[] */
-    private function __construct(array $subscribers)
-    {
-        /** @var EventSubscriberInterface $implementation */
-        foreach ($subscribers as $implementation) {
-            $handlers = (new $implementation)->getEventHandlers();
-            foreach ($handlers as $eventName => $methodName) {
-                $this->attach(
-                    $eventName,
-                    function (Event $e) use ($implementation, $methodName) {
-                        if (\method_exists($implementation, $methodName)) {
-                            $implementation::{$methodName}($e);
-                        }
-                    }
-                );
-            }
-        }
-    }
 
     /**
      * @param string $name
@@ -55,24 +39,30 @@ class EventManager implements EventManagerInterface
         $this->events[$name][] = $callback;
     }
 
+    public function detach(string $name): void
+    {
+        unset($this->events[$name]);
+    }
+
     /**
-     * @param EventSubscriberInterface[] $subscribers
+     * @param \App\Core\Application\Event\EventSubscriber\EventSubscriberInterface[] $subscribers
      * @return EventManager
      */
-    public static function getInstance(array $subscribers): EventManagerInterface
+    public static function getInstance(): EventManagerInterface
     {
         if (null === self::$instance) {
-            self::$instance = new self($subscribers);
+            self::$instance = new self();
         }
 
         return self::$instance;
     }
 
+
     /**
      * @param string $name
-     * @param array $params
+     * @param ParamsInterface $params
      */
-    public function trigger(string $name, array $params = array()): void
+    public function trigger(string $name, ParamsInterface $params = null): void
     {
         foreach ($this->events[$name] as $event => $callback) {
             $e = new Event($name, $params);

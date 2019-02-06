@@ -21,8 +21,8 @@ class SymbolTest extends TestCase
         $symbol = new Symbol(0);
         $symbol = new Symbol(-1);
         $symbol = new Symbol(null);
-        $symbol = new Symbol(new \stdClass());
-        $symbol = new Symbol(\json_decode(['x' => 'y']));
+        $symbol = new Symbol(new stdClass());
+        $symbol = new Symbol(json_decode(['x' => 'y']));
     }
 
     /**

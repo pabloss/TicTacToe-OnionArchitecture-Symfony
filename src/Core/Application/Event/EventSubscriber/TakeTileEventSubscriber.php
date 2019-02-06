@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Tests\Stubs\EventSubscriber;
+namespace App\Core\Application\Event\EventSubscriber;
 
-use App\Core\Application\EventSubscriber\EventSubscriberInterface;
+use App\Core\Application\Event\TileTakenEvent;
 use App\Core\Application\Service\AccessControl;
 use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Tests\Stubs\Event\TileTakenEvent;
 
 /**
  * Class TakeTileEventSubscriber
@@ -16,6 +14,7 @@ use App\Tests\Stubs\Event\TileTakenEvent;
  */
 class TakeTileEventSubscriber implements EventSubscriberInterface
 {
+    public static $counter = 0;
     /**
      * @param EventInterface $event
      * @return Tile
@@ -24,25 +23,28 @@ class TakeTileEventSubscriber implements EventSubscriberInterface
     public static function onTakenTile(EventInterface $event)
     {
         /** @var $game Game */
-        list($player, $tile, $game) = $event->getParams();
+        $params = $event->getParams();
+        $player = $params->player();
+        $tile = $params->tile();
+        $game = $params->game();
         if (false === AccessControl::isPlayerAllowed($player, $game)) {
             $game->addError(Game::PLAYER_IS_NOT_ALLOWED, $player);
         }
-        /** @var $player Player */
         if (
-            empty($game->history()->getLastTurn()) &&
+            empty($game->history()->getLastTurn($game)) &&
             $player->symbol() != $game->history()->getStartingPlayerSymbol()
         ) {
 
             $game->addError(Game::GAME_STARTED_BY_PLAYER0_ERROR, $player);
         }
-
+        if(!empty($game->history()->getLastTurn($game)) && $player->symbol()->value() === $game->history()->getLastTurn($game)->player()->symbol()->value()){
+            $game->addError(Game::DUPLICATED_TURNS_ERROR, $player);
+        }
         if ($game->errors() === Game::OK) {
-            $game->history()->saveLastTurn($player, $game);
-
+            ++self::$counter;
             $game->board()->mark($tile, $player);
 
-            $game->history()->saveTurnToHistory($tile);
+            $game->history()->saveTurn($player, $tile, $game);
         }
 
         return $tile;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\integration\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomeControllerTest extends WebTestCase
 {
@@ -28,10 +29,21 @@ class HomeControllerTest extends WebTestCase
                 $crawler->filter("div#tile_$i")->count()
             );
         }
-        for ($i = 1; $i <= 9; $i++) {
-//            $link = $crawler->filter("div.tile a")->eq(1)->link();
-//            $client->click($link);
-            \var_dump($crawler->filter("div.tile")->attr('style'));
-        }
+
+        $link = $crawler->filter("div#tile_1 a")->eq(0)->link();
+        $client->click($link);
+
+        self::assertEquals('GET', $link->getMethod());
+        self::assertEquals('http://localhost/game/get-tile/0,0', $link->getUri());
+        self::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        $link = $crawler->filter("div#tile_2 a")->eq(0)->link();
+        $client->click($link);
+        self::assertEquals('http://localhost/game/get-tile/0,1', $link->getUri());
+        self::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        $link = $crawler->filter("div#tile_1 a")->eq(0)->link();
+        $client->click($link);
+        self::assertEquals(Response::HTTP_CONFLICT, $client->getResponse()->getStatusCode());
     }
 }
