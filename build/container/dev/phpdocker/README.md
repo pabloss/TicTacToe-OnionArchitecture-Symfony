@@ -22,7 +22,7 @@ Once you're done, simply `cd` to your project and run `docker-compose up -d`. Th
 
 You can access your application via **`localhost`**, if you're running the containers directly, or through **``** when run on a vm. nginx and mailhog both respond to any hostname, in case you want to add your own hostname on your `/etc/hosts` 
 
-Service|Address outside containers
+Validation|Address outside containers
 ------|---------|-----------
 Webserver|[localhost:8080](http://localhost:8080)
 MySQL|**host:** `localhost`; **port:** `8082`
@@ -31,7 +31,7 @@ MySQL|**host:** `localhost`; **port:** `8082`
 
 You'll need to configure your application to use any services you enabled:
 
-Service|Hostname|Port number
+Validation|Hostname|Port number
 ------|---------|-----------
 php-fpm|php-fpm|9000
 MySQL|mysql|3306 (default)

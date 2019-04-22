@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Application\Service;
+namespace App\Core\Application\Validation;
 
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
@@ -9,7 +9,7 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 
 /**
  * Class AccessControl
- * @package App\Core\Application\Service
+ * @package App\Core\Application\Validation
  */
 class AccessControl
 {

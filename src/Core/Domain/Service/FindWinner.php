@@ -16,7 +16,7 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
  * We need symbol that we try to find, board and patterns of every winning result.
  *
  * Class FindWinner
- * @package App\Core\Domain\Service
+ * @package App\Core\Domain\Validation
  */
 class FindWinner
 {
