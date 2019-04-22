@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
+use App\Core\Application\History\HistoryContent;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
@@ -113,6 +114,6 @@ class HistoryTest extends TestCase
                 $gameProphecy->reveal()
             );
         }
-        self::assertEquals($expectedContent, $history->content($gameProphecy->reveal()));
+        self::assertEquals(new HistoryContent($expectedContent), $history->content($gameProphecy->reveal()));
     }
 }

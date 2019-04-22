@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Web\Pub\History;
 
+use App\Core\Application\History\HistoryContent;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
@@ -33,9 +34,9 @@ class History implements HistoryInterface
 
     /**
      * @param Game $game
-     * @return array
+     * @return HistoryContent
      */
-    public function &content(Game $game): array
+    public function &content(Game $game): HistoryContent
     {
         $histories = $this->historyRepository->findAll();
 

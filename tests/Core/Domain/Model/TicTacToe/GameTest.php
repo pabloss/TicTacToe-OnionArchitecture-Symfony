@@ -43,14 +43,7 @@ class GameTest extends TestCase
         $playerX->takeTile(new Tile(1, 0), $game);
         $player0->takeTile(new Tile(1, 1), $game);
         self::assertEquals([$playerX, $player0, null, $playerX, $player0, null, null, null, null], $game->board()->contents());
-        $historyTiles = [];
-        $historyItems = $game->history()->content($game);
-        /** @var HistoryItem $historyItem */
-        foreach ($historyItems as $historyItem) {
-            $tile = $historyItem->tile();
-            $historyTiles[] = [$tile->row(), $tile->column()];
-        }
-        self::assertEquals([[0, 0], [0, 1], [1, 0], [1, 1]], $historyTiles);
+        self::assertEquals([[0, 0], [0, 1], [1, 0], [1, 1]], $game->history()->content($game)->getTilesHistory());
         self::assertEquals($game::OK, $game->errors());
     }
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Model\TicTacToe\Game;
 
+use App\Core\Application\History\HistoryContent;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Tests\Stubs\History\HistoryItem;
@@ -50,9 +51,9 @@ class History implements HistoryInterface
      * @param Game $game
      * @return array
      */
-    public function &content(Game $game): array
+    public function &content(Game $game): HistoryContent
     {
-        return $this->timeLine;
+        return new HistoryContent($this->timeLine[$game->uuid()]);
     }
 
     /**
