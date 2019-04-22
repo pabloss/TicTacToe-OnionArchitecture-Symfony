@@ -5,7 +5,7 @@ namespace App\Presentation\Web\Pub\History;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Repository\HistoryRepository;
@@ -95,7 +95,7 @@ class History implements HistoryInterface
     }
 
     /**
-     * @param Player $player
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Player $player
      * @param Tile $tile
      * @param Game $game
      * @throws \Doctrine\ORM\ORMException

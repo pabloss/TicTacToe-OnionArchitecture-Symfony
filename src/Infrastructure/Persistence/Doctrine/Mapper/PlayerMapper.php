@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Doctrine\Mapper;
 
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player as PlayerVO;
+use App\Core\Domain\Model\TicTacToe\Game\Player as PlayerVO;
 use App\Core\Domain\Model\TicTacToe\ValueObject\ValueObjectInterface;
 use App\Entity\EntityInterface;
 use App\Entity\Player as PlayerEntity;

@@ -5,7 +5,7 @@ namespace App\Core\Domain\Service;
 
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 
 /**
@@ -120,7 +120,7 @@ class FindWinner
 
     /**
      * @param Game $game
-     * @return \App\Core\Domain\Model\TicTacToe\ValueObject\Player|null
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player|null
      * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
      */
     public function winner(Game $game): ?Player
@@ -133,7 +133,7 @@ class FindWinner
     /**
      * @param \App\Core\Domain\Model\TicTacToe\ValueObject\Symbol $symbol
      * @param Game $game
-     * @return \App\Core\Domain\Model\TicTacToe\ValueObject\Player|null
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player|null
      * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
      */
     private function findWinnerByBoardPatterns(Symbol $symbol, Game $game): ?Player
@@ -175,7 +175,7 @@ class FindWinner
         \array_walk(
             $this->board->contents(),
             function ($val, $i) use (&$foundCount, $symbol, $pattern) {
-                /** @var \App\Core\Domain\Model\TicTacToe\ValueObject\Player $val */
+                /** @var \App\Core\Domain\Model\TicTacToe\Game\Player $val */
                 if (\is_null($val) === false && $val->symbol()->value() === $symbol->value() && $pattern[$i] == '#') {
                     $foundCount++;
                 }

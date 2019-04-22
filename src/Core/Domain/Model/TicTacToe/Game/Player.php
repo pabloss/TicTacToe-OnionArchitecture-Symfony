@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\ValueObject;
+namespace App\Core\Domain\Model\TicTacToe\Game;
 
-use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Event\Params\Params;
 use App\Core\Domain\Event\TileTakenEventInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
+use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
+use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\ValueObject\ValueObjectInterface;
 
 /**
  * Class Player

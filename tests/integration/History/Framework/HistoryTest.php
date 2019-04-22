@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\History\Framework;
 
-use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Presentation\Web\Pub\History\History;
-use App\Repository\HistoryRepository;
 use App\Tests\Stubs\History\HistoryItem;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

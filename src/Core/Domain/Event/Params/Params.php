@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Core\Domain\Event\Params;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 
 class Params implements ParamsInterface
@@ -20,7 +20,7 @@ class Params implements ParamsInterface
 
     /**
      * Params constructor.
-     * @param Player $player
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Player $player
      * @param Tile $tile
      * @param Game $game
      */

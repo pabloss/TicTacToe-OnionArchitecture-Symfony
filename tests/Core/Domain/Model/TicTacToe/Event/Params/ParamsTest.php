@@ -6,7 +6,7 @@ namespace App\Tests\Core\Domain\Model\TicTacToe\Event\Params;
 use App\Core\Domain\Event\Params\Params;
 use App\Core\Domain\Event\Params\ParamsInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use PHPUnit\Framework\TestCase;
 

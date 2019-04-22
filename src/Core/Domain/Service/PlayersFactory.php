@@ -5,7 +5,7 @@ namespace App\Core\Domain\Service;
 
 use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 
 /**
@@ -27,7 +27,7 @@ class PlayersFactory
 
 
     /**
-     * @return Player[]
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player[]
      * @throws NotAllowedSymbolValue
      */
     public function create(): array

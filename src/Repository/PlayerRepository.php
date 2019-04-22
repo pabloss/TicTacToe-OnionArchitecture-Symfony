@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game as GameVO;
 use App\Core\Domain\Model\TicTacToe\Game\History as HistoryVO;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player as PlayerVO;
+use App\Core\Domain\Model\TicTacToe\Game\Player as PlayerVO;
 use App\Core\Domain\Repository\PlayerRepositoryInterface;
 use App\Entity\Game as GameEntity;
 use App\Entity\History as HistoryEntity;

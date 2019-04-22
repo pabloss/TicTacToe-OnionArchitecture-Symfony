@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Model\TicTacToe\Game;
 
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Tests\Stubs\History\HistoryItem;

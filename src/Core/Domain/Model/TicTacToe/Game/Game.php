@@ -6,7 +6,6 @@ namespace App\Core\Domain\Model\TicTacToe\Game;
 use App\Core\Application\Validation\AccessControl;
 use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Model\TicTacToe\Exception;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Tests\Stubs\History\History;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Tests\Stubs\History\History;
 use App\Tests\Stubs\History\HistoryItem;
