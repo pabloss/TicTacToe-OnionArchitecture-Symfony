@@ -16,44 +16,29 @@ class HistoryTest extends TestCase
     /**
      * @test
      */
-    public function history_should_record_values()
+    public function get_last_turn()
     {
+        // Given
         $history = new History();
-        list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpDependencies();
-        $this->configureProphecies($playerProphecy, $gameProphecy, '0', '0');
+
+        $gameProphecy = $this->prophesize(Game::class);
+        $tileProphecy = $this->prophesize(Tile::class);
+
+        $playerProphecy = $this->prophesize(Player::class);
+        $gameProphecy->uuid()->willReturn('0');
+
+        // When
         $history->saveTurn(
             $playerProphecy->reveal(),
             $tileProphecy->reveal(),
             $gameProphecy->reveal()
         );
+
+        // Then
         $historyItem = $history->getLastTurn($gameProphecy->reveal());
         self::assertEquals($gameProphecy->reveal(), $historyItem->game());
         self::assertEquals($playerProphecy->reveal(), $historyItem->player());
         self::assertEquals($tileProphecy->reveal(), $historyItem->tile());
-    }
-
-    /**
-     * @return array
-     */
-    private function setUpDependencies($gameUuid, $playerUuid): array
-    {
-        $playerProphecy = $this->prophesize(Player::class);
-        $gameProphecy = $this->prophesize(Game::class);
-        $tileProphecy = $this->prophesize(Tile::class);
-        $gameProphecy->uuid()->willReturn($gameUuid);
-        $playerProphecy->getUuid()->willReturn($playerUuid);
-
-        return array($playerProphecy, $gameProphecy, $tileProphecy);
-    }
-
-    /**
-     * @param $playerProphecy
-     * @param $gameProphecy
-     */
-    private function configureProphecies($playerProphecy, $gameProphecy, $first, $second): void
-    {
-        $playerProphecy->getUuid()->willReturn($first);
-        $gameProphecy->uuid()->willReturn($second);
     }
 
     /**
