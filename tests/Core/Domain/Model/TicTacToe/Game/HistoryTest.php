@@ -19,7 +19,7 @@ class HistoryTest extends TestCase
     public function history_should_record_values()
     {
         $history = new History();
-        list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpProphecies();
+        list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpDependencies();
         $this->configureProphecies($playerProphecy, $gameProphecy, '0', '0');
         $history->saveTurn(
             $playerProphecy->reveal(),
@@ -35,11 +35,13 @@ class HistoryTest extends TestCase
     /**
      * @return array
      */
-    private function setUpProphecies(): array
+    private function setUpDependencies($gameUuid, $playerUuid): array
     {
         $playerProphecy = $this->prophesize(Player::class);
         $gameProphecy = $this->prophesize(Game::class);
         $tileProphecy = $this->prophesize(Tile::class);
+        $gameProphecy->uuid()->willReturn($gameUuid);
+        $playerProphecy->getUuid()->willReturn($playerUuid);
 
         return array($playerProphecy, $gameProphecy, $tileProphecy);
     }
@@ -59,37 +61,33 @@ class HistoryTest extends TestCase
      */
     public function sequence_of_sets_below_limit_should_take_correct_length()
     {
+        // Given
         $history = new History();
-        list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpProphecies();
-        $this->configureProphecies($playerProphecy, $gameProphecy, '0', '0');
+
+        $gameProphecy = $this->prophesize(Game::class);
+        $tileProphecy = $this->prophesize(Tile::class);
+
+        $player0Prophecy = $this->prophesize(Player::class);
+        $player1Prophecy = $this->prophesize(Player::class);
+
+        // When
+        $gameProphecy->uuid()->willReturn('0');
+        $player0Prophecy->getUuid()->willReturn('0');
+        $player1Prophecy->getUuid()->willReturn('1');
+
         $history->saveTurn(
-            $playerProphecy->reveal(),
+            $player0Prophecy->reveal(),
             $tileProphecy->reveal(),
             $gameProphecy->reveal()
         );
-        self::assertEquals('0', $history->getLastTurn($gameProphecy->reveal())->player()->getUuid());
-
-        list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpProphecies();
-        $this->configureProphecies($playerProphecy, $gameProphecy, '1', '0');
         $history->saveTurn(
-            $playerProphecy->reveal(),
+            $player1Prophecy->reveal(),
             $tileProphecy->reveal(),
             $gameProphecy->reveal()
         );
-        self::assertEquals('1', $history->getLastTurn($gameProphecy->reveal())->player()->getUuid());
 
+        // Then
         self::assertEquals(2, $history->length($gameProphecy->reveal()));
-
-        for ($i = 0; $i < ($history::LIMIT * 2); $i++) {
-            list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpProphecies();
-            $this->configureProphecies($playerProphecy, $gameProphecy, '0', '1');
-            $history->saveTurn(
-                $playerProphecy->reveal(),
-                $tileProphecy->reveal(),
-                $gameProphecy->reveal()
-            );
-        }
-        self::assertEquals($history::LIMIT, $history->length($gameProphecy->reveal()));
     }
 
     /**
@@ -100,7 +98,7 @@ class HistoryTest extends TestCase
         $expectedContent = [];
         $history = new History();
         for ($i = 0; $i < History::LIMIT; $i++) {
-            list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpProphecies();
+            list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpDependencies();
             $this->configureProphecies($playerProphecy, $gameProphecy, '0', '1');
             $value = new HistoryItem(
                 $playerProphecy->reveal(),
