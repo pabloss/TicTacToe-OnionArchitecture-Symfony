@@ -7,6 +7,8 @@ use App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber;
 use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
+use App\Core\Domain\Model\TicTacToe\Game\Game;
+use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Core\Domain\Service\FindWinner;
@@ -16,14 +18,28 @@ use App\Tests\Stubs\Event\EventManager;
 use App\Tests\Stubs\History\History;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class GameTest
+ * @package App\Tests\Core\Domain\Model\TicTacToe
+ */
 class GameTest extends TestCase
 {
+    /** @var Game $game */
+    private $game;
+
+    /** @var Player $playerX */
+    private $playerX;
+
+    /** @var Player $player0 */
+    private $player0;
 
     /**
-     * @test
+     * @return void
+     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
      */
-    public function game_should_record_correct_turns()
+    protected function setUp(): void
     {
+        // Given
         $board = new Board();
         $history = new History();
         $findWinner = new FindWinner();
@@ -38,13 +54,36 @@ class GameTest extends TestCase
         $factory = new PlayersFactory($eventManger);
         $game = new TicTacToe($board, $history, $factory, $findWinner, $eventManger, $uuid);
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
-        $playerX->takeTile(new Tile(0, 0), $game);
-        $player0->takeTile(new Tile(0, 1), $game);
-        $playerX->takeTile(new Tile(1, 0), $game);
-        $player0->takeTile(new Tile(1, 1), $game);
-        self::assertEquals([$playerX, $player0, null, $playerX, $player0, null, null, null, null], $game->board()->contents());
-        self::assertEquals([[0, 0], [0, 1], [1, 0], [1, 1]], $game->history()->content($game)->getTilesHistory());
-        self::assertEquals($game::OK, $game->errors());
+
+        $this->game = $game;
+        $this->playerX = $playerX;
+        $this->player0 = $player0;
+    }
+
+    /**
+     * @test
+     */
+    public function game_should_record_correct_turns()
+    {
+        // When
+        $players = [];
+        $players[] = $this->playerX;
+        $players[] = $this->player0;
+        $expectedTileCoords = [[0, 0], [0, 1], [1, 0], [1, 1]];
+
+        for ($i = 0; $i < \count($expectedTileCoords); ++$i){
+            $row = $expectedTileCoords[$i][0];
+            $column = $expectedTileCoords[$i][1];
+
+            $players[$i%2]->takeTile(new Tile($row,$column), $this->game);
+        }
+
+        // Then
+        self::assertEquals([$this->playerX, $this->player0, null, $this->playerX, $this->player0, null, null, null, null], $this->game->board()->contents());
+        self::assertEquals($expectedTileCoords,
+            $this->game->history()->content($this->game)->getTilesHistory()
+        );
+        self::assertEquals($this->game::OK, $this->game->errors());
     }
 
     /**
@@ -52,22 +91,11 @@ class GameTest extends TestCase
      */
     public function game_should_not_produce_new_players_if_ones_already_exist()
     {
-        $board = new Board();
-        $history = new History();
-        $findWinner = new FindWinner();
-        $eventManger = new EventManager();
-        $eventManger->attach(
-            Event::class,
-            function (EventInterface $event) {
-                return TakeTileEventSubscriber::onTakenTile($event);
-            }
-        );
-        $uuid = uniqid();
-        $factory = new PlayersFactory($eventManger);
-        $game = new TicTacToe($board, $history, $factory, $findWinner, $eventManger, $uuid);
-        list(Symbol::PLAYER_X_SYMBOL => $playerX1, Symbol::PLAYER_0_SYMBOL => $player01) = $game->players();
-        list(Symbol::PLAYER_X_SYMBOL => $playerX2, Symbol::PLAYER_0_SYMBOL => $player02) = $game->players();
+        // When
+        list(Symbol::PLAYER_X_SYMBOL => $playerX1, Symbol::PLAYER_0_SYMBOL => $player01) = $this->game->players();
+        list(Symbol::PLAYER_X_SYMBOL => $playerX2, Symbol::PLAYER_0_SYMBOL => $player02) = $this->game->players();
 
+        // Then
         self::assertSame($playerX1, $playerX2);
         self::assertSame($player01, $player02);
     }
