@@ -95,23 +95,45 @@ class HistoryTest extends TestCase
      */
     public function history_should_return_contents()
     {
-        $expectedContent = [];
+        // Given
         $history = new History();
+
+        $expectedContent = [];
+        $gameProphecy = $this->prophesize(Game::class);
+        $tileProphecy = $this->prophesize(Tile::class);
+
+        $gameProphecy->uuid()->willReturn('0');
+
+        $players = [];
+        $players[] = $this->prophesize(Player::class);
+        $players[] = $this->prophesize(Player::class);
+        $players[0]->getUuid()->willReturn('0');
+        $players[1]->getUuid()->willReturn('1');
+
+        // When
         for ($i = 0; $i < History::LIMIT; $i++) {
-            list($playerProphecy, $gameProphecy, $tileProphecy) = $this->setUpDependencies();
-            $this->configureProphecies($playerProphecy, $gameProphecy, '0', '1');
+            $tileProphecy->row()->willReturn(\rand(0,2));
+            $tileProphecy->column()->willReturn(\rand(0,2));
             $value = new HistoryItem(
-                $playerProphecy->reveal(),
+                $players[$i%2]->reveal(),
                 $tileProphecy->reveal(),
                 $gameProphecy->reveal()
             );
             $expectedContent[$history->length($gameProphecy->reveal()) % History::LIMIT] = $value;
             $history->saveTurn(
-                $playerProphecy->reveal(),
+                $players[$i%2]->reveal(),
                 $tileProphecy->reveal(),
                 $gameProphecy->reveal()
             );
         }
+
+        // Then
         self::assertEquals(new HistoryContent($expectedContent), $history->content($gameProphecy->reveal()));
+
+        $randIndexInHistory = History::LIMIT - \rand(1, History::LIMIT);
+        $randomExpectedHistoryItem = (new HistoryContent($expectedContent))->getArrayCopy()[$randIndexInHistory];
+        $randomActualHistoryItem = $history->content($gameProphecy->reveal())->getArrayCopy()[$randIndexInHistory];
+
+        self::assertEquals($randomExpectedHistoryItem, $randomActualHistoryItem);
     }
 }
