@@ -35,12 +35,18 @@ class History implements HistoryInterface
     /**
      * @param Game $game
      * @return HistoryContent
+     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
+     * @throws \App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException
      */
-    public function &content(Game $game): HistoryContent
+    public function content(Game $game): HistoryContent
     {
         $histories = $this->historyRepository->findAll();
+        $historyItems = [];
+        foreach ($histories as $history){
+            $historyItems[] = $this->createHistoryItem($game, $history);
+        }
 
-        return $histories;
+        return new HistoryContent($historyItems);
     }
 
     /**

@@ -3,25 +3,27 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\History\Framework;
 
+use App\Core\Application\History\HistoryContent;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Presentation\Web\Pub\History\History;
+use App\Entity\History as HistoryEntity;
 use App\Tests\Stubs\History\HistoryItem;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class HistoryTest
  * @package App\Tests\integration\History\Framework
- * @todo:  usuwamy set z historii i zamieniamy na saveMovement
  */
 class HistoryTest extends WebTestCase
 {
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
 
@@ -47,49 +49,76 @@ class HistoryTest extends WebTestCase
 
     /**
      * @test
-     * @description: zapisanie playera, jego ruchu i gry pozwala odczytać go z historii
-     * @todo: jednoczesnie ostatni ruch w jednej grze to inny ruch w innej grze
      */
-    public function playerMovementForGameShouldBeSaved()
+    public function get_last_turn()
     {
-        $history = new History($this->entityManager->getRepository(\App\Entity\History::class));
+        // Given
+        $history = new History($this->entityManager->getRepository(HistoryEntity::class));
+
         $gameProphecy = $this->prophesize(Game::class);
         $gameProphecy->uuid()->willReturn('0');
-        $game = $gameProphecy->reveal();
+        $player = new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), \uniqid());
+        $tile = new Tile(0,0);
 
-        $player0 = new Player(new Symbol(Symbol::PLAYER_0_SYMBOL), \uniqid());
-        $playerX = new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), \uniqid());
-        $tile1 = new Tile(0, 0);
-        $tile2 = new Tile(1, 1);
+        // When
+        $history->saveTurn(
+            $player,
+            $tile,
+            $gameProphecy->reveal()
+        );
 
-        $history->saveTurn($player0, $tile1, $game);
-        $history->saveTurn($playerX, $tile2, $game);
+        // Then
+        $historyItem = $history->getLastTurn($gameProphecy->reveal());
+        self::assertEquals($gameProphecy->reveal(), $historyItem->game());
+        self::assertEquals($player, $historyItem->player());
+        self::assertEquals($tile, $historyItem->tile());
+    }
 
-        $historyItem = $history->getLastTurn($game);
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
-        self::assertSame('0', $game->uuid());
-        self::assertEquals($playerX, $historyItem->player());
-        self::assertEquals($tile2, $historyItem->tile());
-        self::assertEquals($game, $historyItem->game());
+    /**
+     * @test
+     * todo: napisz dla dwóch gier
+     */
+    public function history_should_return_contents()
+    {
+        // Given
+        $historyRepository = $this->entityManager->getRepository(HistoryEntity::class);
+        $qb = $historyRepository->createQueryBuilder('h');
+        $qb->delete()->getQuery()->execute();
+        $history = new History($historyRepository);
 
-        $historyItem = $history->getTurn($game, 1);
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
-        self::assertEquals($player0, $historyItem->player());
-        self::assertEquals($tile1, $historyItem->tile());
-        self::assertEquals($game, $historyItem->game());
+        $expectedContent = [];
+        $gameProphecy = $this->prophesize(Game::class);
 
-        $tile3 = new Tile(2, 2);
-        $gameProphecy2 = $this->prophesize(Game::class);
-        $gameProphecy2->uuid()->willReturn('1');
-        $game2 = $gameProphecy2->reveal();
-        $history->saveTurn($player0, $tile3, $game2);
-        $history->saveTurn($player0, $tile1, $game);
-        $historyItem = $history->getLastTurn($game2);
-        self::assertSame('1', $game2->uuid());
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
-        self::assertEquals($player0, $historyItem->player());
-        self::assertEquals($tile3, $historyItem->tile());
-        self::assertEquals($game2, $historyItem->game());
+        $gameProphecy->uuid()->willReturn('0');
+
+        $players = [];
+        $players[] =  new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), \uniqid());
+        $players[] = new Player(new Symbol(Symbol::PLAYER_0_SYMBOL), \uniqid());
+
+        // When
+        for ($i = 0; $i < History::LIMIT; $i++) {
+            $tile = new Tile(\rand(0,2),\rand(0,2));
+            $value = new HistoryItem(
+                $players[$i%2],
+                $tile,
+                $gameProphecy->reveal()
+            );
+            $expectedContent[$history->length($gameProphecy->reveal()) % History::LIMIT] = $value;
+            $history->saveTurn(
+                $players[$i%2],
+                $tile,
+                $gameProphecy->reveal()
+            );
+        }
+
+        // Then
+        self::assertEquals(new HistoryContent($expectedContent), $history->content($gameProphecy->reveal()));
+
+        $randIndexInHistory = History::LIMIT - \rand(1, History::LIMIT);
+        $randomExpectedHistoryItem = (new HistoryContent($expectedContent))->getArrayCopy()[$randIndexInHistory];
+        $randomActualHistoryItem = $history->content($gameProphecy->reveal())->getArrayCopy()[$randIndexInHistory];
+
+        self::assertEquals($randomExpectedHistoryItem, $randomActualHistoryItem);
     }
 
     /**
