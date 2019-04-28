@@ -17,44 +17,64 @@ use App\Presentation\Web\Pub\History\History;
 use App\Repository\HistoryRepository;
 use App\Tests\Stubs\History\HistoryItem;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Presentation\Web\Pub\Event\EventManager;
 
+/**
+ * Class EventManagerTest
+ * @package App\Tests\integration\Event
+ */
 class EventManagerTest extends WebTestCase
 {
     /**
      * @test
      */
-    public function eventManagerShouldImplementEventManagerInterface()
+    public function eventManagerImplementsEventManagerInterface()
     {
+        // Given
         $kernel = self::bootKernel();
 
-        $eventManager = $kernel->getContainer()->get('App\Presentation\Web\Pub\Event\EventManager');
+        // When
+        $eventManager = $kernel->getContainer()->get(EventManager::class);
+
+        // Then
         self::assertInstanceOf(EventManagerInterface::class, $eventManager);
     }
 
     /**
      * @test
      */
-    public function triggeringEventShoulBeCatchedByCorecctSubscriber()
+    public function triggeringEventCaughtByCorrectSubscriber()
     {
+        // Given
         $kernel = self::bootKernel();
         $history = new History(self::$container->get(HistoryRepository::class));
         $playersFactory = $this->prophesize(PlayersFactory::class);
-
-        $eventManager = $kernel->getContainer()
-            ->get('App\Presentation\Web\Pub\Event\EventManager');
         $playersFactory->create()->willReturn([
             Symbol::PLAYER_X_SYMBOL => new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), \uniqid()),
             Symbol::PLAYER_0_SYMBOL => new Player(new Symbol(Symbol::PLAYER_0_SYMBOL), \uniqid()),
         ]);
-        $game = new Game($this->prophesize(Board::class)->reveal(), $history,
-            $playersFactory->reveal(), $this->prophesize(FindWinner::class)->reveal(), $eventManager, \uniqid());
+        $eventManager = $kernel->getContainer()->get(EventManager::class);
 
-        $kernel = self::bootKernel();
+        $game = new Game(
+            $this->prophesize(Board::class)->reveal(),
+            $history,
+            $playersFactory->reveal(),
+            $this->prophesize(FindWinner::class)->reveal(),
+            $eventManager,
+            \uniqid()
+        );
 
-        $eventManager = $kernel->getContainer()->get('App\Presentation\Web\Pub\Event\EventManager');
-        $eventManager->trigger(Event::NAME, new Params($game->players()[Symbol::PLAYER_X_SYMBOL], new Tile(0,0), $game));
-        /** @var HistoryItem $history */
-        $history = $game->history()->getLastTurn($game);
-        self::assertEquals(new Tile(0, 0), $history->tile());
+        // When
+        $eventManager->trigger(
+            Event::NAME, new Params($game->players()[Symbol::PLAYER_X_SYMBOL],
+            new Tile(0,0), $game)
+        );
+
+        // Then
+        /** @var HistoryItem $historyItem */
+        $historyItem = $game->history()->getLastTurn($game);
+        self::assertEquals($game, $historyItem->game());
+        self::assertEquals($game->players()[Symbol::PLAYER_X_SYMBOL], $historyItem->player());
+        self::assertEquals(new Tile(0, 0), $historyItem->tile());
     }
 }
