@@ -43,7 +43,15 @@ class Player implements ValueObjectInterface
     /**
      * @return string
      */
-    public function getUuid(): string
+    public function symbolValue(): string
+    {
+        return $this->symbol()->value();
+    }
+
+    /**
+     * @return string
+     */
+    public function uuid(): string
     {
         return $this->uuid;
     }
@@ -51,12 +59,11 @@ class Player implements ValueObjectInterface
     /**
      * @param Tile $tile
      * @param Game $game
-     * @return Tile
+     * @param HistoryInterface $history
+     * @return void
      */
-    public function takeTile(Tile $tile, Game $game): Tile
+    public function takeTile(Tile $tile, Game $game, HistoryInterface $history): void
     {
-        $game->eventManger()->trigger(TileTakenEventInterface::NAME, new Params($this, $tile, $game));
-
-        return $tile;
+        $game->eventManger()->trigger(TileTakenEventInterface::NAME, new Params($this, $tile, $game, $history));
     }
 }

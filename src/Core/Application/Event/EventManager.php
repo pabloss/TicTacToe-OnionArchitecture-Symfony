@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Stubs\Event;
+namespace App\Core\Application\Event;
 
-use App\Core\Application\Event\Event;
 use App\Core\Application\Event\EventSubscriber\EventSubscriberInterface;
 use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Event\Params\ParamsInterface;
+use App\Tests\Stubs\Event\Event;
 
 /**
  * Example:
@@ -31,12 +31,12 @@ class EventManager implements EventManagerInterface
 
 
     /**
-     * @param string $name
+     * @param string $eventName
      * @param callable $callback
      */
-    public function attach(string $name, callable $callback): void
+    public function attach(string $eventName, callable $callback): void
     {
-        $this->events[$name][] = $callback;
+        $this->events[$eventName][] = $callback;
     }
 
     public function detach(string $name): void
@@ -45,7 +45,7 @@ class EventManager implements EventManagerInterface
     }
 
     /**
-     * @param \App\Core\Application\Event\EventSubscriber\EventSubscriberInterface[] $subscribers
+     * @param EventSubscriberInterface[] $subscribers
      * @return EventManager
      */
     public static function getInstance(): EventManagerInterface
@@ -59,13 +59,13 @@ class EventManager implements EventManagerInterface
 
 
     /**
-     * @param string $name
+     * @param string $eventName
      * @param ParamsInterface $params
      */
-    public function trigger(string $name, ParamsInterface $params = null): void
+    public function trigger(string $eventName, ParamsInterface $params = null): void
     {
-        foreach ($this->events[$name] as $event => $callback) {
-            $e = new Event($name, $params);
+        foreach ($this->events[$eventName] as $event => $callback) {
+            $e = new Event($eventName, $params);
             $callback($e);
         }
     }

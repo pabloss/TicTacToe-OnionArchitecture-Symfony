@@ -48,23 +48,6 @@ class HistoryRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function getLastByGameAndIndex(Game $game, int $index): ?History
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('h')
-            ->from(History::class, 'h')
-            ->where('h.gameUuid = :gameUuid')
-            ->orderBy('h.createdAt', 'DESC')
-            ->setMaxResults($index+1)
-            ->setParameter('gameUuid', $game->uuid())
-        ;
-        $result = $qb->getQuery()->getResult();
-
-        return \end($result);
-    }
-
-
-
     /**
      * @param HistoryEntity $history
      * @throws \Doctrine\ORM\ORMException

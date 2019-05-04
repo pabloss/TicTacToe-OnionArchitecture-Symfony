@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
 use App\Core\Application\History\HistoryContent;
+use App\Core\Application\History\HistoryItem;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Tests\Stubs\History\History;
-use App\Tests\Stubs\History\HistoryItem;
 use PHPUnit\Framework\TestCase;
 
 class HistoryTest extends TestCase
@@ -35,7 +35,7 @@ class HistoryTest extends TestCase
         );
 
         // Then
-        $historyItem = $history->getLastTurn($gameProphecy->reveal());
+        $historyItem = $history->lastItem($gameProphecy->reveal());
         self::assertEquals($gameProphecy->reveal(), $historyItem->game());
         self::assertEquals($playerProphecy->reveal(), $historyItem->player());
         self::assertEquals($tileProphecy->reveal(), $historyItem->tile());
@@ -57,8 +57,8 @@ class HistoryTest extends TestCase
 
         // When
         $gameProphecy->uuid()->willReturn('0');
-        $player0Prophecy->getUuid()->willReturn('0');
-        $player1Prophecy->getUuid()->willReturn('1');
+        $player0Prophecy->uuid()->willReturn('0');
+        $player1Prophecy->uuid()->willReturn('1');
 
         $history->saveTurn(
             $player0Prophecy->reveal(),
@@ -92,8 +92,8 @@ class HistoryTest extends TestCase
         $players = [];
         $players[] = $this->prophesize(Player::class);
         $players[] = $this->prophesize(Player::class);
-        $players[0]->getUuid()->willReturn('0');
-        $players[1]->getUuid()->willReturn('1');
+        $players[0]->uuid()->willReturn('0');
+        $players[1]->uuid()->willReturn('1');
 
         // When
         for ($i = 0; $i < History::LIMIT; $i++) {

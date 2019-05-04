@@ -37,38 +37,6 @@ class PlayerRepository extends ServiceEntityRepository implements PlayerReposito
         $this->objectManager = $objectManager;
     }
 
-    public function savePlayer(PlayerVO $player, GameVO $game)
-    {
-        $playerEntity = new PlayerEntity();
-        $playerEntity->setValueObject($player);
-
-        if (empty($this->gameRepository->findByVO($game))) {
-            $gameEntity = new GameEntity();
-            $gameEntity->setValueObject($game);
-
-            $historyEntity = new HistoryEntity();
-            $historyEntity->setValueObject(new HistoryVO());
-            $gameEntity->setHistory($historyEntity);
-
-            $playerEntity->setGame($gameEntity);
-
-            $this->objectManager->persist($historyEntity);
-            $this->objectManager->persist($gameEntity);
-
-        } else {
-            $gameEntity = $this->gameRepository->findByVO($game);
-            $playerEntity->setGame($gameEntity);
-            $playerEntity->setValueObject($player);
-        }
-        $this->objectManager->persist($playerEntity);
-        $this->objectManager->flush();
-    }
-
-    public function getPlayer(PlayerVO $player): PlayerVO
-    {
-        return $this->findByVO($player)->getValueObject();
-    }
-
     /**
      * @param
      * @return

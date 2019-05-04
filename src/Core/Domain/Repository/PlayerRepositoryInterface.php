@@ -13,16 +13,4 @@ use App\Core\Domain\Model\TicTacToe\Game\Player as PlayerVO;
  */
 interface PlayerRepositoryInterface
 {
-    /**
-     * @param PlayerVO $player
-     * @param GameVO $game
-     * @return mixed
-     */
-    public function savePlayer(PlayerVO $player, GameVO $game);
-
-    /**
-     * @param PlayerVO $player
-     * @return PlayerVO
-     */
-    public function getPlayer(PlayerVO $player): PlayerVO;
 }

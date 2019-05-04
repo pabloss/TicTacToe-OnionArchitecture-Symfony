@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Core\Application\History;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Tests\Stubs\History\HistoryItem;
+use App\Core\Application\History\HistoryItem;
 
 /**
  * Class HistoryContent
@@ -28,17 +28,22 @@ class HistoryContent extends \ArrayObject
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getTilesHistory(): array
     {
         $historyTiles = [];
-        $historyItems = $this->content;
-        /** @var HistoryItem $historyItem */
-        foreach ($historyItems as $historyItem) {
-            $tile = $historyItem->tile();
-            $historyTiles[] = [$tile->row(), $tile->column()];
+        foreach ($this->content() as $historyItem) {
+            $historyTiles[] = $historyItem->getTileArray();
         }
         return $historyTiles;
+    }
+
+    /**
+     * @return HistoryItem[]
+     */
+    private function content(): array
+    {
+        return $this->content;
     }
 }

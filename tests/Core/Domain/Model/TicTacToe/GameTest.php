@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
+use App\Core\Application\Event\EventManager;
 use App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber;
 use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
-use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
+use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Presentation\Web\Pub\Event\Event;
-use App\Tests\Stubs\Event\EventManager;
 use App\Tests\Stubs\History\History;
 use PHPUnit\Framework\TestCase;
 
@@ -34,6 +34,11 @@ class GameTest extends TestCase
     private $player0;
 
     /**
+     * @var History
+     */
+    private $history;
+
+    /**
      * @return void
      * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
      */
@@ -44,6 +49,7 @@ class GameTest extends TestCase
         $history = new History();
         $findWinner = new FindWinner();
         $eventManger = new EventManager();
+        TakeTileEventSubscriber::init($history);
         $eventManger->attach(
             Event::NAME,
             function (EventInterface $event) {
@@ -51,13 +57,14 @@ class GameTest extends TestCase
             }
         );
         $uuid = uniqid();
-        $factory = new PlayersFactory($eventManger);
+        $factory = new PlayersFactory();
         $game = new TicTacToe($board, $history, $factory, $findWinner, $eventManger, $uuid);
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
 
         $this->game = $game;
         $this->playerX = $playerX;
         $this->player0 = $player0;
+        $this->history = $history;
     }
 
     /**
@@ -75,13 +82,13 @@ class GameTest extends TestCase
             $row = $expectedTileCoords[$i][0];
             $column = $expectedTileCoords[$i][1];
 
-            $players[$i%2]->takeTile(new Tile($row,$column), $this->game);
+            $players[$i%2]->takeTile(new Tile($row,$column), $this->game, $this->history);
         }
 
         // Then
         self::assertEquals([$this->playerX, $this->player0, null, $this->playerX, $this->player0, null, null, null, null], $this->game->board()->contents());
         self::assertEquals($expectedTileCoords,
-            $this->game->history()->content($this->game)->getTilesHistory()
+            $this->history->content($this->game)->getTilesHistory()
         );
         self::assertEquals($this->game::OK, $this->game->errors());
     }

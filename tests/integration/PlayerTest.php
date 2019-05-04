@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
+use App\Core\Application\Event\EventManager;
 use App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber;
 use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\AI\AI;
@@ -13,7 +14,6 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Presentation\Web\Pub\Event\Event;
-use App\Tests\Stubs\Event\EventManager;
 use PHPUnit\Framework\TestCase;
 
 class PlayerTest extends TestCase
@@ -26,13 +26,15 @@ class PlayerTest extends TestCase
      */
     public function looping_AI_player_fills_whole_board_in_9_turns()
     {
-            TakeTileEventSubscriber::$counter = 0;
+        $history = new History();
+        TakeTileEventSubscriber::$counter = 0;
+        TakeTileEventSubscriber::init($history);
         $eventManager = EventManager::getInstance();
         $eventManager->detach(Event::NAME);
         $eventManager->attach(Event::NAME, function (EventInterface $event){
             TakeTileEventSubscriber::onTakenTile($event);
         });
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($eventManager), new FindWinner(),
+        $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
             );
@@ -44,8 +46,8 @@ class PlayerTest extends TestCase
             $expectedFilledCount <= 9;
             $expectedFilledCount += 2
         ) {
-            $player->takeTile($ai->takeRandomFreeTile(), $game);
-            $notUsedPlayer->takeTile($this->simulate_choosing_tiles_of_real_player(), $game);
+            $player->takeTile($ai->takeRandomFreeTile(), $game, $history);
+            $notUsedPlayer->takeTile($this->simulate_choosing_tiles_of_real_player(), $game, $history);
             $actualFilledCount = \array_reduce(
                 $game->board()->contents(),
                 function ($carry, $item) {

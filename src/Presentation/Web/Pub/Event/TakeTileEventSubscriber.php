@@ -9,11 +9,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface as SymfonyEventSu
 
 class TakeTileEventSubscriber extends \App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber implements SymfonyEventSubscriberInterface, EventSubscriberInterface
 {
-    public function getEventHandlers()
-    {
-        return self::getSubscribedEvents();
-    }
-
     public static function getSubscribedEvents()
     {
         return [

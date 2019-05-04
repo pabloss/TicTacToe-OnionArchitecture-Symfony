@@ -8,6 +8,8 @@ use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 
+
+
 /**
  * Winner is found when all his/her marks are in one line at some stage of game
  *
@@ -20,6 +22,8 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
  */
 class FindWinner
 {
+    const MATCHED_PATTERN_EXPECTED_FIELD_COUNT = 3;
+    const MARKED_FIELD_GENERIC_SYMBOL = '#';
     const patterns = [
         [
             '#',
@@ -111,12 +115,6 @@ class FindWinner
         ],
     ];
 
-    /**
-     * We'll operate on reference to control a state of board
-     *
-     * @var Board
-     */
-    private $board;
 
     /**
      * @param Game $game
@@ -126,62 +124,54 @@ class FindWinner
     public function winner(Game $game): ?Player
     {
         return
-            $this->findWinnerByBoardPatterns(new Symbol(Symbol::PLAYER_X_SYMBOL), $game) ??
-            $this->findWinnerByBoardPatterns(new Symbol(Symbol::PLAYER_0_SYMBOL), $game);
+            $this->findWinnerByBoardPatterns(new Symbol(Symbol::PLAYER_X_SYMBOL), $game->board()) ??
+            $this->findWinnerByBoardPatterns(new Symbol(Symbol::PLAYER_0_SYMBOL), $game->board());
     }
 
     /**
-     * @param \App\Core\Domain\Model\TicTacToe\ValueObject\Symbol $symbol
-     * @param Game $game
-     * @return \App\Core\Domain\Model\TicTacToe\Game\Player|null
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
+     * @param Symbol $symbol
+     * @param Board $board
+     * @return Player|null
      */
-    private function findWinnerByBoardPatterns(Symbol $symbol, Game $game): ?Player
+    private function findWinnerByBoardPatterns(Symbol $symbol, Board $board): ?Player
     {
-        $this->board = $game->board();
-        // Here were loop, but now I've changed to use native PHP array function
-        // I'm not sure if it "improves" performance
-        $found = \array_reduce(
+        return \array_reduce(
             self::patterns,
-            function ($carry, $pattern) use ($symbol) {
-                $carry =
-                    (
-                        $carry ||
-                        $this->countFieldsMatchedToPattern($pattern, $symbol) === 3
-                    );
-
+            function ($carry, $pattern) use ($symbol, $board) {
+                if(null === $carry){
+                    return $this->findPlayerByPatternAndSymbol($pattern, $board, $symbol);
+                }
                 return $carry;
             },
-            false
+            null
         );
-
-        if ($found === false) {
-            return null;
-        }
-
-        return $game->players()[$symbol->value()];
     }
 
     /**
      * @param $pattern
+     * @param Board $board
      * @param Symbol $symbol
-     * @return int
+     * @return Player|null
      */
-    private function countFieldsMatchedToPattern($pattern, Symbol $symbol): int
+    private function findPlayerByPatternAndSymbol($pattern, Board $board, Symbol $symbol): ?Player
     {
+        // todo: too complex to make small refactor
         $foundCount = 0;
+        $foundPlayer = null;
         // Here were loop, but now I've changed to use native PHP array function
         // I'm not sure if it "improves" performance
         \array_walk(
-            $this->board->contents(),
-            function ($val, $i) use (&$foundCount, $symbol, $pattern) {
-                /** @var \App\Core\Domain\Model\TicTacToe\Game\Player $val */
-                if (\is_null($val) === false && $val->symbol()->value() === $symbol->value() && $pattern[$i] == '#') {
+            $board->contents(),
+            function ($player, $i) use (&$foundPlayer, &$foundCount, $symbol, $pattern) {
+                /** @var Player $player */
+                if (\is_null($player) === false && $player->symbol()->value() === $symbol->value() && $pattern[$i] == self::MARKED_FIELD_GENERIC_SYMBOL) {
                     $foundCount++;
+                    $foundPlayer = $player;
                 }
             }
         );
 
-        return $foundCount;
+        return ($foundCount === self::MATCHED_PATTERN_EXPECTED_FIELD_COUNT) ?
+            $foundPlayer : null;
     }
 }

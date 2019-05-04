@@ -4,13 +4,17 @@ declare(strict_types=1);
 namespace App\Presentation\Web\Pub\History;
 
 use App\Core\Application\History\HistoryContent;
+use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
+use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Repository\HistoryRepository;
-use App\Tests\Stubs\History\HistoryItem;
+use App\Core\Application\History\HistoryItem;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 
 /**
  * Class History
@@ -52,10 +56,10 @@ class History implements HistoryInterface
     /**
      * @param Game $game
      * @return HistoryItem|null
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException
+     * @throws NotAllowedSymbolValue
+     * @throws OutOfLegalSizeException
      */
-    public function getLastTurn(Game $game): ?HistoryItem
+    public function lastItem(Game $game): ?HistoryItem
     {
         if(0 === (int) $this->historyRepository->count([])){
             return null;
@@ -65,31 +69,28 @@ class History implements HistoryInterface
         return  $this->createHistoryItem($game, $entity);
     }
 
-    /**
-     * @param Game $game
-     * @param int $index
-     * @return HistoryItem|null
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException
-     */
-    public function getTurn(Game $game, int $index): ?HistoryItem
+    public function lastItemPlayerSymbolValue(Game $game): ?string
     {
-        if(0 === (int) $this->historyRepository->count([])){
-            return null;
-        }
-        $entity = $this->historyRepository->getLastByGameAndIndex($game, $index);
-
-        return  $this->createHistoryItem($game, $entity);
+        return $this->lastItem($game)->player()->symbol()->value();
     }
 
 
     /**
      * @return Symbol
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
+     * @throws NotAllowedSymbolValue
      */
     public function getStartingPlayerSymbol(): Symbol
     {
         return new Symbol(Symbol::PLAYER_X_SYMBOL);
+    }
+
+    /**
+     * @return string
+     * @throws NotAllowedSymbolValue
+     */
+    public function getStartingPlayerSymbolValue(): string
+    {
+        return $this->getStartingPlayerSymbol()->value();
     }
 
     /**
@@ -102,16 +103,16 @@ class History implements HistoryInterface
     }
 
     /**
-     * @param \App\Core\Domain\Model\TicTacToe\Game\Player $player
+     * @param Player $player
      * @param Tile $tile
      * @param Game $game
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function saveTurn(Player $player, Tile $tile, Game $game): void
     {
         $entity = new \App\Entity\History();
-        $entity->setPlayerUuid($player->getUuid());
+        $entity->setPlayerUuid($player->uuid());
         $entity->setPlayerSymbol($player->symbol()->value());
         $entity->setGameUuid($game->uuid());
         $entity->setCreatedAt((string) \microtime(true));
@@ -123,8 +124,8 @@ class History implements HistoryInterface
      * @param Game $game
      * @param \App\Entity\History|null $entity
      * @return HistoryItem
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException
+     * @throws NotAllowedSymbolValue
+     * @throws OutOfLegalSizeException
      */
     private function createHistoryItem(Game $game, ?\App\Entity\History $entity): ?HistoryItem
     {

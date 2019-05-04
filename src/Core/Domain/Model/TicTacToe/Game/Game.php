@@ -9,6 +9,7 @@ use App\Core\Domain\Model\TicTacToe\Exception;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Tests\Stubs\History\History;
+use App\Core\Application\History\HistoryItem;
 
 /**
  * Class Game
@@ -99,11 +100,11 @@ class Game
     }
 
     /**
-     * @return HistoryInterface
+     * @return HistoryItem|mixed|null
      */
-    public function history(): HistoryInterface
+    public function getLastItem()
     {
-        return $this->history;
+        return $this->history->lastItem($this);
     }
 
     /**

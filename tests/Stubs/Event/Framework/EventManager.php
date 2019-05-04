@@ -3,13 +3,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Stubs\Event\Framework;
 
-use App\Core\Application\EventSubscriber\EventSubscriberInterface;
 use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Event\Params\ParamsInterface;
-use App\Tests\Stubs\Event\TileTakenEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use App\Presentation\Web\Pub\Event\TakeTileEventSubscriber;
 
 class EventManager implements EventManagerInterface
 {
@@ -18,8 +15,6 @@ class EventManager implements EventManagerInterface
 
     /** @var self */
     private static $instance;
-    /** @var Event[] */
-    private $events = array();
 
     /**
      * EventManager constructor.
@@ -28,15 +23,11 @@ class EventManager implements EventManagerInterface
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         self::$dispatcher = $dispatcher;
-        /** @var EventSubscriberInterface[] $subscribers */
     }
 
-    public function attach(string $name, callable $callback): void
+    public function attach(string $eventName, callable $callback): void
     {
-        $methodName = TakeTileEventSubscriber::getSubscribedEvents()[TileTakenEvent::NAME];
-        $this->events[$name][] = function () use ($methodName) {
-            (new TakeTileEventSubscriber())->{$methodName}();
-        };
+
     }
 
     public static function getInstance(): EventManagerInterface
@@ -48,8 +39,8 @@ class EventManager implements EventManagerInterface
         return self::$instance;
     }
 
-    public function trigger(string $name, ParamsInterface $params = null): void
+    public function trigger(string $eventName, ParamsInterface $params = null): void
     {
-        self::$dispatcher->dispatch($name, new Event($name, $params));
+        self::$dispatcher->dispatch($eventName, new Event($eventName, $params));
     }
 }

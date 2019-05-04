@@ -3,14 +3,17 @@ declare(strict_types=1);
 
 namespace App\Core\Application\Event;
 
+use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Event\Params\ParamsInterface;
 
 /**
  * Class TileTakenEvent
  * @package App\Core\Domain\Event
  */
-class TileTakenEvent extends \App\Core\Application\Event\Event
+class TileTakenEvent implements EventInterface
 {
+    use Event { __construct as construct; }
+
     const NAME = 'tile.taken';
 
     /**
@@ -19,6 +22,6 @@ class TileTakenEvent extends \App\Core\Application\Event\Event
      */
     public function __construct(ParamsInterface $params)
     {
-        parent::__construct(self::NAME, $params);
+        $this->construct(self::NAME, $params);
     }
 }

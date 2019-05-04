@@ -6,7 +6,7 @@ namespace App\Core\Domain\Model\TicTacToe\Game;
 use App\Core\Application\History\HistoryContent;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Tests\Stubs\History\HistoryItem;
+use App\Core\Application\History\HistoryItem;
 
 /**
  * Interface HistoryInterface
@@ -15,7 +15,8 @@ use App\Tests\Stubs\History\HistoryItem;
 interface HistoryInterface
 {
     /**
-     * @return array
+     * @param Game $game
+     * @return HistoryContent
      */
     public function content(Game $game): HistoryContent;
 
@@ -23,12 +24,23 @@ interface HistoryInterface
      * @param Game $game
      * @return HistoryItem|null
      */
-    public function getLastTurn(Game $game): ?HistoryItem;
+    public function lastItem(Game $game): ?HistoryItem;
+
+    /**
+     * @param Game $game
+     * @return string|null
+     */
+    public function lastItemPlayerSymbolValue(Game $game): ?string ;
 
     /**
      * @return Symbol
      */
     public function getStartingPlayerSymbol(): Symbol;
+
+    /**
+     * @return Symbol
+     */
+    public function getStartingPlayerSymbolValue(): string;
 
     /**
      * @param Game $game

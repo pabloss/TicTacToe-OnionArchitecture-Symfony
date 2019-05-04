@@ -5,11 +5,26 @@ namespace App\Core\Domain\Event;
 
 use App\Core\Domain\Event\Params\ParamsInterface;
 
+/**
+ * Interface EventManagerInterface
+ * @package App\Core\Domain\Event
+ */
 interface EventManagerInterface
 {
+    /**
+     * @return EventManagerInterface
+     */
     public static function getInstance(): self;
 
-    public function attach(string $name, callable $callback): void;
+    /**
+     * @param string $eventName
+     * @param callable $callback
+     */
+    public function attach(string $eventName, callable $callback): void;
 
-    public function trigger(string $name, ParamsInterface $params = null): void;
+    /**
+     * @param string $eventName
+     * @param ParamsInterface|null $params
+     */
+    public function trigger(string $eventName, ParamsInterface $params = null): void;
 }

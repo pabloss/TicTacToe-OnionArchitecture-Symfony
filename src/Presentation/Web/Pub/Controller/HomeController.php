@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class HomeController
  * @package App\Presentation\Web\Pub\Controller
+ * @not used currently
  */
 final class HomeController extends AbstractController
 {
@@ -62,7 +63,7 @@ final class HomeController extends AbstractController
      */
     public function getTile(int $x, int $y)
     {
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($this->eventManager), new FindWinner(),
+        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner(),
         $this->eventManager,
         \uniqid()
         );

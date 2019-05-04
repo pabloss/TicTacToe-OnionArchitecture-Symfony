@@ -7,6 +7,7 @@ use App\Core\Application\Validation\TurnControl;
 use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
+use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 
 /**
@@ -16,27 +17,39 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 class TakeTileEventSubscriber implements EventSubscriberInterface
 {
     public static $counter = 0;
+
+    /** @var HistoryInterface */
+    private static $history;
+
+    /**
+     * TakeTileEventSubscriber constructor.
+     * @param HistoryInterface $history
+     * @todo zamien na __construct, by nie trzeba było pamiętać o wywołaniu tej metody
+     */
+    public static function init(HistoryInterface $history)
+    {
+        self::$history = $history;
+    }
+
     /**
      * @param EventInterface $event
      * @return Tile
      * @throws NotAllowedSymbolValue
+     * @todo zamień na niestatyczną by nie trzeba było pamiętać o self::init
      */
     public static function onTakenTile(EventInterface $event)
     {
         /** @var $game Game */
-        $params = $event->getParams();
-        $player = $params->player();
-        $tile = $params->tile();
-        $game = $params->game();
-        TurnControl::validateTurn($player, $game);
-        if ($game->errors() === Game::OK) {
+        TurnControl::validateTurn($event->player(), $event->game(), $event->gameHistory());
+        if ($event->gameErrors() === Game::OK) {
             ++self::$counter;
-            $game->board()->mark($tile, $player);
+            // todo: dodaj oddzielny subscriber do markowania planszy: jeśli był mark to zrób event toSaveToHistory
+            $event->gameBoard()->mark($event->tile(), $event->player());
 
-            $game->history()->saveTurn($player, $tile, $game);
+            self::$history->saveTurn($event->player(), $event->tile(), $event->game());
         }
 
-        return $tile;
+        return $event->tile();
     }
 
     public function getEventHandlers()

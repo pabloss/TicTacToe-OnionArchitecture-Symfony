@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Stubs\Event\Framework;
 
+use App\Core\Application\Event\Event as CoreEvent;
 use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Event\Params\ParamsInterface;
 use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
@@ -13,6 +14,8 @@ use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
  */
 class Event extends SymfonyEvent implements EventInterface
 {
+    use CoreEvent { __construct as construct; }
+
     const NAME = '';
 
     /** @var string */
@@ -28,25 +31,6 @@ class Event extends SymfonyEvent implements EventInterface
      */
     public function __construct(string $name, ParamsInterface $params = null)
     {
-        $this->name = $name;
-        $this->params = $params;
+        $this->construct($name, $params);
     }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return ParamsInterface|null
-     */
-    public function getParams(): ?ParamsInterface
-    {
-        return $this->params;
-    }
-
-
 }

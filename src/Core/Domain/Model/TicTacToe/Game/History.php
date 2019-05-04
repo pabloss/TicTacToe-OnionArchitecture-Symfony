@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace App\Core\Domain\Model\TicTacToe\Game;
 
 use App\Core\Application\History\HistoryContent;
+use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Tests\Stubs\History\HistoryItem;
+use App\Core\Application\History\HistoryItem;
 
 /**
  * Class History
@@ -19,17 +20,13 @@ class History implements HistoryInterface
     /**
      * @var array
      */
-    private $timeLine = [];
+    protected $timeLine = [];
 
     /**
      * @var Symbol
      */
     private $startingPlayerSymbol;
 
-    /**
-     * @var
-     */
-    private $lastTurn;
 
     /**
      * History constructor.
@@ -41,6 +38,7 @@ class History implements HistoryInterface
 
     /**
      * @return array
+     * todo: remove the method
      */
     public function getLast(): array
     {
@@ -51,7 +49,7 @@ class History implements HistoryInterface
      * @param Game $game
      * @return array
      */
-    public function &content(Game $game): HistoryContent
+    public function content(Game $game): HistoryContent
     {
         return new HistoryContent($this->timeLine[$game->uuid()]);
     }
@@ -60,9 +58,18 @@ class History implements HistoryInterface
      * @param Game $game
      * @return mixed
      */
-    public function getLastTurn(Game $game): ?HistoryItem
+    public function lastItem(Game $game): ?HistoryItem
     {
         return $this->timeLine[$game->uuid()][($this->length($game) - 1) % self::LIMIT] ?? null;
+    }
+
+    /**
+     * @param Game $game
+     * @return string|null
+     */
+    public function lastItemPlayerSymbolValue(Game $game): ?string
+    {
+        return $this->lastItem($game)->player()->symbol()->value();
     }
 
     /**
@@ -73,12 +80,19 @@ class History implements HistoryInterface
         return $this->startingPlayerSymbol;
     }
 
+    /**
+     * @return string
+     */
+    public function getStartingPlayerSymbolValue(): string
+    {
+        return $this->getStartingPlayerSymbol()->value();
+    }
 
     /**
      * @param Player $player
      * @param Tile $tile
      * @param Game $game
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
+     * @throws NotAllowedSymbolValue
      */
     public function saveTurn(Player $player, Tile $tile, Game $game): void
     {
@@ -95,6 +109,7 @@ class History implements HistoryInterface
 
     /**
      * @param $value
+     * todo: remove the method
      */
     public function set($value): void
     {

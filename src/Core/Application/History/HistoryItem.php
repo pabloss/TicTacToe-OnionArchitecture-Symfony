@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Stubs\History;
+namespace App\Core\Application\History;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
@@ -50,6 +50,14 @@ class HistoryItem
     public function tile(): ?Tile
     {
         return $this->tile;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTileArray(): array
+    {
+        return [$this->tile->row(), $this->tile->column()];
     }
 
     /**

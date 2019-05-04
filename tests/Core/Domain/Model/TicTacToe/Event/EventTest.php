@@ -28,7 +28,7 @@ class EventTest extends TestCase
     public function getEventName()
     {
         $event = new Event('test', $this->params);
-        self::assertEquals('test', $event->getName());
+        self::assertEquals('test', $event->name());
     }
 
     /**
@@ -37,8 +37,8 @@ class EventTest extends TestCase
     public function getEventParams()
     {
         $event = new Event('test', $this->params);
-        self::assertInstanceOf(ParamsInterface::class, $event->getParams());
-        self::assertSame($this->params, $event->getParams());
+        self::assertInstanceOf(ParamsInterface::class, $event->params());
+        self::assertSame($this->params, $event->params());
     }
 
     /**
@@ -47,8 +47,8 @@ class EventTest extends TestCase
     public function eventParamsCouldBeNull()
     {
         $event = new Event('test');
-        self::assertEquals('test', $event->getName()); // tu już event spełnia asercię, ale możemy dodać nową, gdybyśmy użyli $event->getParams();
-        self::assertNull($event->getParams()); // dopiero Event::getParams(): ?ParamsInterface poprawiło to
+        self::assertEquals('test', $event->name()); // tu już event spełnia asercię, ale możemy dodać nową, gdybyśmy użyli $event->getParams();
+        self::assertNull($event->params()); // dopiero Event::getParams(): ?ParamsInterface poprawiło to
     }
 
     protected function setUp()

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Event;
 
+use App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber;
+use App\Core\Application\History\HistoryItem;
 use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Event\Params\Params;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
@@ -13,11 +15,10 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Presentation\Web\Pub\Event\Event;
+use App\Presentation\Web\Pub\Event\EventManager;
 use App\Presentation\Web\Pub\History\History;
 use App\Repository\HistoryRepository;
-use App\Tests\Stubs\History\HistoryItem;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use App\Presentation\Web\Pub\Event\EventManager;
 
 /**
  * Class EventManagerTest
@@ -48,6 +49,7 @@ class EventManagerTest extends WebTestCase
         // Given
         $kernel = self::bootKernel();
         $history = new History(self::$container->get(HistoryRepository::class));
+        TakeTileEventSubscriber::init($history);
         $playersFactory = $this->prophesize(PlayersFactory::class);
         $playersFactory->create()->willReturn([
             Symbol::PLAYER_X_SYMBOL => new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), \uniqid()),
@@ -67,12 +69,12 @@ class EventManagerTest extends WebTestCase
         // When
         $eventManager->trigger(
             Event::NAME, new Params($game->players()[Symbol::PLAYER_X_SYMBOL],
-            new Tile(0,0), $game)
+            new Tile(0,0), $game, $history)
         );
 
         // Then
-        /** @var HistoryItem $historyItem */
-        $historyItem = $game->history()->getLastTurn($game);
+        /** @var \App\Core\Application\History\HistoryItem $historyItem */
+        $historyItem = $history->lastItem($game);
         self::assertEquals($game, $historyItem->game());
         self::assertEquals($game->players()[Symbol::PLAYER_X_SYMBOL], $historyItem->player());
         self::assertEquals(new Tile(0, 0), $historyItem->tile());

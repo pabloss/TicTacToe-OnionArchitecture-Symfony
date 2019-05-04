@@ -14,7 +14,7 @@ class EventTest extends TestCase
     public function name()
     {
         $event = new Event("test");
-        self::assertEquals("test", $event->getName());
+        self::assertEquals("test", $event->name());
         new Event(null);
     }
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Stubs\Event;
 
+use App\Core\Application\Event\Event as CoreEvent;
 use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Event\Params\ParamsInterface;
 
@@ -12,6 +13,8 @@ use App\Core\Domain\Event\Params\ParamsInterface;
  */
 class Event implements EventInterface
 {
+    use CoreEvent { __construct as construct; }
+
     /** @var string */
     private $name;
     /** @var array */
@@ -24,23 +27,6 @@ class Event implements EventInterface
      */
     public function __construct(string $name, ParamsInterface $params = null)
     {
-        $this->name = $name;
-        $this->params = $params;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return ParamsInterface
-     */
-    public function getParams(): ?ParamsInterface
-    {
-        return $this->params;
+        $this->construct($name, $params);
     }
 }

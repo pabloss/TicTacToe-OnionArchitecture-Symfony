@@ -8,7 +8,6 @@ use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Tests\Stubs\History\History;
-use App\Tests\Stubs\History\HistoryItem;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,15 +36,15 @@ class HistoryTest extends TestCase
         $history->saveTurn($player0, $tile1, $game);
         $history->saveTurn($playerX, $tile2, $game);
 
-        $historyItem = $history->getLastTurn($game);
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
+        $historyItem = $history->lastItem($game);
+        self::assertInstanceOf(\App\Core\Application\History\HistoryItem::class, $historyItem);
         self::assertSame('0', $game->uuid());
         self::assertEquals($playerX, $historyItem->player());
         self::assertEquals($tile2, $historyItem->tile());
         self::assertEquals($game, $historyItem->game());
 
         $historyItem = $history->getTurn($game, 1);
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
+        self::assertInstanceOf(\App\Core\Application\History\HistoryItem::class, $historyItem);
         self::assertEquals($player0, $historyItem->player());
         self::assertEquals($tile1, $historyItem->tile());
         self::assertEquals($game, $historyItem->game());
@@ -56,9 +55,9 @@ class HistoryTest extends TestCase
         $game2 = $gameProphecy2->reveal();
         $history->saveTurn($player0, $tile3, $game2);
         $history->saveTurn($player0, $tile1, $game);
-        $historyItem = $history->getLastTurn($game2);
+        $historyItem = $history->lastItem($game2);
         self::assertSame('1', $game2->uuid());
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
+        self::assertInstanceOf(\App\Core\Application\History\HistoryItem::class, $historyItem);
         self::assertEquals($player0, $historyItem->player());
         self::assertEquals($tile3, $historyItem->tile());
         self::assertEquals($game2, $historyItem->game());

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\business;
 
+use App\Core\Application\Event\EventManager;
 use App\Core\Domain\Model\TicTacToe\AI\AI;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
@@ -11,7 +12,6 @@ use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
-use App\Tests\Stubs\Event\EventManager;
 use PHPUnit\Framework\TestCase;
 
 class PlayingAgainstAISimulationTest extends TestCase
@@ -25,7 +25,8 @@ class PlayingAgainstAISimulationTest extends TestCase
     public function random_looped_taken_tiles_should_fill_whole_board()
     {
         $eventManager = EventManager::getInstance();
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory($eventManager), new FindWinner(),
+        $history = new History();
+        $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
             );
@@ -33,9 +34,9 @@ class PlayingAgainstAISimulationTest extends TestCase
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
         $ai = new AI($game);
         for ($i = 2; $i <= 9; $i += 2) {
-            $playerX->takeTile($ai->takeRandomFreeTile(), $game);
+            $playerX->takeTile($ai->takeRandomFreeTile(), $game, $history);
             /** @var Player $player0 */
-            $player0->takeTile($this->simulate_choosing_tiles_of_real_player(), $game);
+            $player0->takeTile($this->simulate_choosing_tiles_of_real_player(), $game, $history);
         }
 
         self::assertTrue(

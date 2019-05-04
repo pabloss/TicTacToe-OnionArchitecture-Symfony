@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace App\Tests\integration\History\Framework;
 
 use App\Core\Application\History\HistoryContent;
+use App\Core\Application\History\HistoryItem;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Presentation\Web\Pub\History\History;
 use App\Entity\History as HistoryEntity;
-use App\Tests\Stubs\History\HistoryItem;
+use App\Presentation\Web\Pub\History\History;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -68,7 +68,7 @@ class HistoryTest extends WebTestCase
         );
 
         // Then
-        $historyItem = $history->getLastTurn($gameProphecy->reveal());
+        $historyItem = $history->lastItem($gameProphecy->reveal());
         self::assertEquals($gameProphecy->reveal(), $historyItem->game());
         self::assertEquals($player, $historyItem->player());
         self::assertEquals($tile, $historyItem->tile());

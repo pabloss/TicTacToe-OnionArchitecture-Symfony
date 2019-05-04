@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Core\Domain\Event\Params;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game;
+use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 
@@ -18,17 +19,23 @@ class Params implements ParamsInterface
     /** @var Game */
     private $game;
 
+    /** @var HistoryInterface */
+    private $history;
+
     /**
      * Params constructor.
-     * @param \App\Core\Domain\Model\TicTacToe\Game\Player $player
+     * @param Player $player
      * @param Tile $tile
      * @param Game $game
+     * @param HistoryInterface $history
      */
-    public function __construct(Player $player, Tile $tile, Game $game)
+    public function __construct(Player $player, Tile $tile, Game $game, HistoryInterface $history)
     {
         $this->player = $player;
         $this->tile = $tile;
         $this->game = $game;
+        $this->history = $history;
+
     }
 
     public function player(): Player
@@ -46,4 +53,8 @@ class Params implements ParamsInterface
         return $this->game;
     }
 
+    public function history(): HistoryInterface
+    {
+        return $this->history;
+    }
 }

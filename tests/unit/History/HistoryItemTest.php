@@ -7,7 +7,6 @@ use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Tests\Stubs\History\HistoryItem;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +24,7 @@ class HistoryItemTest extends TestCase
         $game = $gameProphecy->reveal();
         $playerX = new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), \uniqid());
         $tile1 = new Tile(0, 0);
-        $historyItem = new HistoryItem($playerX, $tile1, $game);
+        $historyItem = new \App\Core\Application\History\HistoryItem($playerX, $tile1, $game);
 
         self::assertEquals($playerX, $historyItem->player());
         self::assertEquals($tile1, $historyItem->tile());

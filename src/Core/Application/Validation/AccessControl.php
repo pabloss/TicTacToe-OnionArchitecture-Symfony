@@ -14,16 +14,16 @@ use App\Core\Domain\Model\TicTacToe\Game\Player;
 class AccessControl
 {
     /**
-     * @param \App\Core\Domain\Model\TicTacToe\Game\Player $player
+     * @param Player $player
      * @param Game $game
      * @return bool
      * @throws NotAllowedSymbolValue
      */
     public static function isPlayerAllowed(Player $player, Game $game): bool
     {
-        /** @var \App\Core\Domain\Model\TicTacToe\Game\Player $internalPlayer */
+        /** @var Player $internalPlayer */
         foreach ($game->players() as $internalPlayer) {
-            if ($internalPlayer->getUuid() === $player->getUuid()) {
+            if ($internalPlayer->uuid() === $player->uuid()) {
                 return true;
             }
         }

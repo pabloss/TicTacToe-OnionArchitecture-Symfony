@@ -13,19 +13,6 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
  */
 class PlayersFactory
 {
-    /** @var EventManagerInterface */
-    private $eventManager;
-
-    /**
-     * PlayersFactory constructor.
-     * @param EventManagerInterface $eventManager
-     */
-    public function __construct(EventManagerInterface $eventManager)
-    {
-        $this->eventManager = $eventManager;
-    }
-
-
     /**
      * @return \App\Core\Domain\Model\TicTacToe\Game\Player[]
      * @throws NotAllowedSymbolValue
