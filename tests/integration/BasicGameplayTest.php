@@ -15,6 +15,8 @@ use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Presentation\Web\Pub\Event\Event;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Presentation\Web\Pub\History\History as FrameworkHistory;
+use App\Presentation\Web\Pub\Event\EventManager as FrameworkEventManager;
 
 class BasicGameplayTest extends WebTestCase
 {
@@ -93,10 +95,11 @@ class BasicGameplayTest extends WebTestCase
     {
         $client = self::createClient();
 
-        $history = new History();
-        TakeTileEventSubscriber::init($history);
+        $history = $client->getContainer()->get(FrameworkHistory::class);
+        $eventManager = $client->getContainer()->get(FrameworkEventManager::class);
+
         $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
-            $client->getContainer()->get(\App\Tests\Stubs\Event\Framework\EventManager::class),
+            $eventManager,
             \uniqid()
         );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
