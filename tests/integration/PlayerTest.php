@@ -28,11 +28,11 @@ class PlayerTest extends TestCase
     {
         $history = new History();
         TakeTileEventSubscriber::$counter = 0;
-        TakeTileEventSubscriber::init($history);
+        $subscriber = new TakeTileEventSubscriber($history);
         $eventManager = EventManager::getInstance();
         $eventManager->detach(Event::NAME);
-        $eventManager->attach(Event::NAME, function (EventInterface $event){
-            TakeTileEventSubscriber::onTakenTile($event);
+        $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
+            $subscriber->onTakenTile($event);
         });
         $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
             $eventManager,

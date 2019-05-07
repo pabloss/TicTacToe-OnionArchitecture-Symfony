@@ -33,10 +33,10 @@ class BasicGameplayTest extends WebTestCase
     public function complete_happy_path_gameplay()
     {
         $history = new History();
-        TakeTileEventSubscriber::init($history);
+        $subscriber = new TakeTileEventSubscriber($history);
         $eventManager = EventManager::getInstance();
-        $eventManager->attach(Event::NAME, function (EventInterface $event){
-            TakeTileEventSubscriber::onTakenTile($event);
+        $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
+            $subscriber->onTakenTile($event);
         });
         $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
             EventManager::getInstance(),
@@ -58,11 +58,11 @@ class BasicGameplayTest extends WebTestCase
     {
         // We are swapping players
         $history = new History();
-        TakeTileEventSubscriber::init($history);
+        $subscriber = new TakeTileEventSubscriber($history);
         $eventManager = EventManager::getInstance();
         $eventManager->detach(Event::NAME);
-        $eventManager->attach(Event::NAME, function (EventInterface $event){
-            TakeTileEventSubscriber::onTakenTile($event);
+        $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
+            $subscriber->onTakenTile($event);
         });
         $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
             $eventManager,
@@ -117,11 +117,11 @@ class BasicGameplayTest extends WebTestCase
 
         // We are swapping players
         $history = new History();
-        TakeTileEventSubscriber::init($history);
+        $subscriber = new TakeTileEventSubscriber($history);
         $eventManager = EventManager::getInstance();
         $eventManager->detach(Event::NAME);
-        $eventManager->attach(Event::NAME, function (EventInterface $event){
-            TakeTileEventSubscriber::onTakenTile($event);
+        $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
+            $subscriber->onTakenTile($event);
         });
         $game = new TicTacToe(new Board(), $history, new PlayersFactory(),
             new FindWinner(),

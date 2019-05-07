@@ -19,16 +19,15 @@ class TakeTileEventSubscriber implements EventSubscriberInterface
     public static $counter = 0;
 
     /** @var HistoryInterface */
-    private static $history;
+    private $history;
 
     /**
      * TakeTileEventSubscriber constructor.
      * @param HistoryInterface $history
-     * @todo zamien na __construct, by nie trzeba było pamiętać o wywołaniu tej metody
      */
-    public static function init(HistoryInterface $history)
+    public function __construct(HistoryInterface $history)
     {
-        self::$history = $history;
+        $this->history = $history;
     }
 
     /**
@@ -37,7 +36,7 @@ class TakeTileEventSubscriber implements EventSubscriberInterface
      * @throws NotAllowedSymbolValue
      * @todo zamień na niestatyczną by nie trzeba było pamiętać o self::init
      */
-    public static function onTakenTile(EventInterface $event)
+    public function onTakenTile(EventInterface $event)
     {
         /** @var $game Game */
         TurnControl::validateTurn($event->player(), $event->game(), $event->gameHistory());
@@ -46,7 +45,7 @@ class TakeTileEventSubscriber implements EventSubscriberInterface
             // todo: dodaj oddzielny subscriber do markowania planszy: jeśli był mark to zrób event toSaveToHistory
             $event->gameBoard()->mark($event->tile(), $event->player());
 
-            self::$history->saveTurn($event->player(), $event->tile(), $event->game());
+            $this->history->saveTurn($event->player(), $event->tile(), $event->game());
         }
 
         return $event->tile();

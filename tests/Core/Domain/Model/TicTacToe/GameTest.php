@@ -49,11 +49,11 @@ class GameTest extends TestCase
         $history = new History();
         $findWinner = new FindWinner();
         $eventManger = new EventManager();
-        TakeTileEventSubscriber::init($history);
+        $subscriber = new TakeTileEventSubscriber($history);
         $eventManger->attach(
             Event::NAME,
-            function (EventInterface $event) {
-                return TakeTileEventSubscriber::onTakenTile($event);
+            function (EventInterface $event) use ($subscriber)  {
+                return $subscriber->onTakenTile($event);
             }
         );
         $uuid = uniqid();

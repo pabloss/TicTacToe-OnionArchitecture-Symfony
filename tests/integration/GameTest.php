@@ -57,10 +57,10 @@ class GameTest extends TestCase
     public function players_take_turns()
     {
         $history = new History();
-        TakeTileEventSubscriber::init($history);
+        $subscriber = new TakeTileEventSubscriber($history);
         $eventManager = EventManager::getInstance();
-        $eventManager->attach(Event::NAME, function (EventInterface $event){
-            TakeTileEventSubscriber::onTakenTile($event);
+        $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
+            $subscriber->onTakenTile($event);
         });
         $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
             $eventManager,
