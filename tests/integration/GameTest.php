@@ -26,7 +26,7 @@ class GameTest extends TestCase
     public function create_players()
     {
         $eventManager = EventManager::getInstance();
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
         );
@@ -41,7 +41,7 @@ class GameTest extends TestCase
     public function factor_players()
     {
         $eventManager = EventManager::getInstance();
-        $game = new TicTacToe(new Board(), new History(), new PlayersFactory(), new FindWinner(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
         );
@@ -62,7 +62,7 @@ class GameTest extends TestCase
         $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
             $subscriber->onTakenTile($event);
         });
-        $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
         );
@@ -82,7 +82,7 @@ class GameTest extends TestCase
     {
         $eventManager = EventManager::getInstance();
         $history = new History();
-        $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
         );

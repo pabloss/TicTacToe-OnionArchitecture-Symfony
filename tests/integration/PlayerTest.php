@@ -34,7 +34,7 @@ class PlayerTest extends TestCase
         $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
             $subscriber->onTakenTile($event);
         });
-        $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
             );

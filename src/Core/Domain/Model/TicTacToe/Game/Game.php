@@ -60,16 +60,14 @@ class Game
     /**
      * Game constructor.
      * @param Board $board
-     * @param HistoryInterface $history
      * @param PlayersFactory $factory
      * @param FindWinner $findWinner
      * @param EventManagerInterface $eventManager
      * @param string $uuid
      */
-    public function __construct(Board $board, HistoryInterface $history, PlayersFactory $factory, FindWinner $findWinner, EventManagerInterface $eventManager, string $uuid)
+    public function __construct(Board $board, PlayersFactory $factory, FindWinner $findWinner, EventManagerInterface $eventManager, string $uuid)
     {
         $this->board = $board;
-        $this->history = $history;
         $this->factory = $factory;
         $this->findWinner = $findWinner;
         $this->players = [];
@@ -97,14 +95,6 @@ class Game
     public function &board(): Board
     {
         return $this->board;
-    }
-
-    /**
-     * @return HistoryItem|mixed|null
-     */
-    public function getLastItem()
-    {
-        return $this->history->lastItem($this);
     }
 
     /**

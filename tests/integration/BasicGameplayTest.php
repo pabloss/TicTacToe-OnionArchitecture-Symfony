@@ -40,7 +40,7 @@ class BasicGameplayTest extends WebTestCase
         $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
             $subscriber->onTakenTile($event);
         });
-        $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(), new FindWinner(),
             EventManager::getInstance(),
             \uniqid()
         );
@@ -66,7 +66,7 @@ class BasicGameplayTest extends WebTestCase
         $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
             $subscriber->onTakenTile($event);
         });
-        $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
         );
@@ -98,7 +98,7 @@ class BasicGameplayTest extends WebTestCase
         $history = $client->getContainer()->get(FrameworkHistory::class);
         $eventManager = $client->getContainer()->get(FrameworkEventManager::class);
 
-        $game = new TicTacToe(new Board(), $history, new PlayersFactory(), new FindWinner(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(), new FindWinner(),
             $eventManager,
             \uniqid()
         );
@@ -126,7 +126,7 @@ class BasicGameplayTest extends WebTestCase
         $eventManager->attach(Event::NAME, function (EventInterface $event) use ($subscriber) {
             $subscriber->onTakenTile($event);
         });
-        $game = new TicTacToe(new Board(), $history, new PlayersFactory(),
+        $game = new TicTacToe(new Board(), new PlayersFactory(),
             new FindWinner(),
             $eventManager,
             \uniqid()

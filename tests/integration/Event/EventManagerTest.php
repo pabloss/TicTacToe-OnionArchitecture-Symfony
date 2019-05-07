@@ -56,7 +56,6 @@ class EventManagerTest extends WebTestCase
 
         $game = new Game(
             $this->prophesize(Board::class)->reveal(),
-            $history,
             $playersFactory->reveal(),
             $this->prophesize(FindWinner::class)->reveal(),
             $eventManager,

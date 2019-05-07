@@ -58,7 +58,7 @@ class GameTest extends TestCase
         );
         $uuid = uniqid();
         $factory = new PlayersFactory();
-        $game = new TicTacToe($board, $history, $factory, $findWinner, $eventManger, $uuid);
+        $game = new TicTacToe($board, $factory, $findWinner, $eventManger, $uuid);
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
 
         $this->game = $game;
