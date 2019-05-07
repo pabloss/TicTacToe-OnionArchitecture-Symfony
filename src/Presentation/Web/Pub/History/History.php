@@ -61,7 +61,7 @@ class History implements HistoryInterface
      */
     public function lastItem(Game $game): ?HistoryItem
     {
-        if(0 === (int) $this->historyRepository->count([])){
+        if(0 === (int) $this->historyRepository->count(['gameUuid' => $game->uuid()])){
             return null;
         }
         $entity = $this->historyRepository->getLastByGame($game);
@@ -99,7 +99,7 @@ class History implements HistoryInterface
      */
     public function length(Game $game): int
     {
-        return $this->historyRepository->count([]);
+        return $this->historyRepository->count(['gameUuid' => $game->uuid()]);
     }
 
     /**
