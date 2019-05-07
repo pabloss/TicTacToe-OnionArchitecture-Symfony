@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Event;
 
-use App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber;
-use App\Core\Application\History\HistoryItem;
 use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Event\Params\Params;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
@@ -48,8 +46,7 @@ class EventManagerTest extends WebTestCase
     {
         // Given
         $kernel = self::bootKernel();
-        $history = new History(self::$container->get(HistoryRepository::class));
-        TakeTileEventSubscriber::init($history);
+        $history = self::$container->get(History::class) ;
         $playersFactory = $this->prophesize(PlayersFactory::class);
         $playersFactory->create()->willReturn([
             Symbol::PLAYER_X_SYMBOL => new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), \uniqid()),
