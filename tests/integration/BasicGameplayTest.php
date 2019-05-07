@@ -45,11 +45,11 @@ class BasicGameplayTest extends WebTestCase
             \uniqid()
         );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
-        $playerX->takeTile(new Tile(1, 1), $game, $history);
-        $player0->takeTile(new Tile(0, 0), $game, $history);
-        $playerX->takeTile(new Tile(0, 1), $game, $history);
-        $player0->takeTile(new Tile(0, 2), $game, $history);
-        $playerX->takeTile(new Tile(2, 1), $game, $history);
+        $playerX->takeTile(new Tile(1, 1), $game);
+        $player0->takeTile(new Tile(0, 0), $game);
+        $playerX->takeTile(new Tile(0, 1), $game);
+        $player0->takeTile(new Tile(0, 2), $game);
+        $playerX->takeTile(new Tile(2, 1), $game);
         $this->assertSame($playerX, $game->winner());
     }
 
@@ -71,12 +71,12 @@ class BasicGameplayTest extends WebTestCase
             \uniqid()
         );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
-        $playerX->takeTile(new Tile(2, 2), $game, $history);
-        $player0->takeTile(new Tile(1, 1), $game, $history);
-        $playerX->takeTile(new Tile(0, 0), $game, $history);
-        $player0->takeTile(new Tile(0, 1), $game, $history);
-        $playerX->takeTile(new Tile(0, 2), $game, $history);
-        $player0->takeTile(new Tile(2, 1), $game, $history);
+        $playerX->takeTile(new Tile(2, 2), $game);
+        $player0->takeTile(new Tile(1, 1), $game);
+        $playerX->takeTile(new Tile(0, 0), $game);
+        $player0->takeTile(new Tile(0, 1), $game);
+        $playerX->takeTile(new Tile(0, 2), $game);
+        $player0->takeTile(new Tile(2, 1), $game);
         $this->assertSame($player0, $game->winner());
     }
 
@@ -103,11 +103,11 @@ class BasicGameplayTest extends WebTestCase
             \uniqid()
         );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
-        $playerX->takeTile(new Tile(1, 1), $game, $history);
-        $player0->takeTile(new Tile(0, 0), $game, $history);
-        $playerX->takeTile(new Tile(0, 1), $game, $history);
-        $player0->takeTile(new Tile(0, 2), $game, $history);
-        $playerX->takeTile(new Tile(2, 1), $game, $history);
+        $playerX->takeTile(new Tile(1, 1), $game);
+        $player0->takeTile(new Tile(0, 0), $game);
+        $playerX->takeTile(new Tile(0, 1), $game);
+        $player0->takeTile(new Tile(0, 2), $game);
+        $playerX->takeTile(new Tile(2, 1), $game);
         $this->assertSame($playerX, $game->winner());
     }
 
@@ -132,12 +132,12 @@ class BasicGameplayTest extends WebTestCase
             \uniqid()
         );
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
-        $playerX->takeTile(new Tile(2, 2), $game, $history);
-        $player0->takeTile(new Tile(1, 1), $game, $history);
-        $playerX->takeTile(new Tile(0, 0), $game, $history);
-        $player0->takeTile(new Tile(0, 1), $game, $history);
-        $playerX->takeTile(new Tile(0, 2), $game, $history);
-        $player0->takeTile(new Tile(2, 1), $game, $history);
+        $playerX->takeTile(new Tile(2, 2), $game);
+        $player0->takeTile(new Tile(1, 1), $game);
+        $playerX->takeTile(new Tile(0, 0), $game);
+        $player0->takeTile(new Tile(0, 1), $game);
+        $playerX->takeTile(new Tile(0, 2), $game);
+        $player0->takeTile(new Tile(2, 1), $game);
         $this->assertSame($player0, $game->winner());
     }
 }

@@ -39,7 +39,7 @@ class TakeTileEventSubscriber implements EventSubscriberInterface
     public function onTakenTile(EventInterface $event)
     {
         /** @var $game Game */
-        TurnControl::validateTurn($event->player(), $event->game(), $event->gameHistory());
+        TurnControl::validateTurn($event->player(), $event->game(), $this->history);
         if ($event->gameErrors() === Game::OK) {
             ++self::$counter;
             // todo: dodaj oddzielny subscriber do markowania planszy: jeśli był mark to zrób event toSaveToHistory

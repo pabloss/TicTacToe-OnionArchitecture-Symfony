@@ -29,6 +29,4 @@ interface ParamsInterface
      * @return Game
      */
     public function game(): Game;
-
-    public function history(): HistoryInterface;
 }

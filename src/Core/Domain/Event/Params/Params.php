@@ -27,14 +27,12 @@ class Params implements ParamsInterface
      * @param Player $player
      * @param Tile $tile
      * @param Game $game
-     * @param HistoryInterface $history
      */
-    public function __construct(Player $player, Tile $tile, Game $game, HistoryInterface $history)
+    public function __construct(Player $player, Tile $tile, Game $game)
     {
         $this->player = $player;
         $this->tile = $tile;
         $this->game = $game;
-        $this->history = $history;
 
     }
 
@@ -51,10 +49,5 @@ class Params implements ParamsInterface
     public function game(): Game
     {
         return $this->game;
-    }
-
-    public function history(): HistoryInterface
-    {
-        return $this->history;
     }
 }

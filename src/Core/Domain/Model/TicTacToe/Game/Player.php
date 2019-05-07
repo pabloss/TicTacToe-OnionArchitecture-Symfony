@@ -59,11 +59,10 @@ class Player implements ValueObjectInterface
     /**
      * @param Tile $tile
      * @param Game $game
-     * @param HistoryInterface $history
      * @return void
      */
-    public function takeTile(Tile $tile, Game $game, HistoryInterface $history): void
+    public function takeTile(Tile $tile, Game $game): void
     {
-        $game->eventManger()->trigger(TileTakenEventInterface::NAME, new Params($this, $tile, $game, $history));
+        $game->eventManger()->trigger(TileTakenEventInterface::NAME, new Params($this, $tile, $game));
     }
 }
