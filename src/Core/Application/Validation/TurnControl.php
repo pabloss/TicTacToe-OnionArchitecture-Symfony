@@ -48,7 +48,6 @@ class TurnControl
      */
     private static function didPlayerPlayMovePreviously(Player $player, Game $game, HistoryInterface $history): bool
     {
-        // todo: zrób gruby refaktor na historię
         return !empty($history->lastItem($game)) && $player->symbolValue() === $history->lastItemPlayerSymbolValue($game);
     }
 }

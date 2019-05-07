@@ -34,7 +34,6 @@ class TakeTileEventSubscriber implements EventSubscriberInterface
      * @param EventInterface $event
      * @return Tile
      * @throws NotAllowedSymbolValue
-     * @todo zamień na niestatyczną by nie trzeba było pamiętać o self::init
      */
     public function onTakenTile(EventInterface $event)
     {
