@@ -38,4 +38,13 @@ class Board
     {
         return $this->board;
     }
+
+    /**
+     * @param Tile $tile
+     * @return mixed
+     */
+    public function getPlayer(Tile $tile)
+    {
+        return $this->board[$tile->column() + 3 * $tile->row()];
+    }
 }
