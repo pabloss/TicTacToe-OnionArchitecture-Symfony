@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Core\Application\Validation;
 
-use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
+use App\Core\Application\Service\PlayerRegistry;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 
@@ -13,17 +13,24 @@ use App\Core\Domain\Model\TicTacToe\Game\Player;
  */
 class AccessControl
 {
+    /** @var PlayerRegistry */
+    private static $registry;
+
+    public static function loadRegistry(PlayerRegistry $registry)
+    {
+        self::$registry = $registry;
+    }
+
     /**
      * @param Player $player
      * @param Game $game
      * @return bool
-     * @throws NotAllowedSymbolValue
      */
     public static function isPlayerAllowed(Player $player, Game $game): bool
     {
         /** @var Player $internalPlayer */
-        foreach ($game->players() as $internalPlayer) {
-            if ($internalPlayer->uuid() === $player->uuid()) {
+        foreach (self::$registry->players($game) as $playerUuid) {
+            if ($playerUuid === $player->uuid()) {
                 return true;
             }
         }
