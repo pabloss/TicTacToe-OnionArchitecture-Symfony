@@ -32,6 +32,6 @@ class PlayerRegistry
      */
     public function players(Game $game): array
     {
-        return $this->registry[$game->uuid()];
+        return $this->registry[$game->uuid()] ?? [];
     }
 }

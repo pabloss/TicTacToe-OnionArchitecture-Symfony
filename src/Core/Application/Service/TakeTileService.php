@@ -22,15 +22,20 @@ class TakeTileService
     /** @var HistoryInterface */
     private $history;
 
+    /** @var TurnControl */
+    private $turnControl;
+
     /**
      * TakeTileService constructor.
      * @param Game $game
      * @param HistoryInterface $history
+     * @param TurnControl $turnControl
      */
-    public function __construct(Game $game, HistoryInterface $history)
+    public function __construct(Game $game, HistoryInterface $history, TurnControl $turnControl)
     {
         $this->game = $game;
         $this->history = $history;
+        $this->turnControl = $turnControl;
     }
 
     /**
@@ -40,9 +45,9 @@ class TakeTileService
      */
     public function takeTile(Player $player, Tile $tile)
     {
+        $this->turnControl->validateTurn($player, $this->game, $this->history);
         $this->game->board()->mark($tile, $player);
         $this->history->saveTurn($player, $tile, $this->game);
-        TurnControl::validateTurn($player, $this->game, $this->history);
     }
 
     /**
