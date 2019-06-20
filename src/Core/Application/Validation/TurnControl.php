@@ -3,13 +3,27 @@ declare(strict_types=1);
 
 namespace App\Core\Application\Validation;
 
+use App\Core\Application\Service\PlayerRegistry;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 
+/**
+ * Class TurnControl
+ * @package App\Core\Application\Validation
+ */
 class TurnControl
 {
+    /**
+     * TurnControl constructor.
+     * @param PlayerRegistry $registry
+     */
+    public function __construct(PlayerRegistry $registry)
+    {
+        AccessControl::loadRegistry($registry);
+    }
+
     /**
      * @param Player $player
      * @param Game $game
