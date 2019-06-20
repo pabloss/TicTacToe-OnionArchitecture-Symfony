@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Core\Application\Validation;
 
+use App\Core\Application\Errors\ErrorLog;
 use App\Core\Application\Service\PlayerRegistry;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
@@ -15,31 +16,35 @@ use App\Core\Domain\Model\TicTacToe\Game\Player;
  */
 class TurnControl
 {
+    /** @var ErrorLog */
+    private $errorLog;
+
     /**
      * TurnControl constructor.
      * @param PlayerRegistry $registry
+     * @param ErrorLog $errorLog
      */
-    public function __construct(PlayerRegistry $registry)
+    public function __construct(PlayerRegistry $registry, ErrorLog $errorLog)
     {
         AccessControl::loadRegistry($registry);
+        $this->errorLog = $errorLog;
     }
 
     /**
      * @param Player $player
      * @param Game $game
      * @param HistoryInterface $history
-     * @throws NotAllowedSymbolValue
      */
-    public static function validateTurn(Player $player, Game $game, HistoryInterface $history): void
+    public  function validateTurn(Player $player, Game $game, HistoryInterface $history): void
     {
         if (false === AccessControl::isPlayerAllowed($player, $game)) {
-            $game->addError(Game::PLAYER_IS_NOT_ALLOWED, $player);
+            $this->errorLog->addError(Game::PLAYER_IS_NOT_ALLOWED, $game);
         }
         if (self::isGameNotStartedByCorrectPlayer($player, $game, $history)) {
-            $game->addError(Game::GAME_STARTED_BY_PLAYER0_ERROR, $player);
+            $this->errorLog->addError(Game::GAME_STARTED_BY_PLAYER0_ERROR, $game);
         }
         if (self::didPlayerPlayMovePreviously($player, $game, $history)) {
-            $game->addError(Game::DUPLICATED_TURNS_ERROR, $player);
+            $this->errorLog->addError(Game::DUPLICATED_TURNS_ERROR, $game);
         }
     }
 

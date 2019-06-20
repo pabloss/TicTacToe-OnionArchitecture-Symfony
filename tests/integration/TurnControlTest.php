@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
+use App\Core\Application\Errors\ErrorLog;
 use App\Core\Application\Service\PlayerRegistry;
 use App\Core\Application\Validation\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
@@ -22,14 +23,14 @@ class TurnControlTest extends TestCase
      */
     public function validateTurn()
     {
-        list($playerRegistry, $playerXProphecy, $playerOProphecy, $historyProphecy, $gameProphecy) = $this->configureGiven();
+        list($playerRegistry, $playerXProphecy, $playerOProphecy, $historyProphecy, $gameProphecy, $errorLogProphecy) = $this->configureGiven();
 
-        $gameProphecy->addError(Game::PLAYER_IS_NOT_ALLOWED, $playerXProphecy)->shouldNotBeCalled();
+        $errorLogProphecy->addError(Game::PLAYER_IS_NOT_ALLOWED, $gameProphecy->reveal())->shouldNotBeCalled();
 
         // When
         $playerRegistry->registerPlayer($playerXProphecy->reveal(), $gameProphecy->reveal());
         $playerRegistry->registerPlayer($playerOProphecy->reveal(), $gameProphecy->reveal());
-        $turnControl = new TurnControl($playerRegistry);
+        $turnControl = new TurnControl($playerRegistry, $errorLogProphecy->reveal());
 
         $turnControl->validateTurn($playerXProphecy->reveal(), $gameProphecy->reveal(), $historyProphecy->reveal());
     }
@@ -39,12 +40,12 @@ class TurnControlTest extends TestCase
      */
     public function notAllowedPlayer()
     {
-        list($playerRegistry, $playerXProphecy, $playerOProphecy, $historyProphecy, $gameProphecy) = $this->configureGiven();
+        list($playerRegistry, $playerXProphecy, $playerOProphecy, $historyProphecy, $gameProphecy, $errorLogProphecy) = $this->configureGiven();
 
-        $gameProphecy->addError(Game::PLAYER_IS_NOT_ALLOWED, $playerXProphecy)->shouldBeCalled();
+        $errorLogProphecy->addError(Game::PLAYER_IS_NOT_ALLOWED, $gameProphecy->reveal())->shouldBeCalled();
 
         // When
-        $turnControl = new TurnControl($playerRegistry);
+        $turnControl = new TurnControl($playerRegistry, $errorLogProphecy->reveal());
 
         $turnControl->validateTurn($playerXProphecy->reveal(), $gameProphecy->reveal(), $historyProphecy->reveal());
     }
@@ -68,6 +69,7 @@ class TurnControlTest extends TestCase
         $gameProphecy = $this->prophesize(Game::class);
         $gameProphecy->uuid()->willReturn(0);
         $historyProphecy->lastItem($gameProphecy->reveal())->willReturn(null);
-        return array($playerRegistry, $playerXProphecy, $playerOProphecy, $historyProphecy, $gameProphecy);
+        $errorLogProphecy = $this->prophesize(ErrorLog::class);
+        return array($playerRegistry, $playerXProphecy, $playerOProphecy, $historyProphecy, $gameProphecy, $errorLogProphecy);
     }
 }
