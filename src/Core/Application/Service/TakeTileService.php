@@ -49,13 +49,4 @@ class TakeTileService
         $this->game->board()->mark($tile, $player);
         $this->history->saveTurn($player, $tile, $this->game);
     }
-
-    /**
-     * @param int $error
-     * @return bool
-     */
-    public function hasError(int $error): bool
-    {
-        return !!($error & $this->game->errors());
-    }
 }
