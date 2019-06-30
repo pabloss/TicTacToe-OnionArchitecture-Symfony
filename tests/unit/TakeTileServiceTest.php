@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\unit;
 
 use App\Core\Application\Service\TakeTileService;
+use App\Core\Application\Validation\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
@@ -55,37 +56,15 @@ class TakeTileServiceTest extends TestCase
         $historyProphecy->getStartingPlayerSymbolValue()->willReturn(Symbol::PLAYER_X_SYMBOL);
         $this->prepareSavingTurn($historyProphecy, $playerXProphecy, $tileProphecy, $gameProphecy);
 
-        $service = new TakeTileService($gameProphecy->reveal(), $historyProphecy->reveal());
+        $turnControlProphecy = $this->prophesize(TurnControl::class);
+
+        $service = new TakeTileService($gameProphecy->reveal(), $historyProphecy->reveal(), $turnControlProphecy->reveal());
         $service->takeTile($playerXProphecy->reveal(), $tileProphecy->reveal());
 
         self::assertNotEmpty($gameProphecy->reveal()->board()->getPlayer($tileProphecy->reveal()));
         self::assertSame($playerXProphecy->reveal(), $gameProphecy->reveal()->board()->getPlayer($tileProphecy->reveal()));
     }
 
-    /**
-     * @test
-     */
-    public function hasError()
-    {
-        list($playerXProphecy, $playerOProphecy) = $this->preparePlayers();
-        $tileProphecy = $this->prophesize(Tile::class);
-
-        $boardProphecy = $this->prophesize(Board::class);
-
-        $gameProphecy = $this->prepareGame($boardProphecy, $playerOProphecy, $playerXProphecy);
-        $gameProphecy->addError(Game::GAME_STARTED_BY_PLAYER0_ERROR, $playerOProphecy->reveal())->shouldBeCalled();
-        $gameProphecy->errors()->willReturn(Game::GAME_STARTED_BY_PLAYER0_ERROR);
-
-        $historyProphecy = $this->prophesize(HistoryInterface::class);
-        $historyProphecy->lastItem($gameProphecy->reveal())->willReturn(null);
-        $historyProphecy->getStartingPlayerSymbolValue()->willReturn(Symbol::PLAYER_X_SYMBOL);
-        $this->prepareSavingTurn($historyProphecy, $playerOProphecy, $tileProphecy, $gameProphecy);
-
-        $service = new TakeTileService($gameProphecy->reveal(), $historyProphecy->reveal());
-        $service->takeTile($playerOProphecy->reveal(), $tileProphecy->reveal());
-
-        self::assertTrue($service->hasError(Game::GAME_STARTED_BY_PLAYER0_ERROR));
-    }
 
 
     /**
