@@ -11,7 +11,13 @@ use App\Core\Domain\Model\TicTacToe\Game\Game;
  */
 class ErrorLog
 {
+    const OK = 0;
     const DUPLICATED_PLAYERS_ERROR = 1;
+    const DUPLICATED_TURNS_ERROR = 2;
+    const GAME_STARTED_BY_PLAYER0_ERROR = 4;
+    const PLAYER_IS_NOT_ALLOWED = 8;
+    const NON_EXISTING_ERROR = 16;
+    const ERRORS = [self::DUPLICATED_PLAYERS_ERROR, self::DUPLICATED_TURNS_ERROR, self::GAME_STARTED_BY_PLAYER0_ERROR, self::PLAYER_IS_NOT_ALLOWED, self::NON_EXISTING_ERROR];
 
     /**
      * @var int
@@ -41,6 +47,15 @@ class ErrorLog
             $this->errors[$game->uuid()] = 0;
         }
         $this->errors[$game->uuid()] |= $error;
+    }
+
+    /**
+     * @param Game $game
+     * @return int
+     */
+    public function errors(Game $game): int
+    {
+        return $this->errors[$game->uuid()];
     }
 
     /**
