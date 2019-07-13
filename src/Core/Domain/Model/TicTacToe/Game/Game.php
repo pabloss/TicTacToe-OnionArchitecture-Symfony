@@ -17,14 +17,6 @@ use App\Core\Application\History\HistoryItem;
  */
 class Game
 {
-    const OK = 0;
-    const DUPLICATED_PLAYERS_ERROR = 1;
-    const DUPLICATED_TURNS_ERROR = 2;
-    const GAME_STARTED_BY_PLAYER0_ERROR = 4;
-    const PLAYER_IS_NOT_ALLOWED = 8;
-    const NON_EXISTING_ERROR = 16;
-    const ERRORS = [self::DUPLICATED_PLAYERS_ERROR, self::DUPLICATED_TURNS_ERROR, self::GAME_STARTED_BY_PLAYER0_ERROR, self::PLAYER_IS_NOT_ALLOWED, self::NON_EXISTING_ERROR];
-
     /**
      * @var Board
      */
@@ -60,20 +52,10 @@ class Game
     /**
      * Game constructor.
      * @param Board $board
-     * @param PlayersFactory $factory
-     * @param FindWinner $findWinner
-     * @param EventManagerInterface $eventManager
-     * @param string $uuid
      */
-    public function __construct(Board $board, PlayersFactory $factory, FindWinner $findWinner, EventManagerInterface $eventManager, string $uuid)
+    public function __construct(Board $board)
     {
         $this->board = $board;
-        $this->factory = $factory;
-        $this->findWinner = $findWinner;
-        $this->players = [];
-        $this->errors = self::OK; // Just to remember: such representation of start value explains initial state
-        $this->eventManager = $eventManager;
-        $this->uuid = $uuid;
     }
 
     /**
@@ -133,8 +115,9 @@ class Game
 
     public function uuid(): string
     {
-        return $this->uuid;
-    }
+        return '1';
+//        return $this->uuid;
+    }    
 
     /**
      * @return EventManagerInterface

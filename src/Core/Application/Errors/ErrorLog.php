@@ -55,7 +55,7 @@ class ErrorLog
      */
     public function errors(Game $game): int
     {
-        return $this->errors[$game->uuid()];
+        return $this->errors[$game->uuid()] ?? self::OK;
     }
 
     /**

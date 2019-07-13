@@ -3,18 +3,17 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
-use App\Core\Application\Event\EventManager;
-use App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber;
-use App\Core\Domain\Event\EventInterface;
+use App\Core\Application\Errors\ErrorLog;
+use App\Core\Application\Service\PlayerRegistry;
+use App\Core\Application\Service\TakeTileService;
+use App\Core\Application\Validation\TurnControl;
+use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Player;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
-use App\Presentation\Web\Pub\Event\Event;
 use App\Tests\Stubs\History\History;
 use PHPUnit\Framework\TestCase;
 
@@ -24,14 +23,15 @@ use PHPUnit\Framework\TestCase;
  */
 class GameTest extends TestCase
 {
-    /** @var Game $game */
+    /** @var Player[] */
+    private $players;
+    /** @var TicTacToe */
     private $game;
+    /** @var TurnControl */
+    private $turnControl;
 
-    /** @var Player $playerX */
-    private $playerX;
-
-    /** @var Player $player0 */
-    private $player0;
+    /** @var ErrorLog */
+    private $errorLog;
 
     /**
      * @var History
@@ -40,31 +40,27 @@ class GameTest extends TestCase
 
     /**
      * @return void
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
+     * @throws NotAllowedSymbolValue
      */
     protected function setUp(): void
     {
         // Given
-        $board = new Board();
-        $history = new History();
-        $findWinner = new FindWinner();
-        $eventManger = new EventManager();
-        $subscriber = new TakeTileEventSubscriber($history);
-        $eventManger->attach(
-            Event::NAME,
-            function (EventInterface $event) use ($subscriber)  {
-                return $subscriber->onTakenTile($event);
-            }
+        $playerRegistry = new PlayerRegistry();
+        $playersFactory = new PlayersFactory();
+        $this->players = $playersFactory->create();
+        $this->game = new TicTacToe(new Board());
+        $playerRegistry->registerPlayer(
+            $this->players[Symbol::PLAYER_X_SYMBOL],
+            $this->game
         );
-        $uuid = uniqid();
-        $factory = new PlayersFactory();
-        $game = new TicTacToe($board, $factory, $findWinner, $eventManger, $uuid);
-        list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $game->players();
+        $playerRegistry->registerPlayer(
+            $this->players[Symbol::PLAYER_0_SYMBOL],
+            $this->game
+        );
+        $errorLog = new ErrorLog();
+        $this->errorLog = $errorLog;
 
-        $this->game = $game;
-        $this->playerX = $playerX;
-        $this->player0 = $player0;
-        $this->history = $history;
+        $this->turnControl = new TurnControl($playerRegistry, $this->errorLog);
     }
 
     /**
@@ -73,37 +69,34 @@ class GameTest extends TestCase
     public function game_should_record_correct_turns()
     {
         // When
-        $players = [];
-        $players[] = $this->playerX;
-        $players[] = $this->player0;
+        $history = new \App\Core\Domain\Model\TicTacToe\Game\History();
+        $takeTileService = new TakeTileService($this->game, $history, $this->turnControl);
+        $symbols = [Symbol::PLAYER_X_SYMBOL, Symbol::PLAYER_0_SYMBOL];
         $expectedTileCoords = [[0, 0], [0, 1], [1, 0], [1, 1]];
 
         for ($i = 0; $i < \count($expectedTileCoords); ++$i){
             $row = $expectedTileCoords[$i][0];
             $column = $expectedTileCoords[$i][1];
 
-            $players[$i%2]->takeTile(new Tile($row,$column), $this->game, $this->history);
+            $takeTileService->takeTile($this->players[$symbols[$i%2]], new Tile($row,$column));
         }
 
         // Then
-        self::assertEquals([$this->playerX, $this->player0, null, $this->playerX, $this->player0, null, null, null, null], $this->game->board()->contents());
+        self::assertEquals(
+            [
+                $this->players[Symbol::PLAYER_X_SYMBOL],
+                $this->players[Symbol::PLAYER_0_SYMBOL],
+                null,
+                $this->players[Symbol::PLAYER_X_SYMBOL],
+                $this->players[Symbol::PLAYER_0_SYMBOL],
+                null,
+                null,
+                null,
+                null
+            ], $this->game->board()->contents());
         self::assertEquals($expectedTileCoords,
-            $this->history->content($this->game)->getTilesHistory()
+            $history->content($this->game)->getTilesHistory()
         );
-        self::assertEquals($this->game::OK, $this->game->errors());
-    }
-
-    /**
-     * @test
-     */
-    public function game_should_not_produce_new_players_if_ones_already_exist()
-    {
-        // When
-        list(Symbol::PLAYER_X_SYMBOL => $playerX1, Symbol::PLAYER_0_SYMBOL => $player01) = $this->game->players();
-        list(Symbol::PLAYER_X_SYMBOL => $playerX2, Symbol::PLAYER_0_SYMBOL => $player02) = $this->game->players();
-
-        // Then
-        self::assertSame($playerX1, $playerX2);
-        self::assertSame($player01, $player02);
+        self::assertEquals(ErrorLog::OK, $this->errorLog->errors($this->game));
     }
 }
