@@ -38,13 +38,13 @@ class TurnControl
     public  function validateTurn(Player $player, Game $game, HistoryInterface $history): void
     {
         if (false === AccessControl::isPlayerAllowed($player, $game)) {
-            $this->errorLog->addError(Game::PLAYER_IS_NOT_ALLOWED, $game);
+            $this->errorLog->addError(ErrorLog::PLAYER_IS_NOT_ALLOWED, $game);
         }
         if (self::isGameNotStartedByCorrectPlayer($player, $game, $history)) {
-            $this->errorLog->addError(Game::GAME_STARTED_BY_PLAYER0_ERROR, $game);
+            $this->errorLog->addError(ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR, $game);
         }
         if (self::didPlayerPlayMovePreviously($player, $game, $history)) {
-            $this->errorLog->addError(Game::DUPLICATED_TURNS_ERROR, $game);
+            $this->errorLog->addError(ErrorLog::DUPLICATED_TURNS_ERROR, $game);
         }
     }
 
