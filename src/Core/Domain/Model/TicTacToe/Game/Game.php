@@ -74,7 +74,7 @@ class Game
     /**
      * @return Board
      */
-    public function &board(): Board
+    public function board(): Board
     {
         return $this->board;
     }
