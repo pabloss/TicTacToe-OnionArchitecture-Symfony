@@ -25,7 +25,7 @@ class TurnControlTest extends TestCase
     {
         list($playerRegistry, $playerXProphecy, $playerOProphecy, $historyProphecy, $gameProphecy, $errorLogProphecy) = $this->configureGiven();
 
-        $errorLogProphecy->addError(Game::PLAYER_IS_NOT_ALLOWED, $gameProphecy->reveal())->shouldNotBeCalled();
+        $errorLogProphecy->addError(ErrorLog::PLAYER_IS_NOT_ALLOWED, $gameProphecy->reveal())->shouldNotBeCalled();
 
         // When
         $playerRegistry->registerPlayer($playerXProphecy->reveal(), $gameProphecy->reveal());
@@ -42,7 +42,7 @@ class TurnControlTest extends TestCase
     {
         list($playerRegistry, $playerXProphecy, $playerOProphecy, $historyProphecy, $gameProphecy, $errorLogProphecy) = $this->configureGiven();
 
-        $errorLogProphecy->addError(Game::PLAYER_IS_NOT_ALLOWED, $gameProphecy->reveal())->shouldBeCalled();
+        $errorLogProphecy->addError(ErrorLog::PLAYER_IS_NOT_ALLOWED, $gameProphecy->reveal())->shouldBeCalled();
 
         // When
         $turnControl = new TurnControl($playerRegistry, $errorLogProphecy->reveal());
