@@ -58,7 +58,7 @@ class TakeTileServiceTest extends TestCase
         $tile = new Tile(0, 0);
         $service->takeTile($playerO, $tile);
         self::assertFalse($errorLog->noErrors($game));
-        self::assertTrue($errorLog->hasError(Game::GAME_STARTED_BY_PLAYER0_ERROR, $game));
+        self::assertTrue($errorLog->hasError(ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR, $game));
     }
 
     /**
@@ -76,8 +76,8 @@ class TakeTileServiceTest extends TestCase
         $tile = new Tile(0, 0);
         $service->takeTile($playerO, $tile);
         self::assertFalse($errorLog->noErrors($game));
-        self::assertTrue($errorLog->hasError(Game::PLAYER_IS_NOT_ALLOWED, $game));
-        self::assertTrue($errorLog->hasError(Game::GAME_STARTED_BY_PLAYER0_ERROR, $game));
+        self::assertTrue($errorLog->hasError(ErrorLog::PLAYER_IS_NOT_ALLOWED, $game));
+        self::assertTrue($errorLog->hasError(ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR, $game));
     }
 
     /**
@@ -97,6 +97,6 @@ class TakeTileServiceTest extends TestCase
         $service->takeTile($playerO, $tile);
         $service->takeTile($playerO, $tile);
         self::assertFalse($errorLog->noErrors($game));
-        self::assertTrue($errorLog->hasError(Game::DUPLICATED_TURNS_ERROR, $game));
+        self::assertTrue($errorLog->hasError(ErrorLog::DUPLICATED_TURNS_ERROR, $game));
     }
 }
