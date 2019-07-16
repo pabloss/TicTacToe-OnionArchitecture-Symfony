@@ -3,17 +3,16 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\business;
 
+use App\Core\Application\Command\TakeTileService;
 use App\Core\Application\Errors\ErrorLog;
+use App\Core\Application\Query\FindWinnerService;
 use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Service\TakeTileService;
 use App\Core\Application\Validation\TurnControl;
 use App\Core\Domain\Model\TicTacToe\AI\AI;
-use App\Core\Domain\Model\TicTacToe\Game\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\History;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-use App\Core\Domain\Service\FindWinner;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use App\Core\Domain\Service\PlayersFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -51,13 +50,13 @@ class PlayingAgainstAISimulationTest extends TestCase
     {
         $history = new History();
         $playersFactory = new PlayersFactory();
-        $findWinnerService = new FindWinner();
+        $findWinnerService = new FindWinnerService();
         $takeTileService = new TakeTileService($this->game, $history, $this->turnControl);
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $playersFactory->create();;
         $ai = new AI($this->game);
         for ($i = 2; $i <= 9; $i += 2) {
             $takeTileService->takeTile($playerX, $ai->takeRandomFreeTile());
-            /** @var Player $player0 */
+            /** @var \App\Core\Domain\Model\TicTacToe\Game\Player\Player $player0 */
             $takeTileService->takeTile($player0, $this->simulate_choosing_tiles_of_real_player());
         }
 

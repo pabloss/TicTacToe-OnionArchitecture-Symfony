@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service;
+namespace App\Core\Application\Query;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 
 
 /**
@@ -20,7 +19,7 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
  * Class FindWinner
  * @package App\Core\Domain\Validation
  */
-class FindWinner
+class FindWinnerService
 {
     const MATCHED_PATTERN_EXPECTED_FIELD_COUNT = 3;
     const MARKED_FIELD_GENERIC_SYMBOL = '#';
@@ -118,7 +117,7 @@ class FindWinner
 
     /**
      * @param Game $game
-     * @return \App\Core\Domain\Model\TicTacToe\Game\Player|null
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Player|null
      * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
      */
     public function winner(Game $game): ?Player
@@ -130,7 +129,7 @@ class FindWinner
 
     /**
      * @param Symbol $symbol
-     * @param Board $board
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Board\Board $board
      * @return Player|null
      */
     private function findWinnerByBoardPatterns(Symbol $symbol, Board $board): ?Player
@@ -149,9 +148,9 @@ class FindWinner
 
     /**
      * @param $pattern
-     * @param Board $board
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Board\Board $board
      * @param Symbol $symbol
-     * @return Player|null
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Player|null
      */
     private function findPlayerByPatternAndSymbol($pattern, Board $board, Symbol $symbol): ?Player
     {
@@ -163,7 +162,7 @@ class FindWinner
         \array_walk(
             $board->contents(),
             function ($player, $i) use (&$foundPlayer, &$foundCount, $symbol, $pattern) {
-                /** @var Player $player */
+                /** @var \App\Core\Domain\Model\TicTacToe\Game\Player\Player $player */
                 if (\is_null($player) === false && $player->symbol()->value() === $symbol->value() && $pattern[$i] == self::MARKED_FIELD_GENERIC_SYMBOL) {
                     $foundCount++;
                     $foundPlayer = $player;

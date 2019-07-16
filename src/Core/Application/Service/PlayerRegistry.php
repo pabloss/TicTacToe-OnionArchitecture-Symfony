@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Core\Application\Service;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 
 /**
  * Class PlayerRegistry

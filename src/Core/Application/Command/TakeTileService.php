@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Application\Service;
+namespace App\Core\Application\Command;
 
 use App\Core\Application\Validation\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 
 /**
  * Class TakeTileService
@@ -40,7 +40,7 @@ class TakeTileService
 
     /**
      * @param Player $player
-     * @param Tile $tile
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Board\Tile $tile
      * @throws NotAllowedSymbolValue
      */
     public function takeTile(Player $player, Tile $tile)

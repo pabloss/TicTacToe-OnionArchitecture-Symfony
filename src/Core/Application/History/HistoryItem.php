@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Core\Application\History;
 
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 
 
 /**
@@ -14,7 +14,7 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
  */
 class HistoryItem
 {
-    /** @var Player */
+    /** @var \App\Core\Domain\Model\TicTacToe\Game\Player\Player */
     private $player;
 
     /** @var Tile */
@@ -25,7 +25,7 @@ class HistoryItem
 
     /**
      * HistoryItem constructor.
-     * @param \App\Core\Domain\Model\TicTacToe\Game\Player $player
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Player\Player $player
      * @param Tile $tile
      * @param Game $game
      */
@@ -37,7 +37,7 @@ class HistoryItem
     }
 
     /**
-     * @return Player
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Player
      */
     public function player(): ?Player
     {

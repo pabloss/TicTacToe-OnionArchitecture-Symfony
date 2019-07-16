@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
+use App\Core\Application\Command\TakeTileService;
 use App\Core\Application\Errors\ErrorLog;
 use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Service\TakeTileService;
 use App\Core\Application\Validation\TurnControl;
 use App\Core\Domain\Model\TicTacToe\AI\AI;
-use App\Core\Domain\Model\TicTacToe\Game\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\History;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use App\Core\Domain\Service\PlayersFactory;
 use PHPUnit\Framework\TestCase;
 

@@ -5,7 +5,7 @@ namespace App\Core\Application\Validation;
 
 use App\Core\Application\Service\PlayerRegistry;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 
 /**
  * Class AccessControl
@@ -22,7 +22,7 @@ class AccessControl
     }
 
     /**
-     * @param Player $player
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Player\Player $player
      * @param Game $game
      * @return bool
      */

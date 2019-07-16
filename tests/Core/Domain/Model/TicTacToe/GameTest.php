@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
+use App\Core\Application\Command\TakeTileService;
 use App\Core\Application\Errors\ErrorLog;
 use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Service\TakeTileService;
 use App\Core\Application\Validation\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
-use App\Core\Domain\Model\TicTacToe\Game\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Tests\Stubs\History\History;
 use PHPUnit\Framework\TestCase;

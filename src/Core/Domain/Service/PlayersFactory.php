@@ -5,8 +5,8 @@ namespace App\Core\Domain\Service;
 
 use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 
 /**
  * Class PlayersFactory
@@ -14,7 +14,7 @@ use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
 class PlayersFactory
 {
     /**
-     * @return \App\Core\Domain\Model\TicTacToe\Game\Player[]
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Player[]
      * @throws NotAllowedSymbolValue
      */
     public function create(): array
@@ -23,8 +23,8 @@ class PlayersFactory
     }
 
     /**
-     * @param Symbol $symbolX
-     * @param Symbol $symbol0
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Player\Symbol $symbolX
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Player\Symbol $symbol0
      * @return array
      */
     private function players(Symbol $symbolX, Symbol $symbol0)

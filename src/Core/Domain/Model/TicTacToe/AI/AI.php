@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Core\Domain\Model\TicTacToe\AI;
 
 use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 
 /**
  * Class AI
@@ -42,7 +42,7 @@ class AI
 
     /**
      * @param $randomIndex
-     * @return Tile
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Board\Tile
      * @throws OutOfLegalSizeException
      */
     private function tileFromIndex($randomIndex): Tile

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\Game;
+namespace App\Core\Domain\Model\TicTacToe\Game\Board;
 
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 
 /**
  * Class Board

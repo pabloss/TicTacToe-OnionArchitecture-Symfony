@@ -5,10 +5,9 @@ namespace App\Core\Application\Validation;
 
 use App\Core\Application\Errors\ErrorLog;
 use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 
 /**
  * Class TurnControl

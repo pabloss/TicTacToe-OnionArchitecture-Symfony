@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\ValueObject;
+namespace App\Core\Domain\Model\TicTacToe\Game\Player;
 
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 
@@ -9,7 +9,7 @@ use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
  * Class Symbol
  * @package App\Core\Domain\Model\TicTacToe\ValueObject
  */
-class Symbol implements ValueObjectInterface
+class Symbol
 {
     const PLAYER_X_SYMBOL = 'X';
     const PLAYER_0_SYMBOL = '0';

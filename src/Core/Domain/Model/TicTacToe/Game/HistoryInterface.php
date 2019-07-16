@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace App\Core\Domain\Model\TicTacToe\Game;
 
 use App\Core\Application\History\HistoryContent;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
 use App\Core\Application\History\HistoryItem;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 
 /**
  * Interface HistoryInterface
@@ -33,12 +34,12 @@ interface HistoryInterface
     public function lastItemPlayerSymbolValue(Game $game): ?string ;
 
     /**
-     * @return Symbol
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Symbol
      */
     public function getStartingPlayerSymbol(): Symbol;
 
     /**
-     * @return Symbol
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Symbol
      */
     public function getStartingPlayerSymbolValue(): string;
 
@@ -50,7 +51,7 @@ interface HistoryInterface
 
     /**
      * @param Player $player
-     * @param Tile $tile
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Board\Tile $tile
      * @param Game $game
      */
     public function saveTurn(Player $player, Tile $tile, Game $game):void;

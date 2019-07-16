@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use PHPUnit\Framework\TestCase;
 
 class SymbolTest extends TestCase

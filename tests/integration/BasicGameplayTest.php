@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
+use App\Core\Application\Command\TakeTileService;
 use App\Core\Application\Errors\ErrorLog;
+use App\Core\Application\Query\FindWinnerService;
 use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Service\TakeTileService;
 use App\Core\Application\Validation\TurnControl;
-use App\Core\Domain\Model\TicTacToe\Game\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\History;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Core\Domain\Service\FindWinner;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Entity\Player;
 use App\Presentation\Web\Pub\History\History as FrameworkHistory;
@@ -70,7 +70,7 @@ class BasicGameplayTest extends WebTestCase
         $takeTileService->takeTile($player0, new Tile(0, 2));
         $takeTileService->takeTile($playerX, new Tile(2, 1));
 
-        $findWinner = new FindWinner();
+        $findWinner = new FindWinnerService();
         $this->assertSame($playerX, $findWinner->winner($this->game));
     }
 
@@ -93,7 +93,7 @@ class BasicGameplayTest extends WebTestCase
         $takeTileService->takeTile($playerX, new Tile(0, 2));
         $takeTileService->takeTile($player0, new Tile(2, 1));
 
-        $findWinner = new FindWinner();
+        $findWinner = new FindWinnerService();
         $this->assertSame($player0, $findWinner->winner($this->game));
     }
 
@@ -121,7 +121,7 @@ class BasicGameplayTest extends WebTestCase
         $takeTileService->takeTile($playerX, new Tile(0, 1));
         $takeTileService->takeTile($player0, new Tile(0, 2));
         $takeTileService->takeTile($playerX, new Tile(2, 1));
-        $findWinner = new FindWinner();
+        $findWinner = new FindWinnerService();
         $this->assertSame($playerX, $findWinner->winner($this->game));
     }
 
@@ -144,7 +144,7 @@ class BasicGameplayTest extends WebTestCase
         $takeTileService->takeTile($player0, new Tile(0, 1));
         $takeTileService->takeTile($playerX, new Tile(0, 2));
         $takeTileService->takeTile($player0, new Tile(2, 1));
-        $findWinner = new FindWinner();
+        $findWinner = new FindWinnerService();
         $this->assertSame($player0, $findWinner->winner($this->game));
     }
 }

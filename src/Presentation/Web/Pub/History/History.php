@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace App\Presentation\Web\Pub\History;
 
 use App\Core\Application\History\HistoryContent;
+use App\Core\Application\History\HistoryItem;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use App\Repository\HistoryRepository;
-use App\Core\Application\History\HistoryItem;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 
@@ -76,7 +76,7 @@ class History implements HistoryInterface
 
 
     /**
-     * @return Symbol
+     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Symbol
      * @throws NotAllowedSymbolValue
      */
     public function getStartingPlayerSymbol(): Symbol
@@ -104,7 +104,7 @@ class History implements HistoryInterface
 
     /**
      * @param Player $player
-     * @param Tile $tile
+     * @param \App\Core\Domain\Model\TicTacToe\Game\Board\Tile $tile
      * @param Game $game
      * @throws ORMException
      * @throws OptimisticLockException

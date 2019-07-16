@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace App\Core\Application\History;
 
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Application\History\HistoryItem;
-
 /**
  * Class HistoryContent
  * @package App\Core\Application\History

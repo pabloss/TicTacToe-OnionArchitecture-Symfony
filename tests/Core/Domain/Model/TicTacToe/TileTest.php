@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use PHPUnit\Framework\TestCase;
 
 class TileTest extends TestCase

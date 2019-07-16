@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\ValueObject;
+namespace App\Core\Domain\Model\TicTacToe\Game\Board;
 
 use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
 
@@ -9,7 +9,7 @@ use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
  * Class Tile
  * @package App\Core\Domain\Model\TicTacToe\ValueObject
  */
-class Tile implements ValueObjectInterface
+class Tile
 {
     const POSITION_UPPER_LIMIT = 3;
     /**

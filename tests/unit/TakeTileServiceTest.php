@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Tests\unit;
 
-use App\Core\Application\Service\TakeTileService;
+use App\Core\Application\Command\TakeTileService;
 use App\Core\Application\Validation\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
-use App\Core\Domain\Model\TicTacToe\Game\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -101,10 +101,6 @@ class TakeTileServiceTest extends TestCase
     {
         $gameProphecy = $this->prophesize(Game::class);
         $gameProphecy->board()->willReturn($boardProphecy->reveal());
-        $gameProphecy->players()->willReturn([
-            $playerOProphecy->reveal(),
-            $playerXProphecy->reveal(),
-        ]);
         return $gameProphecy;
     }
 

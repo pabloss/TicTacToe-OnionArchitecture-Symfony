@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Tests\unit;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board;
-use App\Core\Domain\Model\TicTacToe\Game\Player;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use PHPUnit\Framework\TestCase;
 
 /**

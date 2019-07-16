@@ -1,19 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\Game;
+namespace App\Core\Domain\Model\TicTacToe\Game\Player;
 
-use App\Core\Domain\Event\Params\Params;
-use App\Core\Domain\Event\TileTakenEventInterface;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Core\Domain\Model\TicTacToe\ValueObject\ValueObjectInterface;
+use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Game;
 
 /**
  * Class Player
  * @package App\Core\Domain\Model\TicTacToe\ValueObject
  */
-class Player implements ValueObjectInterface
+class Player
 {
     /** @var Symbol */
     private $symbol;
@@ -54,15 +51,5 @@ class Player implements ValueObjectInterface
     public function uuid(): string
     {
         return $this->uuid;
-    }
-
-    /**
-     * @param Tile $tile
-     * @param Game $game
-     * @return void
-     */
-    public function takeTile(Tile $tile, Game $game): void
-    {
-        $game->eventManger()->trigger(TileTakenEventInterface::NAME, new Params($this, $tile, $game));
     }
 }
