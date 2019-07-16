@@ -4,21 +4,15 @@ declare(strict_types=1);
 namespace App\Tests\integration;
 
 use App\Core\Application\Errors\ErrorLog;
-use App\Core\Application\Event\EventManager;
-use App\Core\Application\Event\EventSubscriber\TakeTileEventSubscriber;
 use App\Core\Application\Service\PlayerRegistry;
 use App\Core\Application\Service\TakeTileService;
 use App\Core\Application\Validation\TurnControl;
-use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Model\TicTacToe\AI\AI;
 use App\Core\Domain\Model\TicTacToe\Game\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\History;
 use App\Core\Domain\Model\TicTacToe\ValueObject\Symbol;
-use App\Core\Domain\Model\TicTacToe\ValueObject\Tile;
-use App\Core\Domain\Service\FindWinner;
 use App\Core\Domain\Service\PlayersFactory;
-use App\Presentation\Web\Pub\Event\Event;
 use PHPUnit\Framework\TestCase;
 
 class PlayerTest extends TestCase
