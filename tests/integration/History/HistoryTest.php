@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\History;
 
+use App\Core\Application\Service\History\HistoryItem;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
@@ -37,14 +38,14 @@ class HistoryTest extends TestCase
         $history->saveTurn($playerX, $tile2, $game);
 
         $historyItem = $history->lastItem($game);
-        self::assertInstanceOf(\App\Core\Application\History\HistoryItem::class, $historyItem);
+        self::assertInstanceOf(HistoryItem::class, $historyItem);
         self::assertSame('0', $game->uuid());
         self::assertEquals($playerX, $historyItem->player());
         self::assertEquals($tile2, $historyItem->tile());
         self::assertEquals($game, $historyItem->game());
 
         $historyItem = $history->getTurn($game, 1);
-        self::assertInstanceOf(\App\Core\Application\History\HistoryItem::class, $historyItem);
+        self::assertInstanceOf(HistoryItem::class, $historyItem);
         self::assertEquals($player0, $historyItem->player());
         self::assertEquals($tile1, $historyItem->tile());
         self::assertEquals($game, $historyItem->game());
@@ -57,7 +58,7 @@ class HistoryTest extends TestCase
         $history->saveTurn($player0, $tile1, $game);
         $historyItem = $history->lastItem($game2);
         self::assertSame('1', $game2->uuid());
-        self::assertInstanceOf(\App\Core\Application\History\HistoryItem::class, $historyItem);
+        self::assertInstanceOf(HistoryItem::class, $historyItem);
         self::assertEquals($player0, $historyItem->player());
         self::assertEquals($tile3, $historyItem->tile());
         self::assertEquals($game2, $historyItem->game());

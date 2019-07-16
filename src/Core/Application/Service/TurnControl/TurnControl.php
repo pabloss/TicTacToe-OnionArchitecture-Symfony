@@ -1,12 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Application\Validation;
+namespace App\Core\Application\Service\TurnControl;
 
-use App\Core\Application\Errors\ErrorLog;
-use App\Core\Application\Service\PlayerRegistry;
+use App\Core\Application\Service\History\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 
 /**
@@ -32,7 +30,7 @@ class TurnControl
     /**
      * @param Player $player
      * @param Game $game
-     * @param HistoryInterface $history
+     * @param \App\Core\Application\Service\History\HistoryInterface $history
      */
     public  function validateTurn(Player $player, Game $game, HistoryInterface $history): void
     {
@@ -50,7 +48,7 @@ class TurnControl
     /**
      * @param Player $player
      * @param Game $game
-     * @param HistoryInterface $history
+     * @param \App\Core\Domain\Service\History\\App\Core\Application\Service\History\HistoryInterface $history
      * @return bool
      */
     private static function isGameNotStartedByCorrectPlayer(Player $player, Game $game, HistoryInterface $history): bool

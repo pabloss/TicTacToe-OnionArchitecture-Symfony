@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Application\History;
+namespace App\Core\Application\Service\History;
 
 /**
  * Class HistoryContent
- * @package App\Core\Application\History
+ * @package App\Core\Application\Service\History
  */
 class HistoryContent extends \ArrayObject
 {

@@ -4,16 +4,16 @@ declare(strict_types=1);
 namespace App\Tests\Core\Domain\Model\TicTacToe;
 
 use App\Core\Application\Command\TakeTileService;
-use App\Core\Application\Errors\ErrorLog;
-use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Validation\TurnControl;
+use App\Core\Application\Service\TurnControl\ErrorLog;
+use App\Core\Application\Service\TurnControl\PlayerRegistry;
+use App\Core\Application\Service\TurnControl\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\PlayersFactory;
+use App\Core\Application\Service\PlayersFactory;
 use App\Tests\Stubs\History\History;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,7 @@ class GameTest extends TestCase
     /** @var TurnControl */
     private $turnControl;
 
-    /** @var ErrorLog */
+    /** @var \App\Core\Application\Service\TurnControl\ErrorLog */
     private $errorLog;
 
     /**
@@ -69,7 +69,7 @@ class GameTest extends TestCase
     public function game_should_record_correct_turns()
     {
         // When
-        $history = new \App\Core\Domain\Model\TicTacToe\Game\History();
+        $history = new \App\Core\Application\Service\History\History();
         $takeTileService = new TakeTileService($this->game, $history, $this->turnControl);
         $symbols = [Symbol::PLAYER_X_SYMBOL, Symbol::PLAYER_0_SYMBOL];
         $expectedTileCoords = [[0, 0], [0, 1], [1, 0], [1, 1]];

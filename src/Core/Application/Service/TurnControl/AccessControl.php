@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Application\Validation;
+namespace App\Core\Application\Service\TurnControl;
 
-use App\Core\Application\Service\PlayerRegistry;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 

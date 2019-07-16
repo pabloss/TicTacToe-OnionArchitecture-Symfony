@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\Game;
+namespace App\Core\Application\Service\History;
 
-use App\Core\Application\History\HistoryContent;
-use App\Core\Application\History\HistoryItem;
+use App\Core\Application\Service\History\HistoryContent;
+use App\Core\Application\Service\History\HistoryItem;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 

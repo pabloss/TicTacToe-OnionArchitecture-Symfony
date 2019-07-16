@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
-use App\Core\Application\Errors\ErrorLog;
-use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Validation\TurnControl;
+use App\Core\Application\Service\History\HistoryInterface;
+use App\Core\Application\Service\TurnControl\ErrorLog;
+use App\Core\Application\Service\TurnControl\PlayerRegistry;
+use App\Core\Application\Service\TurnControl\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use PHPUnit\Framework\TestCase;

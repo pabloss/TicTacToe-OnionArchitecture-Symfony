@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\History;
 
-use App\Core\Application\Errors\ErrorLog;
+use App\Core\Application\Service\TurnControl\ErrorLog;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use PHPUnit\Framework\TestCase;
 

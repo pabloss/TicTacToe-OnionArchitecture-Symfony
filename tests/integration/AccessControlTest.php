@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
-use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Validation\AccessControl;
+use App\Core\Application\Service\TurnControl\AccessControl;
+use App\Core\Application\Service\TurnControl\PlayerRegistry;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;

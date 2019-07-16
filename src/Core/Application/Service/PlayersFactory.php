@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service;
+namespace App\Core\Application\Service;
 
-use App\Core\Domain\Event\EventManagerInterface;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;

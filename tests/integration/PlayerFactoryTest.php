@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Tests\integration;
 
+use App\Core\Application\Service\PlayersFactory;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\PlayersFactory;
 use PHPUnit\Framework\TestCase;
 
 /**

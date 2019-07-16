@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\History;
 
-use App\Core\Application\Service\PlayerRegistry;
+use App\Core\Application\Service\TurnControl\PlayerRegistry;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;

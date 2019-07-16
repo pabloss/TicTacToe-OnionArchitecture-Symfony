@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace App\Tests\unit;
 
 use App\Core\Application\Command\TakeTileService;
-use App\Core\Application\Validation\TurnControl;
+use App\Core\Application\Service\History\HistoryInterface;
+use App\Core\Application\Service\TurnControl\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use PHPUnit\Framework\TestCase;

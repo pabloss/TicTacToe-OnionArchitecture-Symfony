@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace App\Core\Application\Command;
 
-use App\Core\Application\Validation\TurnControl;
+use App\Core\Application\Service\History\HistoryInterface;
+use App\Core\Application\Service\TurnControl\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\HistoryInterface;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 
 /**
@@ -19,17 +19,17 @@ class TakeTileService
     /** @var Game */
     private $game;
 
-    /** @var HistoryInterface */
+    /** @var \App\Core\Application\Service\History\HistoryInterface */
     private $history;
 
-    /** @var TurnControl */
+    /** @var \App\Core\Application\Service\TurnControl\TurnControl */
     private $turnControl;
 
     /**
      * TakeTileService constructor.
      * @param Game $game
-     * @param HistoryInterface $history
-     * @param TurnControl $turnControl
+     * @param \App\Core\Application\Service\History\HistoryInterface $history
+     * @param \App\Core\Application\Service\TurnControl\TurnControl $turnControl
      */
     public function __construct(Game $game, HistoryInterface $history, TurnControl $turnControl)
     {

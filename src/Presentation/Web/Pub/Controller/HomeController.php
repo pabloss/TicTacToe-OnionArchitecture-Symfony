@@ -4,14 +4,14 @@
 namespace App\Presentation\Web\Pub\Controller;
 
 use App\Core\Application\Command\TakeTileService;
-use App\Core\Application\Errors\ErrorLog;
-use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Validation\TurnControl;
+use App\Core\Application\Service\TurnControl\ErrorLog;
+use App\Core\Application\Service\TurnControl\PlayerRegistry;
+use App\Core\Application\Service\TurnControl\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\PlayersFactory;
+use App\Core\Application\Service\PlayersFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 

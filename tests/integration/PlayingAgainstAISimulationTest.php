@@ -4,16 +4,16 @@ declare(strict_types=1);
 namespace App\Tests\integration\business;
 
 use App\Core\Application\Command\TakeTileService;
-use App\Core\Application\Errors\ErrorLog;
 use App\Core\Application\Query\FindWinnerService;
-use App\Core\Application\Service\PlayerRegistry;
-use App\Core\Application\Validation\TurnControl;
+use App\Core\Application\Service\History\History;
+use App\Core\Application\Service\PlayersFactory;
+use App\Core\Application\Service\TurnControl\ErrorLog;
+use App\Core\Application\Service\TurnControl\PlayerRegistry;
+use App\Core\Application\Service\TurnControl\TurnControl;
 use App\Core\Domain\Model\TicTacToe\AI\AI;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
-use App\Core\Domain\Model\TicTacToe\Game\History;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\PlayersFactory;
 use PHPUnit\Framework\TestCase;
 
 class PlayingAgainstAISimulationTest extends TestCase
@@ -22,7 +22,7 @@ class PlayingAgainstAISimulationTest extends TestCase
     private $players;
     /** @var TicTacToe */
     private $game;
-    /** @var TurnControl */
+    /** @var \App\Core\Application\Service\TurnControl\TurnControl */
     private $turnControl;
 
     protected function setUp()
