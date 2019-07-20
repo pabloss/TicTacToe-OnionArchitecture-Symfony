@@ -12,6 +12,7 @@ use App\Core\Domain\Service\History\HistoryInterface;
 use App\Core\Domain\Service\History\HistoryItem;
 use App\Entity\History as HistoryEntity;
 use App\Presentation\Web\Pub\History\History;
+use App\Repository\HistoryRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -69,9 +70,9 @@ class HistoryTest extends WebTestCase
     public function history_should_return_contents()
     {
         // Given
+        /** @var HistoryRepository $historyRepository */
         $historyRepository = $this->entityManager->getRepository(HistoryEntity::class);
-        $qb = $historyRepository->createQueryBuilder('h');
-        $qb->delete()->getQuery()->execute();
+        $historyRepository->cleanupRepository();
         $history = new History($historyRepository);
 
         $expectedContent = [];

@@ -59,4 +59,10 @@ class HistoryRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($history);
         $this->getEntityManager()->flush();
     }
+
+    public function cleanupRepository(): void
+    {
+        $qb = $this->createQueryBuilder('h');
+        $qb->delete()->getQuery()->execute();
+    }
 }
