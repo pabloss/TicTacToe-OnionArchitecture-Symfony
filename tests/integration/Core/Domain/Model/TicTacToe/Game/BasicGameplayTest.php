@@ -133,7 +133,7 @@ class BasicGameplayTest extends WebTestCase
         $playerRegistry = new PlayerRegistry();
         $playersFactory = new PlayersFactory();
         $this->players = $playersFactory->create();
-        $this->game = new TicTacToe(new Board());
+        $this->game = new TicTacToe(new Board(), \uniqid());
         $playerRegistry->registerPlayer(
             $this->players[Symbol::PLAYER_X_SYMBOL],
             $this->game

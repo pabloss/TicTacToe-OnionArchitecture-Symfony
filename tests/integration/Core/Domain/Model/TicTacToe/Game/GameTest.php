@@ -74,7 +74,7 @@ class GameTest extends TestCase
      */
     public function same_player_take_turn()
     {
-        $game = new TicTacToe(new Board());
+        $this->game = new TicTacToe(new Board(), \uniqid());
         $history = new \App\Core\Domain\Service\History\History();
         $takeTileService = new TakeTileService($this->game, $history, $this->turnControl);
         $playerX = $this->players[Symbol::PLAYER_X_SYMBOL];
@@ -83,9 +83,9 @@ class GameTest extends TestCase
         $takeTileService->takeTile($playerX, new Tile(1, 1));
         self::assertEquals(
             ErrorLog::DUPLICATED_TURNS_ERROR,
-            $this->errorLog->errors($game) & ErrorLog::DUPLICATED_TURNS_ERROR
+            $this->errorLog->errors($this->game) & ErrorLog::DUPLICATED_TURNS_ERROR
         );
-        self::assertTrue($this->errorLog->hasError(ErrorLog::DUPLICATED_TURNS_ERROR, $game));
+        self::assertTrue($this->errorLog->hasError(ErrorLog::DUPLICATED_TURNS_ERROR, $this->game));
     }
 
     /**
@@ -93,7 +93,7 @@ class GameTest extends TestCase
      */
     public function game_could_not_allow_to_be_started_by_player0()
     {
-        $game = new TicTacToe(new Board());
+        $this->game = new TicTacToe(new Board(), \uniqid());
         $history = new History();
         $takeTileService = new TakeTileService($this->game, $history, $this->turnControl);
         $player0 = $this->players[Symbol::PLAYER_0_SYMBOL];
@@ -101,9 +101,9 @@ class GameTest extends TestCase
 
         self::assertEquals(
             ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR,
-            $this->errorLog->errors($game) & ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR
+            $this->errorLog->errors($this->game) & ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR
         );
-        self::assertTrue($this->errorLog->hasError(ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR, $game));
+        self::assertTrue($this->errorLog->hasError(ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR, $this->game));
     }
 
     /**
@@ -116,7 +116,7 @@ class GameTest extends TestCase
         $playerRegistry = new PlayerRegistry();
         $playersFactory = new PlayersFactory();
         $this->players = $playersFactory->create();
-        $this->game = new TicTacToe(new Board());
+        $this->game = new TicTacToe(new Board(), \uniqid());
         $playerRegistry->registerPlayer(
             $this->players[Symbol::PLAYER_X_SYMBOL],
             $this->game

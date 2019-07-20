@@ -20,14 +20,15 @@ class Game
     /** @var string $uuid */
     private $uuid;
 
-
     /**
      * Game constructor.
      * @param Board $board
+     * @param string $uuid
      */
-    public function __construct(Board $board)
+    public function __construct(Board $board, string $uuid)
     {
         $this->board = $board;
+        $this->uuid = $uuid;
     }
 
     /**
@@ -40,7 +41,6 @@ class Game
 
     public function uuid(): string
     {
-        return '1';
-//        return $this->uuid;
+        return $this->uuid;
     }
 }

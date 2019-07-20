@@ -27,7 +27,7 @@ class TakeTileServiceTest extends TestCase
 
         $playerX = new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), uniqid());
         $playerO = new Player(new Symbol(Symbol::PLAYER_0_SYMBOL), uniqid());
-        $game = new Game(new Board());
+        $game = new Game(new Board(), \uniqid());
         $playerRegistry = new PlayerRegistry();
         $playerRegistry->registerPlayer($playerX, $game);
         $playerRegistry->registerPlayer($playerO, $game);
@@ -48,7 +48,7 @@ class TakeTileServiceTest extends TestCase
         $errorLog = new ErrorLog();
         $playerO = new Player(new Symbol(Symbol::PLAYER_0_SYMBOL), uniqid());
         $playerX = new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), uniqid());
-        $game = new Game(new Board());
+        $game = new Game(new Board(), \uniqid());
         $playerRegistry = new PlayerRegistry();
         $playerRegistry->registerPlayer($playerX, $game);
         $playerRegistry->registerPlayer($playerO, $game);
@@ -68,7 +68,7 @@ class TakeTileServiceTest extends TestCase
     {
         $errorLog = new ErrorLog();
         $playerO = new Player(new Symbol(Symbol::PLAYER_0_SYMBOL), uniqid());
-        $game = new Game(new Board());
+        $game = new Game(new Board(), \uniqid());
         $playerRegistry = new PlayerRegistry();
         $turnControl = new TurnControl($playerRegistry, $errorLog);
         $service = new TakeTileService($game, new History(), $turnControl);
@@ -87,7 +87,7 @@ class TakeTileServiceTest extends TestCase
     {
         $errorLog = new ErrorLog();
         $playerO = new Player(new Symbol(Symbol::PLAYER_0_SYMBOL), uniqid());
-        $game = new Game(new Board());
+        $game = new Game(new Board(), \uniqid());
         $playerRegistry = new PlayerRegistry();
         $turnControl = new TurnControl($playerRegistry, $errorLog);
         $playerRegistry->registerPlayer($playerO, $game);
