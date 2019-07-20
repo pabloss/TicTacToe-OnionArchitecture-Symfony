@@ -6,7 +6,8 @@
     <div id="app">
         {% for i in 1..9 %}
 
-            <div id="tile_{{ i }}" class="tile"><a href="game/get-tile/{{ ((i - 1) - ((i-1) % 3)) / 3 }},{{ (i - 1) % 3 }}">&nbsp;</a></div>
+            <div id="tile_{{ i }}" class="tile"><a
+                        href="game/get-tile/{{ ((i - 1) - ((i-1) % 3)) / 3 }},{{ (i - 1) % 3 }}">&nbsp;</a></div>
         {% endfor %}
     </div>
 {% endblock %}

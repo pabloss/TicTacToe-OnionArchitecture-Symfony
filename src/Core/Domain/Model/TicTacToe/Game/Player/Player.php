@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Model\TicTacToe\Game\Player;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-
 /**
  * Class Player
  * @package App\Core\Domain\Model\TicTacToe\ValueObject
@@ -30,19 +27,19 @@ class Player
     }
 
     /**
-     * @return Symbol
-     */
-    public function symbol(): Symbol
-    {
-        return $this->symbol;
-    }
-
-    /**
      * @return string
      */
     public function symbolValue(): string
     {
         return $this->symbol()->value();
+    }
+
+    /**
+     * @return Symbol
+     */
+    public function symbol(): Symbol
+    {
+        return $this->symbol;
     }
 
     /**

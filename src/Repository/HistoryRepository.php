@@ -3,10 +3,12 @@
 namespace App\Repository;
 
 use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Entity\History as HistoryEntity;
 use App\Entity\History;
+use App\Entity\History as HistoryEntity;
 use App\Tests\Stubs\History\History as HistoryVO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -43,15 +45,14 @@ class HistoryRepository extends ServiceEntityRepository
             ->where('h.gameUuid = :gameUuid')
             ->orderBy('h.createdAt', 'DESC')
             ->setMaxResults(1)
-            ->setParameter('gameUuid', $game->uuid())
-        ;
+            ->setParameter('gameUuid', $game->uuid());
         return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
      * @param HistoryEntity $history
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(HistoryEntity $history)
     {

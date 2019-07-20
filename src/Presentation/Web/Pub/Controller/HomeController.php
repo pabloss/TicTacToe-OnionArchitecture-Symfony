@@ -4,14 +4,17 @@
 namespace App\Presentation\Web\Pub\Controller;
 
 use App\Core\Application\Command\TakeTileService;
-use App\Core\Application\Service\TurnControl\ErrorLog;
-use App\Core\Application\Service\TurnControl\PlayerRegistry;
-use App\Core\Application\Service\TurnControl\TurnControl;
+use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
+use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Application\Service\PlayersFactory;
+use App\Core\Domain\Service\PlayersFactory;
+use App\Core\Domain\Service\TurnControl\ErrorLog;
+use App\Core\Domain\Service\TurnControl\PlayerRegistry;
+use App\Core\Domain\Service\TurnControl\TurnControl;
+use App\Presentation\Web\Pub\History\History;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,11 +48,17 @@ final class HomeController extends AbstractController
      * @param int $y
      * @param PlayersFactory $factory
      * @return Response
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException
+     * @throws NotAllowedSymbolValue
+     * @throws OutOfLegalSizeException
      */
-    public function getTile(int $x, int $y, PlayersFactory $factory, PlayerRegistry $playerRegistry, ErrorLog $errorLog, \App\Presentation\Web\Pub\History\History $history)
-    {
+    public function getTile(
+        int $x,
+        int $y,
+        PlayersFactory $factory,
+        PlayerRegistry $playerRegistry,
+        ErrorLog $errorLog,
+        History $history
+    ) {
         $game = new TicTacToe(new Board());
         list(Symbol::PLAYER_X_SYMBOL => $playerX, Symbol::PLAYER_0_SYMBOL => $player0) = $factory->create();
         $playerRegistry->registerPlayer(

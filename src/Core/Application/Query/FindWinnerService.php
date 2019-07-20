@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace App\Core\Application\Query;
 
+use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
+use function array_reduce;
+use function array_walk;
+use function is_null;
 
 
 /**
@@ -117,8 +121,8 @@ class FindWinnerService
 
     /**
      * @param Game $game
-     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Player|null
-     * @throws \App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
+     * @return Player|null
+     * @throws NotAllowedSymbolValue
      */
     public function winner(Game $game): ?Player
     {
@@ -129,15 +133,15 @@ class FindWinnerService
 
     /**
      * @param Symbol $symbol
-     * @param \App\Core\Domain\Model\TicTacToe\Game\Board\Board $board
+     * @param Board $board
      * @return Player|null
      */
     private function findWinnerByBoardPatterns(Symbol $symbol, Board $board): ?Player
     {
-        return \array_reduce(
+        return array_reduce(
             self::patterns,
             function ($carry, $pattern) use ($symbol, $board) {
-                if(null === $carry){
+                if (null === $carry) {
                     return $this->findPlayerByPatternAndSymbol($pattern, $board, $symbol);
                 }
                 return $carry;
@@ -148,9 +152,9 @@ class FindWinnerService
 
     /**
      * @param $pattern
-     * @param \App\Core\Domain\Model\TicTacToe\Game\Board\Board $board
+     * @param Board $board
      * @param Symbol $symbol
-     * @return \App\Core\Domain\Model\TicTacToe\Game\Player\Player|null
+     * @return Player|null
      */
     private function findPlayerByPatternAndSymbol($pattern, Board $board, Symbol $symbol): ?Player
     {
@@ -159,11 +163,11 @@ class FindWinnerService
         $foundPlayer = null;
         // Here were loop, but now I've changed to use native PHP array function
         // I'm not sure if it "improves" performance
-        \array_walk(
+        array_walk(
             $board->contents(),
             function ($player, $i) use (&$foundPlayer, &$foundCount, $symbol, $pattern) {
-                /** @var \App\Core\Domain\Model\TicTacToe\Game\Player\Player $player */
-                if (\is_null($player) === false && $player->symbol()->value() === $symbol->value() && $pattern[$i] == self::MARKED_FIELD_GENERIC_SYMBOL) {
+                /** @var Player $player */
+                if (is_null($player) === false && $player->symbol()->value() === $symbol->value() && $pattern[$i] == self::MARKED_FIELD_GENERIC_SYMBOL) {
                     $foundCount++;
                     $foundPlayer = $player;
                 }

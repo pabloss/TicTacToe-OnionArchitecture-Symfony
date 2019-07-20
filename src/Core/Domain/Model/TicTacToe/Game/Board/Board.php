@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Core\Domain\Model\TicTacToe\Game\Board;
 
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use function array_fill;
 
 /**
  * Class Board
@@ -19,7 +20,7 @@ class Board
      */
     public function __construct()
     {
-        $this->board = \array_fill(0, 9, null);
+        $this->board = array_fill(0, 9, null);
     }
 
     /**

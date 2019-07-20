@@ -10,6 +10,37 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class History implements EntityInterface
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $createdAt;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $gameUuid;
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $playerUuid;
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $playerSymbol;
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $tile;
+
     public function getValueObject(): object
     {
         // TODO: Implement getValueObject() method.
@@ -20,60 +51,21 @@ class History implements EntityInterface
         // TODO: Implement setValueObject() method.
     }
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $gameUuid;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $playerUuid;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $playerSymbol;
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $tile;
-
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-        if(null === $updatedAt){
-            $this->createdAt = new \DateTime();
+        if (null === $updatedAt) {
+            $this->createdAt = new DateTime();
         }
         return $this;
     }

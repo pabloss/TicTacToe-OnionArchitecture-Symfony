@@ -6,6 +6,11 @@ namespace App\Core\Domain\Model\TicTacToe\AI;
 use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
+use function array_walk;
+use function count;
+use function floor;
+use function intval;
+use function rand;
 
 /**
  * Class AI
@@ -42,7 +47,7 @@ class AI
 
     /**
      * @param $randomIndex
-     * @return \App\Core\Domain\Model\TicTacToe\Game\Board\Tile
+     * @return Tile
      * @throws OutOfLegalSizeException
      */
     private function tileFromIndex($randomIndex): Tile
@@ -57,7 +62,7 @@ class AI
      */
     private function calculateRow($randomIndex): int
     {
-        return \intval(\floor($randomIndex / 3.0));
+        return intval(floor($randomIndex / 3.0));
     }
 
     /**
@@ -75,7 +80,7 @@ class AI
      */
     private function chooseRandomIndex(array $freeTileIndexes): int
     {
-        return $freeTileIndexes[\rand(0, \count($freeTileIndexes) - 1)];
+        return $freeTileIndexes[rand(0, count($freeTileIndexes) - 1)];
     }
 
 
@@ -86,7 +91,7 @@ class AI
     private function takeFreeTileIndexes(array &$board): array
     {
         $freeTileIndexes = [];
-        \array_walk(
+        array_walk(
             $board,
             function ($value, $key) use (&$freeTileIndexes) {
                 if (null === $value) {

@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Stubs\History;
 
-use App\Core\Application\Service\History\HistoryInterface;
+use App\Core\Domain\Service\History\HistoryInterface;
 
 /**
  * Class History
  * @package App\Core\Domain\Model\TicTacToe\Game
  */
-class History extends \App\Core\Application\Service\History\History implements HistoryInterface
+class History extends \App\Core\Domain\Service\History\History implements HistoryInterface
 {
 
     const LIMIT = 9;

@@ -3,33 +3,33 @@ declare(strict_types=1);
 
 namespace App\Core\Application\Command;
 
-use App\Core\Application\Service\History\HistoryInterface;
-use App\Core\Application\Service\TurnControl\TurnControl;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use App\Core\Domain\Service\History\HistoryInterface;
+use App\Core\Domain\Service\TurnControl\TurnControl;
 
 /**
  * Class TakeTileService
- * @package App\Core\Application\Service
+ * @package App\Core\Domain\Service
  */
 class TakeTileService
 {
     /** @var Game */
     private $game;
 
-    /** @var \App\Core\Application\Service\History\HistoryInterface */
+    /** @var HistoryInterface */
     private $history;
 
-    /** @var \App\Core\Application\Service\TurnControl\TurnControl */
+    /** @var TurnControl */
     private $turnControl;
 
     /**
      * TakeTileService constructor.
      * @param Game $game
-     * @param \App\Core\Application\Service\History\HistoryInterface $history
-     * @param \App\Core\Application\Service\TurnControl\TurnControl $turnControl
+     * @param HistoryInterface $history
+     * @param TurnControl $turnControl
      */
     public function __construct(Game $game, HistoryInterface $history, TurnControl $turnControl)
     {
@@ -40,7 +40,7 @@ class TakeTileService
 
     /**
      * @param Player $player
-     * @param \App\Core\Domain\Model\TicTacToe\Game\Board\Tile $tile
+     * @param Tile $tile
      * @throws NotAllowedSymbolValue
      */
     public function takeTile(Player $player, Tile $tile)
