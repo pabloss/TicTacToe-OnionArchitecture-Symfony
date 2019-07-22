@@ -13,12 +13,16 @@ require('../css/app.css');
 import Vue from 'vue';
 import axios from 'axios';
 import vueAxios from 'vue-axios';
+import PlayerTurn from './components/PlayerTurn'
 
 Vue.use(vueAxios, axios);
 /**
  * Create a fresh Vue Application instance
  */
 new Vue({
-    el: '#app'
+    el: '#app',
+    components: {
+        'player-turn': PlayerTurn
+    }
 });
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

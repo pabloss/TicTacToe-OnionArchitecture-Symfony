@@ -41,12 +41,12 @@ final class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/game", name="home")
+     * @Route("/game", name="game")
      * @return Response
      */
     public function game(): Response
     {
-        return $this->render('@Pub/home/game.html.twig');
+        return $this->render('@Pub/game/game.html.twig');
     }
 
     /**

@@ -51,5 +51,5 @@ Encore
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
 ;
-
+Encore.enableVueLoader();
 module.exports = Encore.getWebpackConfig();
