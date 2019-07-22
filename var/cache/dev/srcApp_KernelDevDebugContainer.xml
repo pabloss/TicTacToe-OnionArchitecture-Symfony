@@ -86,7 +86,7 @@
     <parameter key="kernel.container_class">srcApp_KernelDevDebugContainer</parameter>
     <parameter key="container.autowiring.strict_mode">true</parameter>
     <parameter key="container.dumper.inline_class_loader">true</parameter>
-    <parameter key="env(DATABASE_URL)">mysql://root@127.0.0.1:3306/tic_tac_toe_test</parameter>
+    <parameter key="env(DATABASE_URL)"></parameter>
     <parameter key="fragment.renderer.hinclude.global_template"></parameter>
     <parameter key="fragment.path">/_fragment</parameter>
     <parameter key="kernel.secret">%env(APP_SECRET)%</parameter>
@@ -1296,6 +1296,14 @@
       </call>
       <call method="addListener">
         <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service" id="debug.debug_handlers_listener"/>
+          <argument>configure</argument>
+        </argument>
+        <argument>2048</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.command</argument>
         <argument type="collection">
           <argument type="service" id="debug.debug_handlers_listener"/>
           <argument>configure</argument>
@@ -3578,13 +3586,12 @@
       <argument type="collection">
         <argument key="driver">pdo_mysql</argument>
         <argument key="charset">utf8mb4</argument>
-        <argument key="url">%env(resolve:DATABASE_URL)%</argument>
+        <argument key="url">%env(DATABASE_URL)%</argument>
         <argument key="host">localhost</argument>
         <argument key="port">null</argument>
         <argument key="user">root</argument>
         <argument key="password">null</argument>
         <argument key="driverOptions" type="collection"/>
-        <argument key="serverVersion">5.7</argument>
         <argument key="defaultTableOptions" type="collection">
           <argument key="charset">utf8mb4</argument>
           <argument key="collate">utf8mb4_unicode_ci</argument>

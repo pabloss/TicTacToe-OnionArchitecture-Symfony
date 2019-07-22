@@ -14,6 +14,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import vueAxios from 'vue-axios';
 import PlayerTurn from './components/PlayerTurn'
+import Request from './components/Request'
 
 Vue.use(vueAxios, axios);
 /**
@@ -22,7 +23,8 @@ Vue.use(vueAxios, axios);
 new Vue({
     el: '#app',
     components: {
-        'player-turn': PlayerTurn
+        'player-turn': PlayerTurn,
+        'request-buttons': Request
     }
 });
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
