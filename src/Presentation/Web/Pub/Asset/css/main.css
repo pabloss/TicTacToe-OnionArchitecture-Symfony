@@ -1,9 +1,0 @@
-.tile {
-    width: 120px;
-    height: 120px;
-    background-color: #1b6d85;
-}
-
-.tile:before {
-    content: "\00a0";
-}
