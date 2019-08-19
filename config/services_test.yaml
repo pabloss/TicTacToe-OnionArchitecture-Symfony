@@ -42,3 +42,14 @@ services:
         public: true
         arguments:
             $historyRepository: '@App\Repository\HistoryRepository'
+
+    App\Core\Domain\Service\TurnControl\Validation\ValidationCollection:
+        arguments:
+            $input:
+                - '@App\Core\Domain\Service\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation'
+                - '@App\Core\Domain\Service\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation'
+                - '@App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValidation'
+                - '@App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation'
+    App\Core\Domain\Service\TurnControl\TurnControl:
+        arguments:
+            $validationCollection: '@App\Core\Domain\Service\TurnControl\Validation\ValidationCollection'

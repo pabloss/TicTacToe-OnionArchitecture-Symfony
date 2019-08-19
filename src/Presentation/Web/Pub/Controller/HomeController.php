@@ -14,6 +14,11 @@ use App\Core\Domain\Service\PlayersFactory;
 use App\Core\Domain\Service\TurnControl\ErrorLog;
 use App\Core\Domain\Service\TurnControl\PlayerRegistry;
 use App\Core\Domain\Service\TurnControl\TurnControl;
+use App\Core\Domain\Service\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
+use App\Core\Domain\Service\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
+use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
+use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
+use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
 use App\Presentation\Web\Pub\History\History;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,7 +74,14 @@ final class HomeController extends AbstractController
             $this->players[Symbol::PLAYER_0_SYMBOL],
             $this->game
         );
-        $turnControl = new TurnControl($playerRegistry, $this->errorLog);
+        $turnControl = new TurnControl(new ValidationCollection(
+            [
+                ErrorLog::PLAYER_IS_NOT_ALLOWED => new PlayerShouldBeRegisteredValidation(),
+                ErrorLog::GAME_STARTED_BY_PLAYER0_ERROR => new GameShouldStartWithCorrectPlayerValidation(),
+                ErrorLog::DUPLICATED_TURNS_ERROR => new PreviousPlayerShouldBeDifferentThanActualValidation(),
+                ErrorLog::DUPLICATED_TILE_ERROR => new PlayerMustNotTakeTakenAlreadyTileValidation(),
+            ]
+        ), $this->errorLog);
         $this->takeTileService = new TakeTileService($this->game, $history, $turnControl);
     }
 
