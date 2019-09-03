@@ -29,10 +29,11 @@ class AccessControl
      */
     public static function isPlayerAllowed(PlayerInterface $player, GameInterface $game): bool
     {
-        /** @var Player $internalPlayer */
-        foreach (self::$registry->players($game) as $playerUuid) {
-            if ($playerUuid === $player->uuid()) {
-                return true;
+        if(false === empty(self::$registry)){
+            foreach (self::$registry->players($game) as $playerUuid) {
+                if ($playerUuid === $player->uuid()) {
+                    return true;
+                }
             }
         }
 
