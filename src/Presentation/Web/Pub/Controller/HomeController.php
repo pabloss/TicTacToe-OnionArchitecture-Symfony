@@ -11,6 +11,7 @@ use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use App\Core\Domain\Service\PlayersFactory;
+use App\Core\Domain\Service\TurnControl\AccessControl;
 use App\Core\Domain\Service\TurnControl\ErrorLog;
 use App\Core\Domain\Service\TurnControl\PlayerRegistry;
 use App\Core\Domain\Service\TurnControl\TurnControl;
@@ -20,7 +21,10 @@ use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValid
 use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
 use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
 use App\Presentation\Web\Pub\History\History;
+use App\Repository\HistoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -55,6 +59,21 @@ final class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/api/game", name="api.game")
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function apiGame(EntityManagerInterface $entityManager): Response
+    {
+        $histories = $entityManager->getRepository(\App\Entity\History::class)->findBy([], ['createdAt' => 'DESC']);
+        $result = [];
+        foreach ($histories as $history) {
+            $result[$history->getTile()[0]*3+$history->getTile()[1]] = $history->getPlayerSymbol();
+        }
+        return $this->json($result);
+    }
+
+    /**
      * @param PlayersFactory $factory
      * @param PlayerRegistry $playerRegistry
      * @param ErrorLog $errorLog
@@ -74,6 +93,7 @@ final class HomeController extends AbstractController
             $this->players[Symbol::PLAYER_0_SYMBOL],
             $this->game
         );
+        AccessControl::loadRegistry($playerRegistry);
         $turnControl = new TurnControl(new ValidationCollection(
             [
                 ErrorLog::PLAYER_IS_NOT_ALLOWED => new PlayerShouldBeRegisteredValidation(),
@@ -98,10 +118,23 @@ final class HomeController extends AbstractController
     {
         $this->takeTileService->takeTile($this->players[$symbol], new Tile($x, $y));
         if(0 === (int) $this->errorLog->errors($this->game)){
-            return new Response('', Response::HTTP_OK);
-        } elseif (2 === (int) $this->errorLog->errors($this->game)){
-            return new Response('', Response::HTTP_CONFLICT);
+            return new JsonResponse([], Response::HTTP_OK);
+        } elseif (0 < (int) $this->errorLog->errors($this->game)){
+            return new JsonResponse([
+                'errors' => (int) $this->errorLog->errors($this->game)
+            ], JsonResponse::HTTP_CONFLICT);
         }
 
+    }
+
+    /**
+     * @Route("/game/reset", name="reset")
+     * @param HistoryRepository $repository
+     * @return JsonResponse
+     */
+    public function reset(HistoryRepository $repository)
+    {
+        $repository->cleanupRepository();
+        return new JsonResponse([]);
     }
 }

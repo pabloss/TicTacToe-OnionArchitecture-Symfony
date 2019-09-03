@@ -39,10 +39,17 @@ services:
     php-fpm:
       build: phpdocker/php-fpm
       environment:
-        PHP_IDE_CONFIG: "serverName=my.docker"
+        PHP_IDE_CONFIG: "serverName=docker"
       container_name: symfony-onionarchitecture-php-fpm
       working_dir: /application
       volumes:
         - ../../../:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+
+    selenium-tests:
+      image: selenium/standalone-chrome
+      volumes:
+        - /dev/shm:/dev/shm
+      ports:
+        - 4444:4444
 

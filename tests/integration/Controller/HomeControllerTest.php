@@ -3,56 +3,58 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Controller;
 
-use App\Repository\HistoryRepository;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
-use App\Entity\History as HistoryEntity;
 
 class HomeControllerTest extends WebTestCase
 {
+    /** @var RemoteWebDriver  */
+    private $driver;
+
+    protected function setUp()
+    {
+        $host = 'http://selenium-tests:4444/wd/hub';
+        $this->driver = RemoteWebDriver::create($host, DesiredCapabilities::chrome());
+    }
+
     /**
      * @test
      */
-    public function playGame()
+    public function displayBoardBasedOnDatabaseContent()
     {
-        $client = static::createClient();
-        $entityManager = $client->getContainer()
-            ->get('doctrine')
-            ->getManager();
+        $result =
+            \json_decode(
+                $this->driver
+                    ->get('http://webserver/api/game')
+                    ->findElement(
+                        WebDriverBy::tagName('pre'))
+                    ->getText(),
+                true
+            );
 
-        /** @var HistoryRepository $historyRepository */
-        $historyRepository = $entityManager->getRepository(HistoryEntity::class);
-        $historyRepository->cleanupRepository();
+        $this->driver
+            ->get('http://webserver/game/')
+            ->wait(5)
+            ->until(
+                WebDriverExpectedCondition::elementTextContains(WebDriverBy::tagName('a'), 'X')
+            )
+        ;
 
-        $crawler = $client->request('GET', '/game');
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(
-            9,
-            $crawler->filter('div.tile')->count()
-        );
-
-        for ($i = 1; $i <= 9; $i++) {
-            $this->assertEquals(
-                1,
-                $crawler->filter("div#tile_$i")->count()
+        foreach ($result as $boardIndex => $playeSymbol){
+            self::assertEquals(
+                    $playeSymbol,
+                    $this->driver
+                    ->findElement(WebDriverBy::cssSelector("a#tile_".(($boardIndex - ($boardIndex % 3)) / 3) . '_' . ($boardIndex % 3)))
+                    ->getText()
             );
         }
+    }
 
-        $link = $crawler->filter("div#tile_1 a")->eq(0)->link();
-        $client->click($link);
-
-        self::assertEquals('GET', $link->getMethod());
-        self::assertEquals('http://localhost/game/get-tile/X/0,0', $link->getUri());
-        self::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-
-        $link = $crawler->filter("div#tile_2 a")->eq(1)->link();
-        $client->click($link);
-        self::assertEquals('http://localhost/game/get-tile/0/0,1', $link->getUri());
-        self::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-
-        $link = $crawler->filter("div#tile_1 a")->eq(1)->link();
-        $client->click($link);
-        self::assertEquals(Response::HTTP_CONFLICT, $client->getResponse()->getStatusCode());
+    protected function tearDown()
+    {
+        $this->driver->close();
     }
 }
