@@ -53,6 +53,55 @@ class HomeControllerTest extends WebTestCase
         }
     }
 
+    /**
+     * @test
+     */
+    public function displayResetButton()
+    {
+        $this->driver
+            ->get('http://webserver/game/')
+            ->wait(5)
+            ->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector("button#reset")
+                )
+            )
+        ;
+
+        self::assertTrue(
+            $this->driver->findElement(
+                WebDriverBy::cssSelector("button#reset")
+            )
+            ->isDisplayed()
+        );
+
+        self::assertEquals(
+            "Reset",
+            $this->driver->findElement(
+                WebDriverBy::cssSelector("button#reset")
+            )
+            ->getText()
+        );
+
+        $this->driver->findElement(
+            WebDriverBy::cssSelector("button#reset")
+        )
+        ->click()
+        ;
+        $result =
+            \json_decode(
+                $this->driver
+                    ->get('http://webserver/api/game')
+                    ->findElement(
+                        WebDriverBy::tagName('pre'))
+                    ->getText(),
+                true
+            );
+        self::assertTrue(\is_array($result));
+        self::assertSame(0, \count($result));
+    }
+
+
     protected function tearDown()
     {
         $this->driver->close();

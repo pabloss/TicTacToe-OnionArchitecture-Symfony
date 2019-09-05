@@ -1,13 +1,16 @@
 <template>
-    <div class="grids">
-    <ul class="grid-9">
-        <li  v-for="n in 9" >
-            <a class="wide" v-bind:id="'tile_' + ((n-1) - ((n-1) % 3)) / 3 + '_' + (n-1) % 3" @click="playerTurn((counter%2) ? symbols[0]: symbols[1], ((n-1) - ((n-1) % 3)) / 3, (n-1) % 3 ); counter++">{{ res[n-1] }}</a>
-        </li>
-    </ul>
-    <button value="Reset" @click="reset();"/>
+    <div>
+        <div class="grids">
+            <ul class="grid-9">
+                <li v-for="n in 9">
+                    <a class="wide" v-bind:id="'tile_' + ((n-1) - ((n-1) % 3)) / 3 + '_' + (n-1) % 3"
+                       @click="playerTurn((counter%2) ? symbols[0]: symbols[1], ((n-1) - ((n-1) % 3)) / 3, (n-1) % 3 ); counter++">{{
+                        res[n-1] }}</a>
+                </li>
+            </ul>
+        </div>
+        <button value="Reset" id="reset" @click="reset();">Reset</button>
     </div>
-
 </template>
 
 <script>
