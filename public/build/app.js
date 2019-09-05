@@ -2012,26 +2012,33 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     playerTurn: function playerTurn(symbol, x, y) {
-      var _this = this;
-
       console.log('turn with symbol: ' + symbol + " " + x + " " + y);
+      var vm = this;
       this.axios({
         method: "GET",
         "url": "/game/get-tile/" + symbol + "/" + x + "," + y
       }).then(function (result) {
-        _this.res = result.data.res;
-
-        if (result.status === 200) {}
+        if (result.status === 200) {
+          vm.res = result.data;
+          console.log(result.data);
+        }
       }, function (error) {
         console.error(error);
       });
     },
     reset: function reset() {
+      var _this = this;
+
       this.axios({
         method: "GET",
         "url": "/game/reset"
       }).then(function (result) {
-        console.info(result);
+        var vm = _this;
+
+        if (result.status === 200) {
+          vm.res = result.data;
+          console.log(result.data);
+        }
       }, function (error) {
         console.error(error);
       });
@@ -2052,6 +2059,12 @@ __webpack_require__.r(__webpack_exports__);
     }, function (error) {
       console.error(error);
     });
+  },
+  // watch is important to react on every response change from backend
+  watch: {
+    res: function res(newRes, oldRes) {
+      this.res = newRes;
+    }
   }
 });
 

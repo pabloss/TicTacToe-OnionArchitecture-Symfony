@@ -4,8 +4,7 @@
             <ul class="grid-9">
                 <li v-for="n in 9">
                     <a class="wide" v-bind:id="'tile_' + ((n-1) - ((n-1) % 3)) / 3 + '_' + (n-1) % 3"
-                       @click="playerTurn((counter%2) ? symbols[0]: symbols[1], ((n-1) - ((n-1) % 3)) / 3, (n-1) % 3 ); counter++">{{
-                        res[n-1] }}</a>
+                       @click="playerTurn((counter%2) ? symbols[0]: symbols[1], ((n-1) - ((n-1) % 3)) / 3, (n-1) % 3 ); counter++">{{ res[n-1] }}</a>
                 </li>
             </ul>
         </div>
@@ -23,10 +22,11 @@
         methods: {
             playerTurn: function (symbol, x, y) {
                 console.log('turn with symbol: ' + symbol + " " + x + " " + y);
+                let vm = this;
                 this.axios({ method: "GET", "url": "/game/get-tile/"+symbol+"/"+x+","+y }).then(result => {
-                    this.res = result.data.res;
                     if(result.status === 200){
-
+                        vm.res = result.data;
+                        console.log(result.data);
                     }
                 }, error => {
                     console.error(error);
@@ -34,7 +34,11 @@
             },
             reset: function () {
                 this.axios({ method: "GET", "url": "/game/reset"}).then(result => {
-                    console.info(result);
+                    let vm = this;
+                    if(result.status === 200){
+                        vm.res = result.data;
+                        console.log(result.data);
+                    }
                 }, error => {
                     console.error(error);
                 });
@@ -49,6 +53,12 @@
             }, error => {
                 console.error(error);
             });
+        },
+        // watch is important to react on every response change from backend
+        watch: {
+            res: function (newRes, oldRes) {
+                this.res = newRes;
+            }
         }
     }
 </script>

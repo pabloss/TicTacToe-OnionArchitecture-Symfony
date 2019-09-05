@@ -21,6 +21,7 @@ use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValid
 use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
 use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
 use App\Presentation\Web\Pub\History\History;
+use App\Presentation\Web\Pub\Service\FormatHistoryResult;
 use App\Repository\HistoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,6 +40,9 @@ final class HomeController extends AbstractController
     private $players;
     private $errorLog;
     private $game;
+
+    /** @var array  */
+    private $result;
 
     /**
      * @Route("/", name="home")
@@ -60,17 +64,12 @@ final class HomeController extends AbstractController
 
     /**
      * @Route("/api/game", name="api.game")
-     * @param EntityManagerInterface $entityManager
+     * @param FormatHistoryResult $boardResult
      * @return Response
      */
-    public function apiGame(EntityManagerInterface $entityManager): Response
+    public function apiGame(FormatHistoryResult $boardResult): Response
     {
-        $histories = $entityManager->getRepository(\App\Entity\History::class)->findBy([], ['createdAt' => 'DESC']);
-        $result = [];
-        foreach ($histories as $history) {
-            $result[$history->getTile()[0]*3+$history->getTile()[1]] = $history->getPlayerSymbol();
-        }
-        return $this->json($result);
+        return $this->json($boardResult->format());
     }
 
     /**
@@ -82,6 +81,7 @@ final class HomeController extends AbstractController
      */
     public function __construct(PlayersFactory $factory, PlayerRegistry $playerRegistry, ErrorLog $errorLog, History $history)
     {
+        $this->result = array_fill(0, 9, null);
         $this->errorLog = $errorLog;
         $this->game = new TicTacToe(new Board(), '1');
         $this->players = $factory->create();
@@ -110,15 +110,16 @@ final class HomeController extends AbstractController
      * @param string $symbol
      * @param int $x
      * @param int $y
+     * @param FormatHistoryResult $formatHistoryResultService
      * @return Response
      * @throws NotAllowedSymbolValue
      * @throws OutOfLegalSizeException
      */
-    public function getTile(string $symbol, int $x, int $y)
+    public function getTile(string $symbol, int $x, int $y, FormatHistoryResult $formatHistoryResultService)
     {
         $this->takeTileService->takeTile($this->players[$symbol], new Tile($x, $y));
         if(0 === (int) $this->errorLog->errors($this->game)){
-            return new JsonResponse([], Response::HTTP_OK);
+            return new JsonResponse($formatHistoryResultService->format(), Response::HTTP_OK);
         } elseif (0 < (int) $this->errorLog->errors($this->game)){
             return new JsonResponse([
                 'errors' => (int) $this->errorLog->errors($this->game)
