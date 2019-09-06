@@ -8,6 +8,7 @@
                 </li>
             </ul>
         </div>
+        <div id="winner"></div>
         <button value="Reset" id="reset" @click="reset();">Reset</button>
     </div>
 </template>
