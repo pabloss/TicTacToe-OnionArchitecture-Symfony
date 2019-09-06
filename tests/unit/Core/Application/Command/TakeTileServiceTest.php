@@ -21,20 +21,60 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class TakeTileServiceTest extends TestCase
 {
+    private $tileProphecy;
+    private $boardProphecy;
+    private $gameProphecy;
+    private $historyProphecy;
+    private $turnControlProphecy;
+    private $playerXProphecy;
+    private $playerOProphecy;
+
+    protected function setUp()
+    {
+        list($this->playerXProphecy, $this->playerOProphecy) = $this->preparePlayers();
+        $this->tileProphecy = $this->prophesize(Tile::class);
+
+        $this->boardProphecy = $this->prophesize(Board::class);
+        $this->boardProphecy->getPlayer($this->tileProphecy->reveal())->willReturn($this->playerXProphecy->reveal());
+
+        $this->gameProphecy = $this->prepareGame($this->boardProphecy);
+
+        $this->historyProphecy = $this->prophesize(HistoryInterface::class);
+        $this->historyProphecy->lastItem($this->gameProphecy->reveal())->willReturn(null);
+        $this->historyProphecy->getStartingPlayerSymbolValue()->willReturn(Symbol::PLAYER_X_SYMBOL);
+        $this->prepareSavingTurn($this->historyProphecy, $this->playerXProphecy, $this->tileProphecy, $this->gameProphecy);
+
+        $this->turnControlProphecy = $turnControlProphecy = $this->prophesize(TurnControl::class);
+    }
+
     /**
      * @test
      */
     public function initBoard()
     {
-        list($playerXProphecy, $playerOProphecy) = $this->preparePlayers();
-        $tileProphecy = $this->prophesize(Tile::class);
+        self::assertSame($this->boardProphecy->reveal(), $this->gameProphecy->reveal()->board());
+    }
 
-        $boardProphecy = $this->prophesize(Board::class);
-        $boardProphecy->getPlayer($tileProphecy->reveal())->willReturn($playerXProphecy->reveal());
+    /**
+     * @test
+     */
+    public function markBoard()
+    {
+        // Given
+        $this->boardProphecy->mark($this->tileProphecy->reveal(), $this->playerXProphecy->reveal())->shouldBeCalled();
+        $service = new TakeTileService(
+            $this->gameProphecy->reveal(),
+            $this->historyProphecy->reveal(),
+            $this->turnControlProphecy->reveal()
+        );
 
-        $gameProphecy = $this->prepareGame($boardProphecy, $playerOProphecy, $playerXProphecy);
+        // When
+        $service->takeTile($this->playerXProphecy->reveal(), $this->tileProphecy->reveal());
 
-        self::assertSame($boardProphecy->reveal(), $gameProphecy->reveal()->board());
+        // Then
+        self::assertNotEmpty($this->gameProphecy->reveal()->board()->getPlayer($this->tileProphecy->reveal()));
+        self::assertSame($this->playerXProphecy->reveal(),
+            $this->gameProphecy->reveal()->board()->getPlayer($this->tileProphecy->reveal()));
     }
 
     /**
@@ -62,50 +102,13 @@ class TakeTileServiceTest extends TestCase
 
     /**
      * @param $boardProphecy
-     * @param $playerOProphecy
-     * @param $playerXProphecy
      * @return Game|ObjectProphecy
-     * @throws NotAllowedSymbolValue
      */
-    private function prepareGame($boardProphecy, $playerOProphecy, $playerXProphecy)
+    private function prepareGame($boardProphecy)
     {
         $gameProphecy = $this->prophesize(Game::class);
         $gameProphecy->board()->willReturn($boardProphecy->reveal());
         return $gameProphecy;
-    }
-
-    /**
-     * @test
-     */
-    public function markBoard()
-    {
-        // Given
-        list($playerXProphecy, $playerOProphecy) = $this->preparePlayers();
-        $tileProphecy = $this->prophesize(Tile::class);
-
-        $boardProphecy = $this->prophesize(Board::class);
-        $boardProphecy->getPlayer($tileProphecy->reveal())->willReturn($playerXProphecy->reveal());
-        $boardProphecy->mark($tileProphecy->reveal(), $playerXProphecy->reveal())->shouldBeCalled();
-
-        $gameProphecy = $this->prepareGame($boardProphecy, $playerOProphecy, $playerXProphecy);
-
-        $historyProphecy = $this->prophesize(HistoryInterface::class);
-        $historyProphecy->lastItem($gameProphecy->reveal())->willReturn(null);
-        $historyProphecy->getStartingPlayerSymbolValue()->willReturn(Symbol::PLAYER_X_SYMBOL);
-        $this->prepareSavingTurn($historyProphecy, $playerXProphecy, $tileProphecy, $gameProphecy);
-
-        $turnControlProphecy = $this->prophesize(TurnControl::class);
-
-        $service = new TakeTileService($gameProphecy->reveal(), $historyProphecy->reveal(),
-            $turnControlProphecy->reveal());
-
-        // When
-        $service->takeTile($playerXProphecy->reveal(), $tileProphecy->reveal());
-
-        // Then
-        self::assertNotEmpty($gameProphecy->reveal()->board()->getPlayer($tileProphecy->reveal()));
-        self::assertSame($playerXProphecy->reveal(),
-            $gameProphecy->reveal()->board()->getPlayer($tileProphecy->reveal()));
     }
 
     /**
