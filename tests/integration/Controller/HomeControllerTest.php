@@ -104,6 +104,72 @@ class HomeControllerTest extends WebTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function completeHappyPathGameplay()
+    {
+        $this->driver
+            ->get('http://webserver/game/')
+            ->wait(self::RESPONSE_SECONDS_DELAY)
+            ->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector("button#reset")
+                )
+            )
+        ;
+
+        self::assertTrue(
+            $this->driver->findElement(
+                WebDriverBy::cssSelector("button#reset")
+            )
+                ->isDisplayed()
+        );
+
+        self::assertEquals(
+            "Reset",
+            $this->driver->findElement(
+                WebDriverBy::cssSelector("button#reset")
+            )
+                ->getText()
+        );
+
+        $this->driver->findElement(
+            WebDriverBy::cssSelector("button#reset")
+        )
+            ->click()
+        ;
+        $result =
+            \json_decode(
+                $this->driver
+                    ->get('http://webserver/api/game')
+                    ->findElement(
+                        WebDriverBy::tagName('pre'))
+                    ->getText(),
+                true
+            );
+        self::assertFalse(\is_null($result));
+        self::assertTrue(\is_array($result));
+        self::assertSame(0, \count($result));
+
+        // we should see winner section
+        $this->driver
+            ->get('http://webserver/game/')
+            ->wait(self::RESPONSE_SECONDS_DELAY)
+            ->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector("div#winner")
+                )
+            )
+        ;
+
+        self::assertEquals(
+            "winner",
+            $this->driver
+                ->get('http://webserver/game')->findElement(WebDriverBy::cssSelector("div#winner"))->getAttribute("id")
+        );
+    }
+
     protected function tearDown()
     {
         $this->driver->close();
