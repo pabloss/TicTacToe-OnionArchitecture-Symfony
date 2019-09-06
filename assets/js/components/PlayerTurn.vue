@@ -8,8 +8,8 @@
                 </li>
             </ul>
         </div>
-        <div id="winner"></div>
-        <button value="Reset" id="reset" @click="reset();">Reset</button>
+        <div id="winner">{{ winner }}</div>
+        <button value="Reset" id="reset" @click="reset()">Reset</button>
     </div>
 </template>
 
@@ -18,7 +18,7 @@
         name: "PlayerTurn",
         data: function()
         {
-            return{counter: 1, symbols: ['X', '0'], res: []};
+            return{counter: 1, symbols: ['X', '0'], res: [], winner: null};
         },
         methods: {
             playerTurn: function (symbol, x, y) {
@@ -29,6 +29,14 @@
                         vm.res = result.data;
                         console.log(result.data);
                     }
+                    this.axios({ method: "GET", "url": "/game/get-winner" }).then(result => {
+                        if(result.status === 200){
+                            vm.winner = result.data;
+                            console.log(result.data);
+                        }
+                    }, error => {
+                        console.error(error);
+                    });
                 }, error => {
                     console.error(error);
                 });
@@ -40,9 +48,18 @@
                         vm.res = result.data;
                         console.log(result.data);
                     }
+                    this.axios({ method: "GET", "url": "/game/get-winner" }).then(result => {
+                        if(result.status === 200){
+                            this.winner = result.data;
+                            console.log(result.data);
+                        }
+                    }, error => {
+                        console.error(error);
+                    });
                 }, error => {
                     console.error(error);
                 });
+
             }
         },
         created() {
@@ -54,11 +71,22 @@
             }, error => {
                 console.error(error);
             });
+            this.axios({ method: "GET", "url": "/game/get-winner" }).then(result => {
+                if(result.status === 200){
+                    this.winner = result.data;
+                    console.log(result.data);
+                }
+            }, error => {
+                console.error(error);
+            });
         },
         // watch is important to react on every response change from backend
         watch: {
             res: function (newRes, oldRes) {
                 this.res = newRes;
+            },
+            winner: function (newWinner, oldWinner) {
+                this.winner = newWinner;
             }
         }
     }

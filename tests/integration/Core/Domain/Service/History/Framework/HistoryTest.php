@@ -11,7 +11,7 @@ use App\Core\Domain\Service\History\HistoryContent;
 use App\Core\Domain\Service\History\HistoryInterface;
 use App\Core\Domain\Service\History\HistoryItem;
 use App\Entity\History as HistoryEntity;
-use App\Presentation\Web\Pub\History\History;
+use App\Presentation\Web\Pub\Service\History\History;
 use App\Repository\HistoryRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

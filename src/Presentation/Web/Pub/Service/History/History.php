@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Presentation\Web\Pub\History;
+namespace App\Presentation\Web\Pub\Service\History;
 
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
@@ -19,7 +19,7 @@ use Doctrine\ORM\ORMException;
 
 /**
  * Class History
- * @package App\Presentation\Web\Pub\History
+ * @package App\Presentation\Web\Pub\Service\History
  */
 class History implements HistoryInterface
 {

@@ -20,7 +20,7 @@ use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValid
 use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
 use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
 use App\Entity\Player;
-use App\Presentation\Web\Pub\History\History as FrameworkHistory;
+use App\Presentation\Web\Pub\Service\History\History as FrameworkHistory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BasicGameplayTest extends WebTestCase

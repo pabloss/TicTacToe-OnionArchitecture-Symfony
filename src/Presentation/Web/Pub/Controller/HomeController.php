@@ -4,10 +4,12 @@
 namespace App\Presentation\Web\Pub\Controller;
 
 use App\Core\Application\Command\TakeTileService;
+use App\Core\Application\Query\FindWinnerService;
 use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
+use App\Core\Domain\Model\TicTacToe\Game\Game;
 use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use App\Core\Domain\Service\PlayersFactory;
@@ -20,10 +22,9 @@ use App\Core\Domain\Service\TurnControl\Validation\PlayerMustNotTakeTakenAlready
 use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
 use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
 use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
-use App\Presentation\Web\Pub\History\History;
 use App\Presentation\Web\Pub\Service\FormatHistoryResult;
+use App\Presentation\Web\Pub\Service\History\History;
 use App\Repository\HistoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,7 @@ final class HomeController extends AbstractController
     private $takeTileService;
     private $players;
     private $errorLog;
+    /** @var TicTacToe  */
     private $game;
 
     /** @var array  */
@@ -126,6 +128,22 @@ final class HomeController extends AbstractController
             ], JsonResponse::HTTP_CONFLICT);
         }
 
+    }
+
+    /**
+     * @Route("/game/get-winner", name="get.winner")
+     * @param FindWinnerService $service
+     * @param FormatHistoryResult $result
+     * @return JsonResponse
+     * @throws NotAllowedSymbolValue
+     */
+    public function getWinner(FindWinnerService $service, FormatHistoryResult $result)
+    {
+        $winner = $service->winner(new Game(
+             Board::fromContents($result->format()),
+            '1'
+        ));
+        return new JsonResponse($winner ? $winner->symbolValue(): null);
     }
 
     /**

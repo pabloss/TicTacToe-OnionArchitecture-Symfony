@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Core\Domain\Model\TicTacToe\Game\Board;
 
 use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use function array_fill;
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 
 /**
  * Class Board
@@ -21,6 +21,23 @@ class Board
     public function __construct()
     {
         $this->board = array_fill(0, 9, null);
+    }
+    
+    public static function fromContents(array $contents)
+    {
+        $board = new self();
+        /**
+         * @var  $index
+         * @var Player $content
+         */
+        foreach ($contents as $index => $content){
+            $board->mark(
+                new Tile(($index - ($index % 3)) / 3, $index % 3),
+                new Player(new Symbol($content), '1')
+            );
+        }
+        //  [($index - ($index % 3)) / 3 , $index % 3]
+        return $board;
     }
 
     /**

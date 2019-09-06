@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Controller;
 
+use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
@@ -11,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class HomeControllerTest extends WebTestCase
 {
-    const RESPONSE_SECONDS_DELAY = 5;
+    const RESPONSE_SECONDS_DELAY = 8;
 
     /** @var RemoteWebDriver  */
     private $driver;
@@ -20,6 +21,14 @@ class HomeControllerTest extends WebTestCase
     {
         $host = 'http://selenium-tests:4444/wd/hub';
         $this->driver = RemoteWebDriver::create($host, DesiredCapabilities::chrome());
+//        $this->driver->manage()->timeouts()->implicitlyWait(6);
+        $this->driver->manage()->timeouts()->setScriptTimeout(6);
+        $this->driver->getCommandExecutor()->setRequestTimeout(10*1000);
+
+        $client = static::createClient();
+        $entityManager = $client->getContainer()
+            ->get('doctrine')
+            ->getManager();
     }
 
     /**
@@ -167,6 +176,46 @@ class HomeControllerTest extends WebTestCase
             "winner",
             $this->driver
                 ->get('http://webserver/game')->findElement(WebDriverBy::cssSelector("div#winner"))->getAttribute("id")
+        );
+
+        $turns = [
+            [1, 1],
+            [0, 0],
+            [0, 1],
+            [0, 2],
+            [2, 1],
+        ];
+
+        foreach ($turns as $index => $turn){
+                $this->driver->findElement(
+                    WebDriverBy::cssSelector("a#tile_".\implode("_", $turn))
+                )
+                    ->click();
+                $this->driver->wait(self::RESPONSE_SECONDS_DELAY)->until(
+                    WebDriverExpectedCondition::elementTextContains(
+                        WebDriverBy::cssSelector("a#tile_".\implode("_", $turn)),
+                        [Symbol::PLAYER_X_SYMBOL, Symbol::PLAYER_0_SYMBOL][$index%2]
+                    )
+                );
+            self::assertEquals(
+                [Symbol::PLAYER_X_SYMBOL, Symbol::PLAYER_0_SYMBOL][$index%2],
+                $this->driver->findElement(
+                    WebDriverBy::cssSelector("a#tile_".\implode("_", $turn))
+                )->getText(), "a#tile_".\implode("_", $turn));
+        }
+
+        $this->driver->wait(self::RESPONSE_SECONDS_DELAY)->until(
+            WebDriverExpectedCondition::elementTextContains(
+                WebDriverBy::cssSelector("div#winner"),
+                Symbol::PLAYER_X_SYMBOL
+            )
+        );
+
+        self::assertEquals(
+            Symbol::PLAYER_X_SYMBOL,
+            $this->driver->findElement(
+                WebDriverBy::cssSelector("div#winner")
+            )->getText(), Symbol::PLAYER_X_SYMBOL
         );
     }
 
