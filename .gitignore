@@ -29,3 +29,5 @@ bin/.phpunit*
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+!public/build
+public/build/*
