@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class HomeControllerTest extends WebTestCase
 {
-    const RESPONSE_SECONDS_DELAY = 5;
+    const RESPONSE_SECONDS_DELAY = 10;
 
     /** @var RemoteWebDriver  */
     private $driver;
@@ -23,11 +23,6 @@ class HomeControllerTest extends WebTestCase
         $this->driver = RemoteWebDriver::create($host, DesiredCapabilities::chrome());
         $this->driver->manage()->timeouts()->setScriptTimeout(6);
         $this->driver->getCommandExecutor()->setRequestTimeout(10*1000);
-
-        $client = static::createClient();
-        $entityManager = $client->getContainer()
-            ->get('doctrine')
-            ->getManager();
     }
 
     /**

@@ -3,49 +3,37 @@ declare(strict_types=1);
 
 namespace App\AppCore\ApplicationServices;
 
-use App\AppCore\DomainModel\Game\Board\TileInterface;
-use App\AppCore\DomainModel\Game\GameInterface;
-use App\AppCore\DomainModel\Game\Player\PlayerInterface;
-use App\AppCore\DomainModel\History\HistoryInterface;
-use App\AppCore\DomainServices\TurnControl\Params;
-use App\AppCore\DomainServices\TurnControl\TurnControl;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Exception\NotAllowedSymbolValue;
+use App\AppCore\DomainModel\Game\Exception\OutOfLegalSizeException;
+use App\AppCore\DomainModel\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainServices\TakeTileService as CoreTakeTileService;
 
-/**
- * Class TakeTileService
- * @package App\AppCore\DomainServices
- */
 class TakeTileService
 {
-    /** @var GameInterface */
-    private $game;
-
-    /** @var \App\AppCore\DomainModel\History\HistoryInterface */
-    private $history;
-
-    /** @var TurnControl */
-    private $turnControl;
+    /** @var CoreTakeTileService  */
+    private $domainService;
 
     /**
      * TakeTileService constructor.
-     * @param GameInterface $game
-     * @param \App\AppCore\DomainModel\History\HistoryInterface $history
-     * @param TurnControl $turnControl
+     * @param CoreTakeTileService $domainService
      */
-    public function __construct(GameInterface $game, HistoryInterface $history, TurnControl $turnControl)
+    public function __construct(CoreTakeTileService $domainService)
     {
-        $this->game = $game;
-        $this->history = $history;
-        $this->turnControl = $turnControl;
+        $this->domainService = $domainService;
     }
 
     /**
-     * @param PlayerInterface $player
-     * @param TileInterface $tile
+     * @param string $symbol
+     * @param string $uuid
+     * @param int $x
+     * @param int $y
+     * @throws NotAllowedSymbolValue
+     * @throws OutOfLegalSizeException
      */
-    public function takeTile(PlayerInterface $player, TileInterface $tile)
+    public function takeTile(string $symbol, string $uuid, int $x, int $y)
     {
-        $this->turnControl->validateTurn(new Params($player, $tile, $this->game, $this->history));
-        $this->game->board()->mark($tile, $player);
-        $this->history->saveTurn($player, $tile, $this->game);
+        $this->domainService->takeTile(new Player(new Symbol($symbol), $uuid), new Tile($x, $y));
     }
 }

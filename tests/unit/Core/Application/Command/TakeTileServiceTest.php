@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Core\Application\Command;
 
-use App\AppCore\ApplicationServices\TakeTileService;
 use App\AppCore\DomainModel\Game\Board\Board;
 use App\AppCore\DomainModel\Game\Board\Tile;
 use App\AppCore\DomainModel\Game\Exception\NotAllowedSymbolValue;
@@ -11,6 +10,7 @@ use App\AppCore\DomainModel\Game\Game;
 use App\AppCore\DomainModel\Game\Player\Player;
 use App\AppCore\DomainModel\Game\Player\Symbol;
 use App\AppCore\DomainModel\History\HistoryInterface;
+use App\AppCore\DomainServices\TakeTileService;
 use App\AppCore\DomainServices\TurnControl\TurnControl;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;

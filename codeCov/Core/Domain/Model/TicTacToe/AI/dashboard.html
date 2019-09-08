@@ -227,7 +227,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,6,"<a href=\"AI.php.html#13\">App\\Core\\Domain\\Model\\TicTacToe\\AI\\AI<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,6,"<a href=\"AI.php.html#13\">App\\AppCore\\DomainModel\\Game\\AI\\AI<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -251,7 +251,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"AI.php.html#24\">App\\Core\\Domain\\Model\\TicTacToe\\AI\\AI::__construct<\/a>"],[100,1,"<a href=\"AI.php.html#34\">App\\Core\\Domain\\Model\\TicTacToe\\AI\\AI::takeRandomFreeTile<\/a>"],[100,2,"<a href=\"AI.php.html#48\">App\\Core\\Domain\\Model\\TicTacToe\\AI\\AI::takeFreeTileIndexes<\/a>"],[100,1,"<a href=\"AI.php.html#67\">App\\Core\\Domain\\Model\\TicTacToe\\AI\\AI::chooseRandomIndex<\/a>"],[100,1,"<a href=\"AI.php.html#78\">App\\Core\\Domain\\Model\\TicTacToe\\AI\\AI::coordinatesFromIndex<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,1,"<a href=\"AI.php.html#24\">App\\AppCore\\DomainModel\\Game\\AI\\AI::__construct<\/a>"],[100,1,"<a href=\"AI.php.html#34\">App\\AppCore\\DomainModel\\Game\\AI\\AI::takeRandomFreeTile<\/a>"],[100,2,"<a href=\"AI.php.html#48\">App\\AppCore\\DomainModel\\Game\\AI\\AI::takeFreeTileIndexes<\/a>"],[100,1,"<a href=\"AI.php.html#67\">App\\AppCore\\DomainModel\\Game\\AI\\AI::chooseRandomIndex<\/a>"],[100,1,"<a href=\"AI.php.html#78\">App\\AppCore\\DomainModel\\Game\\AI\\AI::coordinatesFromIndex<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);

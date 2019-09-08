@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Domain\Model\TicTacToe\Game\Player;
 
-use App\AppCore\ApplicationServices\TakeTileService;
 use App\AppCore\DomainModel\Game\AI\AI;
 use App\AppCore\DomainModel\Game\Board\Board;
 use App\AppCore\DomainModel\Game\Game as TicTacToe;
 use App\AppCore\DomainModel\Game\Player\Player;
 use App\AppCore\DomainModel\Game\Player\Symbol;
 use App\AppCore\DomainServices\PlayersFactory;
+use App\AppCore\DomainServices\TakeTileService;
 use App\AppCore\DomainServices\TurnControl\ErrorLog;
 use App\AppCore\DomainServices\TurnControl\PlayerRegistry;
 use App\AppCore\DomainServices\TurnControl\TurnControl;

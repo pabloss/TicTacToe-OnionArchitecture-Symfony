@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Core\Domain\Model\TicTacToe\Game\Game as GameVO;
 use App\Entity\Game as GameEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -22,14 +21,5 @@ class GameRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, GameEntity::class);
-    }
-
-    /**
-     * @param GameVO $game
-     * @return GameEntity
-     */
-    public function findByVO(GameVO $game): GameEntity
-    {
-        return $this->findOneBy(['valueObject' => $game]);
     }
 }

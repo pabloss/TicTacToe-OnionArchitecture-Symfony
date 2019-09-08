@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Application\Command;
 
-use App\AppCore\ApplicationServices\TakeTileService;
 use App\AppCore\DomainModel\Game\Board\Board;
 use App\AppCore\DomainModel\Game\Board\Tile;
 use App\AppCore\DomainModel\Game\Game;
 use App\AppCore\DomainModel\Game\Player\Player;
 use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainServices\TakeTileService;
 use App\AppCore\DomainServices\TurnControl\AccessControl;
 use App\AppCore\DomainServices\TurnControl\ErrorLog;
 use App\AppCore\DomainServices\TurnControl\PlayerRegistry;
@@ -74,7 +74,7 @@ class TakeTileServiceTest extends TestCase
                 ErrorLog::DUPLICATED_TILE_ERROR => new PlayerMustNotTakeTakenAlreadyTileValidation(),
             ]
         ), $errorLog);
-        $service = new \App\AppCore\ApplicationServices\TakeTileService($game, new History(), $turnControl);
+        $service = new \App\AppCore\DomainServices\TakeTileService($game, new History(), $turnControl);
 
         $tile = new Tile(0, 0);
         $service->takeTile($playerO, $tile);
@@ -99,7 +99,7 @@ class TakeTileServiceTest extends TestCase
                 ErrorLog::DUPLICATED_TILE_ERROR => new PlayerMustNotTakeTakenAlreadyTileValidation(),
             ]
         ), $errorLog);
-        $service = new \App\AppCore\ApplicationServices\TakeTileService($game, new History(), $turnControl);
+        $service = new \App\AppCore\DomainServices\TakeTileService($game, new History(), $turnControl);
 
         $tile = new Tile(0, 0);
         $service->takeTile($playerO, $tile);
@@ -126,7 +126,7 @@ class TakeTileServiceTest extends TestCase
             ]
         ), $errorLog);
         $playerRegistry->registerPlayer($playerX, $game);
-        $service = new \App\AppCore\ApplicationServices\TakeTileService($game, new History(), $turnControl);
+        $service = new \App\AppCore\DomainServices\TakeTileService($game, new History(), $turnControl);
 
         $tile = new Tile(0, 0);
         $service->takeTile($playerX, $tile);

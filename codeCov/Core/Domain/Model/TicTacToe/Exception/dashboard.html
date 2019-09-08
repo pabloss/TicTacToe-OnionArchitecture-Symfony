@@ -227,7 +227,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,0,"<a href=\"NotAllowedSymbolValue.php.html#10\">App\\Core\\Domain\\Model\\TicTacToe\\Exception\\NotAllowedSymbolValue<\/a>"],[100,0,"<a href=\"NotAllowedTypeValue.php.html#10\">App\\Core\\Domain\\Model\\TicTacToe\\Exception\\NotAllowedTypeValue<\/a>"],[100,0,"<a href=\"OutOfLegalSizeException.php.html#11\">App\\Core\\Domain\\Model\\TicTacToe\\Exception\\OutOfLegalSizeException<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,0,"<a href=\"NotAllowedSymbolValue.php.html#10\">App\\AppCore\\DomainModel\\Game\\Exception\\NotAllowedSymbolValue<\/a>"],[100,0,"<a href=\"NotAllowedTypeValue.php.html#10\">App\\AppCore\\DomainModel\\Game\\Exception\\NotAllowedTypeValue<\/a>"],[100,0,"<a href=\"OutOfLegalSizeException.php.html#11\">App\\AppCore\\DomainModel\\Game\\Exception\\OutOfLegalSizeException<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);

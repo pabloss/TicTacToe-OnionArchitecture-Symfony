@@ -5,7 +5,7 @@ namespace App\Presentation\Web\Pub\Controller;
 
 use App\AppCore\ApplicationServices\FindWinnerService;
 use App\AppCore\ApplicationServices\FormatHistoryResult;
-use App\AppCore\ApplicationServices\TakeTileService as CoreTakeTileService;
+use App\AppCore\ApplicationServices\TakeTileService;
 use App\AppCore\DomainModel\Game\Board\Board;
 use App\AppCore\DomainModel\Game\Exception\NotAllowedSymbolValue;
 use App\AppCore\DomainModel\Game\Exception\OutOfLegalSizeException;
@@ -14,6 +14,7 @@ use App\AppCore\DomainModel\Game\Player\Player;
 use App\AppCore\DomainModel\Game\Player\Symbol;
 use App\AppCore\DomainModel\History\History;
 use App\AppCore\DomainServices\PlayersFactory;
+use App\AppCore\DomainServices\TakeTileService as CoreTakeTileService;
 use App\AppCore\DomainServices\TurnControl\AccessControl;
 use App\AppCore\DomainServices\TurnControl\ErrorLog;
 use App\AppCore\DomainServices\TurnControl\PlayerRegistry;
@@ -23,7 +24,6 @@ use App\AppCore\DomainServices\TurnControl\Validation\PlayerMustNotTakeTakenAlre
 use App\AppCore\DomainServices\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
 use App\AppCore\DomainServices\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
 use App\AppCore\DomainServices\TurnControl\Validation\ValidationCollection;
-use App\Presentation\Web\Pub\Service\Command\TakeTileService;
 use App\Repository\HistoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
