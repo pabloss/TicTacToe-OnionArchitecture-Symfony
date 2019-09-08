@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\Game\Player\Type;
+namespace App\AppCore\DomainModel\Game\Player\Type;
 
-use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedTypeValue;
-use function in_array;
+use App\AppCore\DomainModel\Game\Exception\NotAllowedTypeValue;
 
 /**
  * Class PlayerType
- * @package App\Core\Domain\Model\TicTacToe\Game\Player\Type
+ * @package App\AppCore\DomainModel\Game\Player\Type
  */
 class PlayerType
 {

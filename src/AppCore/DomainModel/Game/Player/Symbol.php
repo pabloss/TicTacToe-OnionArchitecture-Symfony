@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\Game\Player;
+namespace App\AppCore\DomainModel\Game\Player;
 
-use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
+use App\AppCore\DomainModel\Game\Exception\NotAllowedSymbolValue;
 
 /**
  * Class Symbol
