@@ -9,8 +9,7 @@ use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
 use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
 use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
+use App\AppCore\DomainModel\Game\Game as TicTacToe;
 use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 use App\Core\Domain\Service\PlayersFactory;
 use App\Core\Domain\Service\TurnControl\AccessControl;
@@ -139,7 +138,7 @@ final class HomeController extends AbstractController
      */
     public function getWinner(FindWinnerService $service, FormatHistoryResult $result)
     {
-        $winner = $service->winner(new Game(
+        $winner = $service->winner(new TicTacToe(
              Board::fromContents($result->format()),
             '1'
         ));
