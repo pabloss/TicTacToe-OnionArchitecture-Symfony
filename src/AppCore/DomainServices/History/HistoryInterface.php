@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service\History;
+namespace App\AppCore\DomainServices\History;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\GameInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
+use App\AppCore\DomainModel\Game\Board\TileInterface;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainModel\History\HistoryItem;
 
 /**
  * Interface HistoryInterface
@@ -16,19 +16,19 @@ use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
 interface HistoryInterface
 {
     /**
-     * @param Game $game
+     * @param GameInterface $game
      * @return HistoryContent
      */
     public function content(GameInterface $game): HistoryContent;
 
     /**
-     * @param Game $game
+     * @param GameInterface $game
      * @return HistoryItem|null
      */
     public function lastItem(GameInterface $game): ?HistoryItem;
 
     /**
-     * @param Game $game
+     * @param GameInterface $game
      * @return string|null
      */
     public function lastItemPlayerSymbolValue(GameInterface $game): ?string;
@@ -44,15 +44,15 @@ interface HistoryInterface
     public function getStartingPlayerSymbolValue(): string;
 
     /**
-     * @param Game $game
+     * @param GameInterface $game
      * @return int
      */
-    public function length(Game $game): int;
+    public function length(GameInterface $game): int;
 
     /**
-     * @param Player $player
-     * @param Tile $tile
-     * @param Game $game
+     * @param PlayerInterface $player
+     * @param TileInterface $tile
+     * @param GameInterface $game
      */
-    public function saveTurn(Player $player, Tile $tile, Game $game): void;
+    public function saveTurn(PlayerInterface $player, TileInterface $tile, GameInterface $game): void;
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\AppCore\DomainModel\History;
 
-use App\AppCore\DomainModel\Game\Game;
+use App\AppCore\DomainModel\Game\GameInterface;
 
 /**
  * Interface HistoryRepositoryInterface
@@ -12,10 +12,10 @@ use App\AppCore\DomainModel\Game\Game;
 interface HistoryRepositoryInterface
 {
     /**
-     * @param Game $game
+     * @param GameInterface $game
      * @return HistoryItem|null
      */
-    public function getLastByGame(Game $game): ?HistoryItem;
+    public function getLastByGame(GameInterface $game): ?HistoryItem;
 
     /**
      * @param HistoryItem $historyItem

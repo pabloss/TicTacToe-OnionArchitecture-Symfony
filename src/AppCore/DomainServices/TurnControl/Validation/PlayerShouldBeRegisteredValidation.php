@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service\TurnControl\Validation;
+namespace App\AppCore\DomainServices\TurnControl\Validation;
 
-use App\Core\Domain\Service\TurnControl\AccessControl;
-use App\Core\Domain\Service\TurnControl\ErrorLog;
-use App\Core\Domain\Service\TurnControl\Params;
+use App\AppCore\DomainServices\TurnControl\AccessControl;
+use App\AppCore\DomainServices\TurnControl\ErrorLog;
+use App\AppCore\DomainServices\TurnControl\Params;
 
 /**
  * Class PlayerShouldBeRegisteredValidation
- * @package App\Core\Domain\Service\TurnControl\Validation
+ * @package App\AppCore\DomainServices\TurnControl\Validation
  */
 class PlayerShouldBeRegisteredValidation implements ValidationInterface
 {

@@ -32,7 +32,7 @@ class Game implements GameInterface
     }
 
     /**
-     * @return \App\AppCore\DomainModel\Game\Board\Board
+     * @return Board
      */
     public function board(): Board
     {

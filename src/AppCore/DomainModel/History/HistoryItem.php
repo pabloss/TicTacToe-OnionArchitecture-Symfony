@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace App\AppCore\DomainModel\History;
 
-use App\AppCore\DomainModel\Game\Board\Tile;
-use App\AppCore\DomainModel\Game\Game;
-use App\AppCore\DomainModel\Game\Player\Player;
-
+use App\AppCore\DomainModel\Game\Board\TileInterface;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
 
 /**
  * Class HistoryItem
@@ -14,22 +13,22 @@ use App\AppCore\DomainModel\Game\Player\Player;
  */
 class HistoryItem
 {
-    /** @var Player */
+    /** @var PlayerInterface */
     private $player;
 
-    /** @var \App\AppCore\DomainModel\Game\Board\Tile */
+    /** @var TileInterface */
     private $tile;
 
-    /** @var Game */
+    /** @var GameInterface */
     private $game;
 
     /**
      * HistoryItem constructor.
-     * @param Player $player
-     * @param \App\AppCore\DomainModel\Game\Board\Tile $tile
-     * @param Game $game
+     * @param PlayerInterface $player
+     * @param TileInterface $tile
+     * @param GameInterface $game
      */
-    public function __construct(Player $player = null, Tile $tile = null, Game $game = null)
+    public function __construct(PlayerInterface $player = null, TileInterface $tile = null, GameInterface $game = null)
     {
         $this->player = $player;
         $this->tile = $tile;
@@ -37,17 +36,17 @@ class HistoryItem
     }
 
     /**
-     * @return Player
+     * @return PlayerInterface
      */
-    public function player(): ?Player
+    public function player(): ?PlayerInterface
     {
         return $this->player;
     }
 
     /**
-     * @return \App\AppCore\DomainModel\Game\Board\Tile
+     * @return TileInterface
      */
-    public function tile(): ?Tile
+    public function tile(): ?TileInterface
     {
         return $this->tile;
     }
@@ -61,9 +60,9 @@ class HistoryItem
     }
 
     /**
-     * @return Game
+     * @return GameInterface
      */
-    public function game(): ?Game
+    public function game(): ?GameInterface
     {
         return $this->game;
     }

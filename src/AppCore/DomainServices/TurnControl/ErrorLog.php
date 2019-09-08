@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service\TurnControl;
+namespace App\AppCore\DomainServices\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\GameInterface;
+use App\AppCore\DomainModel\Game\GameInterface;
 
 /**
  * Class ErrorLog
@@ -35,10 +34,10 @@ class ErrorLog implements ErrorLogInterface
 
 
     /**
-     * @param Game $game
+     * @param GameInterface $game
      * @return bool
      */
-    public function noErrors(Game $game)
+    public function noErrors(GameInterface $game)
     {
         if (!isset($this->errors[$game->uuid()])) {
             $this->errors[$game->uuid()] = 0;
@@ -48,7 +47,7 @@ class ErrorLog implements ErrorLogInterface
 
     /**
      * @param int $error
-     * @param Game $game
+     * @param GameInterface $game
      */
     public function addError(int $error, GameInterface $game)
     {
@@ -59,20 +58,20 @@ class ErrorLog implements ErrorLogInterface
     }
 
     /**
-     * @param Game $game
+     * @param GameInterface $game
      * @return int
      */
-    public function errors(Game $game): int
+    public function errors(GameInterface $game): int
     {
         return $this->errors[$game->uuid()] ?? self::OK;
     }
 
     /**
      * @param int $error
-     * @param Game $game
+     * @param GameInterface $game
      * @return bool
      */
-    public function hasError(int $error, Game $game): bool
+    public function hasError(int $error, GameInterface $game): bool
     {
         return !!($error & $this->errors[$game->uuid()]);
     }

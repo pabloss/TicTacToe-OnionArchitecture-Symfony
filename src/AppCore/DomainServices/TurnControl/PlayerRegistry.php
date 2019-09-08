@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service\TurnControl;
+namespace App\AppCore\DomainServices\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\GameInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\PlayerInterface;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
 
 /**
  * Class PlayerRegistry
- * @package App\Core\Domain\Service
+ * @package App\AppCore\DomainServices
  */
 class PlayerRegistry
 {
