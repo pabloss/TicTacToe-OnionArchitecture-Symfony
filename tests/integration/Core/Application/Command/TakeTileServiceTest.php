@@ -3,21 +3,21 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Application\Command;
 
-use App\Core\Application\Command\TakeTileService;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\TurnControl\AccessControl;
-use App\Core\Domain\Service\TurnControl\ErrorLog;
-use App\Core\Domain\Service\TurnControl\PlayerRegistry;
-use App\Core\Domain\Service\TurnControl\TurnControl;
-use App\Core\Domain\Service\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
-use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
+use App\AppCore\DomainModel\Game\Board\Board;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Game;
+use App\AppCore\DomainModel\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainServices\TakeTileService;
+use App\AppCore\DomainServices\TurnControl\AccessControl;
+use App\AppCore\DomainServices\TurnControl\ErrorLog;
+use App\AppCore\DomainServices\TurnControl\PlayerRegistry;
+use App\AppCore\DomainServices\TurnControl\TurnControl;
+use App\AppCore\DomainServices\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\ValidationCollection;
 use App\Tests\Stubs\History\History;
 use PHPUnit\Framework\TestCase;
 
@@ -74,7 +74,7 @@ class TakeTileServiceTest extends TestCase
                 ErrorLog::DUPLICATED_TILE_ERROR => new PlayerMustNotTakeTakenAlreadyTileValidation(),
             ]
         ), $errorLog);
-        $service = new TakeTileService($game, new History(), $turnControl);
+        $service = new \App\AppCore\DomainServices\TakeTileService($game, new History(), $turnControl);
 
         $tile = new Tile(0, 0);
         $service->takeTile($playerO, $tile);
@@ -99,7 +99,7 @@ class TakeTileServiceTest extends TestCase
                 ErrorLog::DUPLICATED_TILE_ERROR => new PlayerMustNotTakeTakenAlreadyTileValidation(),
             ]
         ), $errorLog);
-        $service = new TakeTileService($game, new History(), $turnControl);
+        $service = new \App\AppCore\DomainServices\TakeTileService($game, new History(), $turnControl);
 
         $tile = new Tile(0, 0);
         $service->takeTile($playerO, $tile);
@@ -126,7 +126,7 @@ class TakeTileServiceTest extends TestCase
             ]
         ), $errorLog);
         $playerRegistry->registerPlayer($playerX, $game);
-        $service = new TakeTileService($game, new History(), $turnControl);
+        $service = new \App\AppCore\DomainServices\TakeTileService($game, new History(), $turnControl);
 
         $tile = new Tile(0, 0);
         $service->takeTile($playerX, $tile);

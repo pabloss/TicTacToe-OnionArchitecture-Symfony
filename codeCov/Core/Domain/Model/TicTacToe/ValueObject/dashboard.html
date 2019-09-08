@@ -227,7 +227,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,4,"<a href=\"Player.php.html#15\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Player<\/a>"],[100,3,"<a href=\"Symbol.php.html#12\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Symbol<\/a>"],[100,7,"<a href=\"Tile.php.html#12\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Board\\Tile<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,4,"<a href=\"Player.php.html#15\">App\\AppCore\\DomainModel\\Game\\Player\\Player<\/a>"],[100,3,"<a href=\"Symbol.php.html#12\">App\\AppCore\\DomainModel\\Game\\Player\\Symbol<\/a>"],[100,7,"<a href=\"Tile.php.html#12\">App\\AppCore\\DomainModel\\Game\\Board\\Tile<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -251,7 +251,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"Player.php.html#30\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Player::__construct<\/a>"],[100,1,"<a href=\"Player.php.html#40\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Player::symbol<\/a>"],[100,1,"<a href=\"Player.php.html#48\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Player::getUuid<\/a>"],[100,1,"<a href=\"Player.php.html#58\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Player::takeTile<\/a>"],[100,2,"<a href=\"Symbol.php.html#27\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Symbol::__construct<\/a>"],[100,1,"<a href=\"Symbol.php.html#47\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Symbol::value<\/a>"],[100,5,"<a href=\"Tile.php.html#30\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Board\\Tile::__construct<\/a>"],[100,1,"<a href=\"Tile.php.html#46\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Board\\Tile::row<\/a>"],[100,1,"<a href=\"Tile.php.html#54\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Board\\Tile::column<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,1,"<a href=\"Player.php.html#30\">App\\AppCore\\DomainModel\\Game\\Player\\Player::__construct<\/a>"],[100,1,"<a href=\"Player.php.html#40\">App\\AppCore\\DomainModel\\Game\\Player\\Player::symbol<\/a>"],[100,1,"<a href=\"Player.php.html#48\">App\\AppCore\\DomainModel\\Game\\Player\\Player::getUuid<\/a>"],[100,1,"<a href=\"Player.php.html#58\">App\\AppCore\\DomainModel\\Game\\Player\\Player::takeTile<\/a>"],[100,2,"<a href=\"Symbol.php.html#27\">App\\AppCore\\DomainModel\\Game\\Player\\Symbol::__construct<\/a>"],[100,1,"<a href=\"Symbol.php.html#47\">App\\AppCore\\DomainModel\\Game\\Player\\Symbol::value<\/a>"],[100,5,"<a href=\"Tile.php.html#30\">App\\AppCore\\DomainModel\\Game\\Board\\Tile::__construct<\/a>"],[100,1,"<a href=\"Tile.php.html#46\">App\\AppCore\\DomainModel\\Game\\Board\\Tile::row<\/a>"],[100,1,"<a href=\"Tile.php.html#54\">App\\AppCore\\DomainModel\\Game\\Board\\Tile::column<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);

@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Domain\Service\History;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\History\HistoryContent;
-use App\Core\Domain\Service\History\HistoryItem;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Game;
+use App\AppCore\DomainModel\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Player\Symbol;
 use App\Tests\Stubs\History\History;
 use PHPUnit\Framework\TestCase;
 
@@ -100,7 +98,7 @@ class HistoryTest extends TestCase
         for ($i = 0; $i < History::LIMIT; $i++) {
             $tileProphecy->row()->willReturn(rand(0, 2));
             $tileProphecy->column()->willReturn(rand(0, 2));
-            $value = new HistoryItem(
+            $value = new \App\AppCore\DomainModel\History\HistoryItem(
                 $players[$i % 2]->reveal(),
                 $tileProphecy->reveal(),
                 $gameProphecy->reveal()
@@ -114,10 +112,10 @@ class HistoryTest extends TestCase
         }
 
         // Then
-        self::assertEquals(new HistoryContent($expectedContent), $history->content($gameProphecy->reveal()));
+        self::assertEquals(new \App\AppCore\DomainModel\History\HistoryContent($expectedContent), $history->content($gameProphecy->reveal()));
 
         $randIndexInHistory = History::LIMIT - rand(1, History::LIMIT);
-        $randomExpectedHistoryItem = (new HistoryContent($expectedContent))->getArrayCopy()[$randIndexInHistory];
+        $randomExpectedHistoryItem = (new \App\AppCore\DomainModel\History\HistoryContent($expectedContent))->getArrayCopy()[$randIndexInHistory];
         $randomActualHistoryItem = $history->content($gameProphecy->reveal())->getArrayCopy()[$randIndexInHistory];
 
         self::assertEquals($randomExpectedHistoryItem, $randomActualHistoryItem);
@@ -144,14 +142,14 @@ class HistoryTest extends TestCase
         $history->saveTurn($playerX, $tile2, $game);
 
         $historyItem = $history->lastItem($game);
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
+        self::assertInstanceOf(\App\AppCore\DomainModel\History\HistoryItem::class, $historyItem);
         self::assertSame('0', $game->uuid());
         self::assertEquals($playerX, $historyItem->player());
         self::assertEquals($tile2, $historyItem->tile());
         self::assertEquals($game, $historyItem->game());
 
         $historyItem = $history->getTurn($game, 1);
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
+        self::assertInstanceOf(\App\AppCore\DomainModel\History\HistoryItem::class, $historyItem);
         self::assertEquals($player0, $historyItem->player());
         self::assertEquals($tile1, $historyItem->tile());
         self::assertEquals($game, $historyItem->game());
@@ -164,7 +162,7 @@ class HistoryTest extends TestCase
         $history->saveTurn($player0, $tile1, $game);
         $historyItem = $history->lastItem($game2);
         self::assertSame('1', $game2->uuid());
-        self::assertInstanceOf(HistoryItem::class, $historyItem);
+        self::assertInstanceOf(\App\AppCore\DomainModel\History\HistoryItem::class, $historyItem);
         self::assertEquals($player0, $historyItem->player());
         self::assertEquals($tile3, $historyItem->tile());
         self::assertEquals($game2, $historyItem->game());

@@ -227,7 +227,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,3,"<a href=\"PlayerType.php.html#12\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Type\\PlayerType<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,3,"<a href=\"PlayerType.php.html#12\">App\\AppCore\\DomainModel\\Game\\Player\\Type\\PlayerType<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -251,7 +251,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,2,"<a href=\"PlayerType.php.html#27\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Type\\PlayerType::__construct<\/a>"],[100,1,"<a href=\"PlayerType.php.html#44\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Player\\Type\\PlayerType::value<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,2,"<a href=\"PlayerType.php.html#27\">App\\AppCore\\DomainModel\\Game\\Player\\Type\\PlayerType::__construct<\/a>"],[100,1,"<a href=\"PlayerType.php.html#44\">App\\AppCore\\DomainModel\\Game\\Player\\Type\\PlayerType::value<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);

@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Domain\Service\History;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\History\HistoryItem;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Game;
+use App\AppCore\DomainModel\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Player\Symbol;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +24,7 @@ class HistoryItemTest extends TestCase
         $game = $gameProphecy->reveal();
         $playerX = new Player(new Symbol(Symbol::PLAYER_X_SYMBOL), uniqid());
         $tile1 = new Tile(0, 0);
-        $historyItem = new HistoryItem($playerX, $tile1, $game);
+        $historyItem = new \App\AppCore\DomainModel\History\HistoryItem($playerX, $tile1, $game);
 
         self::assertEquals($playerX, $historyItem->player());
         self::assertEquals($tile1, $historyItem->tile());

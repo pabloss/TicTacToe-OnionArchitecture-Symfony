@@ -2,8 +2,6 @@
 
 namespace App\Repository;
 
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player as PlayerVO;
-use App\Core\Domain\Repository\PlayerRepositoryInterface;
 use App\Entity\Player as PlayerEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -14,7 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @method PlayerEntity[]    findAll()
  * @method PlayerEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PlayerRepository extends ServiceEntityRepository implements PlayerRepositoryInterface
+class PlayerRepository extends ServiceEntityRepository
 {
     /** @var GameRepository */
     private $gameRepository;
@@ -31,14 +29,5 @@ class PlayerRepository extends ServiceEntityRepository implements PlayerReposito
     {
         $this->gameRepository = $gameRepository;
         $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param
-     * @return
-     */
-    public function findByVO(PlayerVO $player): PlayerEntity
-    {
-        return $this->findOneBy(['valueObject' => $player]);
     }
 }

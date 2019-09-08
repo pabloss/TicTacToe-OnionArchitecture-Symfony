@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Core\Application\Command;
 
-use App\Core\Application\Command\TakeTileService;
-use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\History\HistoryInterface;
-use App\Core\Domain\Service\TurnControl\TurnControl;
+use App\AppCore\DomainModel\Game\Board\Board;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Exception\NotAllowedSymbolValue;
+use App\AppCore\DomainModel\Game\Game;
+use App\AppCore\DomainModel\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainModel\History\HistoryInterface;
+use App\AppCore\DomainServices\TakeTileService;
+use App\AppCore\DomainServices\TurnControl\TurnControl;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -102,7 +102,7 @@ class TakeTileServiceTest extends TestCase
 
     /**
      * @param $boardProphecy
-     * @return Game|ObjectProphecy
+     * @return \App\AppCore\DomainModel\Game\Game|ObjectProphecy
      */
     private function prepareGame($boardProphecy)
     {

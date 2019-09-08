@@ -115,7 +115,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="Game.php.html#113"><abbr title="App\Core\Domain\Model\TicTacToe\Game\Game::addError">addError</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Game.php.html#113"><abbr title="App\AppCore\DomainModel\Game\Game::addError">addError</abbr></a></td><td class="text-right">66%</td></tr>
 
        </tbody>
       </table>
@@ -132,7 +132,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="Game.php.html#113"><abbr title="App\Core\Domain\Model\TicTacToe\Game\Game::addError">addError</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="Game.php.html#113"><abbr title="App\AppCore\DomainModel\Game\Game::addError">addError</abbr></a></td><td class="text-right">3</td></tr>
 
        </tbody>
       </table>
@@ -229,7 +229,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,3,"<a href=\"Board.php.html#13\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Board\\Board<\/a>"],[90,11,"<a href=\"Game.php.html#16\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Game<\/a>"],[100,12,"<a href=\"History.php.html#14\">App\\History\\History<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,3,"<a href=\"Board.php.html#13\">App\\AppCore\\DomainModel\\Game\\Board\\Board<\/a>"],[90,11,"<a href=\"Game.php.html#16\">App\\AppCore\\DomainModel\\Game\\Game<\/a>"],[100,12,"<a href=\"History.php.html#14\">App\\History\\History<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -253,7 +253,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"Board.php.html#21\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Board\\Board::__construct<\/a>"],[100,1,"<a href=\"Board.php.html#30\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Board\\Board::mark<\/a>"],[100,1,"<a href=\"Board.php.html#38\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Board\\Board::contents<\/a>"],[100,1,"<a href=\"Game.php.html#59\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Game::__construct<\/a>"],[100,2,"<a href=\"Game.php.html#74\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Game::players<\/a>"],[100,1,"<a href=\"Game.php.html#86\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Game::board<\/a>"],[100,1,"<a href=\"Game.php.html#94\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Game::history<\/a>"],[100,2,"<a href=\"Game.php.html#103\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Game::winner<\/a>"],[66.66666666666666,3,"<a href=\"Game.php.html#113\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Game::addError<\/a>"],[100,1,"<a href=\"Game.php.html#128\">App\\Core\\Domain\\Model\\TicTacToe\\Game\\Game::errors<\/a>"],[100,1,"<a href=\"History.php.html#36\">App\\History\\History::__construct<\/a>"],[100,1,"<a href=\"History.php.html#44\">App\\History\\History::getLast<\/a>"],[100,1,"<a href=\"History.php.html#52\">App\\History\\History::content<\/a>"],[100,2,"<a href=\"History.php.html#60\">App\\History\\History::getLastTurn<\/a>"],[100,1,"<a href=\"History.php.html#68\">App\\History\\History::getStartingPlayerSymbol<\/a>"],[100,3,"<a href=\"History.php.html#78\">App\\History\\History::saveLastTurn<\/a>"],[100,1,"<a href=\"History.php.html#92\">App\\History\\History::saveTurnToHistory<\/a>"],[100,1,"<a href=\"History.php.html#100\">App\\History\\History::set<\/a>"],[100,1,"<a href=\"History.php.html#108\">App\\History\\History::length<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,1,"<a href=\"Board.php.html#21\">App\\AppCore\\DomainModel\\Game\\Board\\Board::__construct<\/a>"],[100,1,"<a href=\"Board.php.html#30\">App\\AppCore\\DomainModel\\Game\\Board\\Board::mark<\/a>"],[100,1,"<a href=\"Board.php.html#38\">App\\AppCore\\DomainModel\\Game\\Board\\Board::contents<\/a>"],[100,1,"<a href=\"Game.php.html#59\">App\\AppCore\\DomainModel\\Game\\Game::__construct<\/a>"],[100,2,"<a href=\"Game.php.html#74\">App\\AppCore\\DomainModel\\Game\\Game::players<\/a>"],[100,1,"<a href=\"Game.php.html#86\">App\\AppCore\\DomainModel\\Game\\Game::board<\/a>"],[100,1,"<a href=\"Game.php.html#94\">App\\AppCore\\DomainModel\\Game\\Game::history<\/a>"],[100,2,"<a href=\"Game.php.html#103\">App\\AppCore\\DomainModel\\Game\\Game::winner<\/a>"],[66.66666666666666,3,"<a href=\"Game.php.html#113\">App\\AppCore\\DomainModel\\Game\\Game::addError<\/a>"],[100,1,"<a href=\"Game.php.html#128\">App\\AppCore\\DomainModel\\Game\\Game::errors<\/a>"],[100,1,"<a href=\"History.php.html#36\">App\\History\\History::__construct<\/a>"],[100,1,"<a href=\"History.php.html#44\">App\\History\\History::getLast<\/a>"],[100,1,"<a href=\"History.php.html#52\">App\\History\\History::content<\/a>"],[100,2,"<a href=\"History.php.html#60\">App\\History\\History::getLastTurn<\/a>"],[100,1,"<a href=\"History.php.html#68\">App\\History\\History::getStartingPlayerSymbol<\/a>"],[100,3,"<a href=\"History.php.html#78\">App\\History\\History::saveLastTurn<\/a>"],[100,1,"<a href=\"History.php.html#92\">App\\History\\History::saveTurnToHistory<\/a>"],[100,1,"<a href=\"History.php.html#100\">App\\History\\History::set<\/a>"],[100,1,"<a href=\"History.php.html#108\">App\\History\\History::length<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);

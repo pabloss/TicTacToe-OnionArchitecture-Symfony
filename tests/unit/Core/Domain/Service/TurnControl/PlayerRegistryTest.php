@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Core\Domain\Service\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\GameInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\PlayerInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\TurnControl\PlayerRegistry;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainServices\TurnControl\PlayerRegistry;
 use PHPUnit\Framework\TestCase;
 
 /**

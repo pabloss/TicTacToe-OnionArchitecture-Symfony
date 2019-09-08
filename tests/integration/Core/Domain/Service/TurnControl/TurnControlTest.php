@@ -3,23 +3,23 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Domain\Service\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\TileInterface;
-use App\Core\Domain\Model\TicTacToe\Game\GameInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\PlayerInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\History\HistoryContent;
-use App\Core\Domain\Service\History\HistoryInterface;
-use App\Core\Domain\Service\TurnControl\AccessControl;
-use App\Core\Domain\Service\TurnControl\ErrorLog;
-use App\Core\Domain\Service\TurnControl\ErrorLogInterface;
-use App\Core\Domain\Service\TurnControl\Params;
-use App\Core\Domain\Service\TurnControl\PlayerRegistry;
-use App\Core\Domain\Service\TurnControl\TurnControl;
-use App\Core\Domain\Service\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
-use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
+use App\AppCore\DomainModel\Game\Board\TileInterface;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainModel\History\HistoryContent;
+use App\AppCore\DomainModel\History\HistoryInterface;
+use App\AppCore\DomainServices\TurnControl\AccessControl;
+use App\AppCore\DomainServices\TurnControl\ErrorLog;
+use App\AppCore\DomainServices\TurnControl\ErrorLogInterface;
+use App\AppCore\DomainServices\TurnControl\Params;
+use App\AppCore\DomainServices\TurnControl\PlayerRegistry;
+use App\AppCore\DomainServices\TurnControl\TurnControl;
+use App\AppCore\DomainServices\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\ValidationCollection;
 use PHPUnit\Framework\TestCase;
 
 /**

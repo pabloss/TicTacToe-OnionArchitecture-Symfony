@@ -3,16 +3,12 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Core\Domain\Service\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Board\TileInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\GameInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\PlayerInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\History\HistoryInterface;
-use App\Core\Domain\Service\TurnControl\Params;
-use App\Tests\Stubs\History\History;
+use App\AppCore\DomainModel\Game\Board\TileInterface;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainModel\History\HistoryInterface;
+use App\AppCore\DomainServices\TurnControl\Params;
 use PHPUnit\Framework\TestCase;
 
 class TurnControlParamsTest extends TestCase
