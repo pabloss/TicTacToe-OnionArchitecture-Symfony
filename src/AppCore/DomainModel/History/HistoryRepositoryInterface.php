@@ -18,6 +18,12 @@ interface HistoryRepositoryInterface
     public function getLastByGame(GameInterface $game): ?HistoryItem;
 
     /**
+     * @param GameInterface $game
+     * @return HistoryContent|null
+     */
+    public function getByGame(GameInterface $game): ?HistoryContent;
+
+    /**
      * @param HistoryItem $historyItem
      */
     public function save(HistoryItem $historyItem): void;

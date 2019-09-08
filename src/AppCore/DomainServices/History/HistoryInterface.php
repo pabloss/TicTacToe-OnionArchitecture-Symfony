@@ -7,6 +7,7 @@ use App\AppCore\DomainModel\Game\Board\TileInterface;
 use App\AppCore\DomainModel\Game\GameInterface;
 use App\AppCore\DomainModel\Game\Player\PlayerInterface;
 use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainModel\History\HistoryContent;
 use App\AppCore\DomainModel\History\HistoryItem;
 
 /**
