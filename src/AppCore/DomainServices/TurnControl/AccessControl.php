@@ -1,12 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service\TurnControl;
+namespace App\AppCore\DomainServices\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\GameInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\PlayerInterface;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
 
 /**
  * Class AccessControl

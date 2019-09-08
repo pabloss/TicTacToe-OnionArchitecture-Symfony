@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service\TurnControl;
+namespace App\AppCore\DomainServices\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\TileInterface;
-use App\Core\Domain\Model\TicTacToe\Game\GameInterface;
-use App\Core\Domain\Model\TicTacToe\Game\Player\PlayerInterface;
-use App\Core\Domain\Service\History\HistoryInterface;
+use App\AppCore\DomainModel\Game\Board\TileInterface;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
+use App\AppCore\DomainServices\History\HistoryInterface;
 
 class Params
 {

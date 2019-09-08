@@ -1,13 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service\TurnControl;
+namespace App\AppCore\DomainServices\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Service\History\HistoryInterface;
-use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
-use App\Core\Domain\Service\TurnControl\Validation\ValidationInterface;
+use App\AppCore\DomainServices\TurnControl\Validation\ValidationCollection;
+use App\AppCore\DomainServices\TurnControl\Validation\ValidationInterface;
 
 /**
  * Class TurnControl
