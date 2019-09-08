@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Core\Domain\Service\TurnControl;
 
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Service\TurnControl\ErrorLog;
+use App\AppCore\DomainModel\Game\Game;
+use App\AppCore\DomainServices\TurnControl\ErrorLog;
 use PHPUnit\Framework\TestCase;
 
 /**

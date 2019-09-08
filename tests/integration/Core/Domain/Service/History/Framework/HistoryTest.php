@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Domain\Service\History\Framework;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\History\HistoryContent;
-use App\Core\Domain\Service\History\HistoryInterface;
-use App\Core\Domain\Service\History\HistoryItem;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Game;
+use App\AppCore\DomainModel\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainModel\History\History;
+use App\AppCore\DomainModel\History\HistoryContent;
+use App\AppCore\DomainModel\History\HistoryInterface;
+use App\AppCore\DomainModel\History\HistoryItem;
 use App\Entity\History as HistoryEntity;
-use App\Presentation\Web\Pub\Service\History\History;
 use App\Repository\HistoryRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

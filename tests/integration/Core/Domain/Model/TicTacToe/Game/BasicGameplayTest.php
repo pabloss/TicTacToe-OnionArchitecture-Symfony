@@ -3,24 +3,24 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Domain\Model\TicTacToe\Game;
 
-use App\Core\Application\Command\TakeTileService;
-use App\Core\Application\Query\FindWinnerService;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\History\History;
-use App\Core\Domain\Service\PlayersFactory;
-use App\Core\Domain\Service\TurnControl\ErrorLog;
-use App\Core\Domain\Service\TurnControl\PlayerRegistry;
-use App\Core\Domain\Service\TurnControl\TurnControl;
-use App\Core\Domain\Service\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
-use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
+use App\AppCore\ApplicationServices\FindWinnerService;
+use App\AppCore\ApplicationServices\TakeTileService;
+use App\AppCore\DomainModel\Game\Board\Board;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Game as TicTacToe;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainModel\History\History as FrameworkHistory;
+use App\AppCore\DomainServices\PlayersFactory;
+use App\AppCore\DomainServices\TurnControl\ErrorLog;
+use App\AppCore\DomainServices\TurnControl\PlayerRegistry;
+use App\AppCore\DomainServices\TurnControl\TurnControl;
+use App\AppCore\DomainServices\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\ValidationCollection;
 use App\Entity\Player;
-use App\Presentation\Web\Pub\Service\History\History as FrameworkHistory;
+use App\Tests\Stubs\History\History;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BasicGameplayTest extends WebTestCase

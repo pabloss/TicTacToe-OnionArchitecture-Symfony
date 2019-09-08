@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Core\Domain\Model\TicTacToe\Game\Player;
 
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
+use App\AppCore\DomainModel\Game\Player\Symbol;
 use App\Tests\integration\Core\Domain\Model\TicTacToe\App;
 use App\Tests\integration\Core\Domain\Model\TicTacToe\stdClass;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +12,7 @@ class SymbolTest extends TestCase
 {
     /**
      * @test
-     * @expectedException App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue
+     * @expectedException App\AppCore\DomainModel\Game\Exception\NotAllowedSymbolValue
      */
     public function validate_symbol()
     {

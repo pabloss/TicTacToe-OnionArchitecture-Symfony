@@ -3,23 +3,23 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Core\Domain\Model\TicTacToe\Game;
 
-use App\Core\Application\Command\TakeTileService;
-use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use App\Core\Domain\Service\PlayersFactory;
-use App\Core\Domain\Service\TurnControl\AccessControl;
-use App\Core\Domain\Service\TurnControl\ErrorLog;
-use App\Core\Domain\Service\TurnControl\PlayerRegistry;
-use App\Core\Domain\Service\TurnControl\TurnControl;
-use App\Core\Domain\Service\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
-use App\Core\Domain\Service\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
-use App\Core\Domain\Service\TurnControl\Validation\ValidationCollection;
+use App\AppCore\ApplicationServices\TakeTileService;
+use App\AppCore\DomainModel\Game\Board\Board;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Exception\NotAllowedSymbolValue;
+use App\AppCore\DomainModel\Game\Game as TicTacToe;
+use App\AppCore\DomainModel\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Player\Symbol;
+use App\AppCore\DomainServices\PlayersFactory;
+use App\AppCore\DomainServices\TurnControl\AccessControl;
+use App\AppCore\DomainServices\TurnControl\ErrorLog;
+use App\AppCore\DomainServices\TurnControl\PlayerRegistry;
+use App\AppCore\DomainServices\TurnControl\TurnControl;
+use App\AppCore\DomainServices\TurnControl\Validation\GameShouldStartWithCorrectPlayerValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PlayerMustNotTakeTakenAlreadyTileValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PlayerShouldBeRegisteredValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\PreviousPlayerShouldBeDifferentThanActualValidation;
+use App\AppCore\DomainServices\TurnControl\Validation\ValidationCollection;
 use App\Tests\Stubs\History\History;
 use PHPUnit\Framework\TestCase;
 
@@ -44,7 +44,7 @@ class GameTest extends TestCase
     public function game_should_record_correct_turns()
     {
         // When
-        $history = new \App\Core\Domain\Service\History\History();
+        $history = new History();
         $takeTileService = new TakeTileService($this->game, $history, $this->turnControl);
         $symbols = [Symbol::PLAYER_X_SYMBOL, Symbol::PLAYER_0_SYMBOL];
         $expectedTileCoords = [[0, 0], [0, 1], [1, 0], [1, 1]];
@@ -81,7 +81,7 @@ class GameTest extends TestCase
     public function same_player_take_turn()
     {
         $this->game = new TicTacToe(new Board(), \uniqid());
-        $history = new \App\Core\Domain\Service\History\History();
+        $history = new History();
         $takeTileService = new TakeTileService($this->game, $history, $this->turnControl);
         $playerX = $this->players[Symbol::PLAYER_X_SYMBOL];
 

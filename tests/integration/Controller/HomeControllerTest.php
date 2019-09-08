@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\integration\Controller;
 
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
+use App\AppCore\DomainModel\Game\Player\Symbol;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class HomeControllerTest extends WebTestCase
 {
-    const RESPONSE_SECONDS_DELAY = 8;
+    const RESPONSE_SECONDS_DELAY = 5;
 
     /** @var RemoteWebDriver  */
     private $driver;
@@ -21,7 +21,6 @@ class HomeControllerTest extends WebTestCase
     {
         $host = 'http://selenium-tests:4444/wd/hub';
         $this->driver = RemoteWebDriver::create($host, DesiredCapabilities::chrome());
-//        $this->driver->manage()->timeouts()->implicitlyWait(6);
         $this->driver->manage()->timeouts()->setScriptTimeout(6);
         $this->driver->getCommandExecutor()->setRequestTimeout(10*1000);
 
