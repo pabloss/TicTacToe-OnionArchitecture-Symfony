@@ -6,7 +6,7 @@ namespace App\AppCore\DomainServices\TurnControl;
 use App\AppCore\DomainModel\Game\Board\TileInterface;
 use App\AppCore\DomainModel\Game\GameInterface;
 use App\AppCore\DomainModel\Game\Player\PlayerInterface;
-use App\AppCore\DomainServices\History\HistoryInterface;
+use App\AppCore\DomainModel\History\HistoryInterface;
 
 class Params
 {
@@ -67,7 +67,7 @@ class Params
     }
 
     /**
-     * @return HistoryInterface
+     * @return \App\AppCore\DomainModel\History\HistoryInterface
      */
     public function history(): HistoryInterface
     {

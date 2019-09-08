@@ -1,17 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\AppCore\DomainServices\History;
+namespace App\AppCore\DomainModel\History;
 
 use App\AppCore\DomainModel\Game\Board\TileInterface;
-use App\AppCore\DomainModel\History\HistoryItem;
-use ArrayObject;
 
 /**
  * Class HistoryContent
  * @package App\AppCore\DomainServices\History
  */
-class HistoryContent extends ArrayObject
+class HistoryContent extends \ArrayObject
 {
     /** @var HistoryItem[] $content */
     private $content;

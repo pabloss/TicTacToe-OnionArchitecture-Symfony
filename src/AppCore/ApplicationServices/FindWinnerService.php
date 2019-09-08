@@ -1,17 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Application\Query;
+namespace App\AppCore\ApplicationServices;
 
-use App\Core\Domain\Model\TicTacToe\Exception\NotAllowedSymbolValue;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Symbol;
-use function array_reduce;
-use function array_walk;
-use function is_null;
-
+use App\AppCore\DomainModel\Game\Board\Board;
+use App\AppCore\DomainModel\Game\Exception\NotAllowedSymbolValue;
+use App\AppCore\DomainModel\Game\GameInterface;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
+use App\AppCore\DomainModel\Game\Player\Symbol;
 
 /**
  * Winner is found when all his/her marks are in one line at some stage of game
@@ -118,13 +114,12 @@ class FindWinnerService
         ],
     ];
 
-
     /**
-     * @param Game $game
-     * @return Player|null
+     * @param GameInterface $game
+     * @return PlayerInterface|null
      * @throws NotAllowedSymbolValue
      */
-    public function winner(Game $game): ?Player
+    public function winner(GameInterface $game): ?PlayerInterface
     {
         return
             $this->findWinnerByBoardPatterns(new Symbol(Symbol::PLAYER_X_SYMBOL), $game->board()) ??
@@ -134,9 +129,9 @@ class FindWinnerService
     /**
      * @param Symbol $symbol
      * @param Board $board
-     * @return Player|null
+     * @return PlayerInterface|null
      */
-    private function findWinnerByBoardPatterns(Symbol $symbol, Board $board): ?Player
+    private function findWinnerByBoardPatterns(Symbol $symbol, Board $board): ?PlayerInterface
     {
         return array_reduce(
             self::patterns,
@@ -154,9 +149,9 @@ class FindWinnerService
      * @param $pattern
      * @param Board $board
      * @param Symbol $symbol
-     * @return Player|null
+     * @return PlayerInterface|null
      */
-    private function findPlayerByPatternAndSymbol($pattern, Board $board, Symbol $symbol): ?Player
+    private function findPlayerByPatternAndSymbol($pattern, Board $board, Symbol $symbol): ?PlayerInterface
     {
         // todo: too complex to make small refactor
         $foundCount = 0;
@@ -166,7 +161,7 @@ class FindWinnerService
         array_walk(
             $board->contents(),
             function ($player, $i) use (&$foundPlayer, &$foundCount, $symbol, $pattern) {
-                /** @var Player $player */
+                /** @var PlayerInterface $player */
                 if (is_null($player) === false && $player->symbol()->value() === $symbol->value() && $pattern[$i] == self::MARKED_FIELD_GENERIC_SYMBOL) {
                     $foundCount++;
                     $foundPlayer = $player;

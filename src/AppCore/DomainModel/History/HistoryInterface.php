@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\AppCore\DomainServices\History;
+namespace App\AppCore\DomainModel\History;
 
 use App\AppCore\DomainModel\Game\Board\TileInterface;
 use App\AppCore\DomainModel\Game\GameInterface;
 use App\AppCore\DomainModel\Game\Player\PlayerInterface;
 use App\AppCore\DomainModel\Game\Player\Symbol;
-use App\AppCore\DomainModel\History\HistoryItem;
 
 /**
  * Interface HistoryInterface
