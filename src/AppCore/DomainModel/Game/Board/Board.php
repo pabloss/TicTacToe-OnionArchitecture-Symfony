@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\AppCore\DomainModel\Game\Board;
 
 use App\AppCore\DomainModel\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Player\PlayerInterface;
 use App\AppCore\DomainModel\Game\Player\Symbol;
 
 /**
@@ -41,10 +42,10 @@ class Board
     }
 
     /**
-     * @param Tile $tile
-     * @param Player $player
+     * @param TileInterface $tile
+     * @param PlayerInterface $player
      */
-    public function mark(Tile $tile, Player $player): void
+    public function mark(TileInterface $tile, PlayerInterface $player): void
     {
         $this->board[$tile->column() + 3 * $tile->row()] = $player;
     }
@@ -58,10 +59,10 @@ class Board
     }
 
     /**
-     * @param Tile $tile
+     * @param TileInterface $tile
      * @return mixed
      */
-    public function getPlayer(Tile $tile)
+    public function getPlayer(TileInterface $tile)
     {
         return $this->board[$tile->column() + 3 * $tile->row()];
     }
