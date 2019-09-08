@@ -6,7 +6,7 @@ namespace App\AppCore\ApplicationServices;
 use App\AppCore\DomainModel\Game\Board\TileInterface;
 use App\AppCore\DomainModel\Game\GameInterface;
 use App\AppCore\DomainModel\Game\Player\PlayerInterface;
-use App\AppCore\DomainServices\History\HistoryInterface;
+use App\AppCore\DomainModel\History\HistoryInterface;
 use App\AppCore\DomainServices\TurnControl\Params;
 use App\AppCore\DomainServices\TurnControl\TurnControl;
 
@@ -19,7 +19,7 @@ class TakeTileService
     /** @var GameInterface */
     private $game;
 
-    /** @var HistoryInterface */
+    /** @var \App\AppCore\DomainModel\History\HistoryInterface */
     private $history;
 
     /** @var TurnControl */
@@ -28,7 +28,7 @@ class TakeTileService
     /**
      * TakeTileService constructor.
      * @param GameInterface $game
-     * @param HistoryInterface $history
+     * @param \App\AppCore\DomainModel\History\HistoryInterface $history
      * @param TurnControl $turnControl
      */
     public function __construct(GameInterface $game, HistoryInterface $history, TurnControl $turnControl)
