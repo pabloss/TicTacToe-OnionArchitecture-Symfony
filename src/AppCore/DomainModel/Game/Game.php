@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\Game;
+namespace App\AppCore\DomainModel\Game;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\Board;
+use App\AppCore\DomainModel\Game\Board\Board;
 
 /**
  * Class Game
@@ -32,7 +32,7 @@ class Game implements GameInterface
     }
 
     /**
-     * @return Board
+     * @return \App\AppCore\DomainModel\Game\Board\Board
      */
     public function board(): Board
     {
