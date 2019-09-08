@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Service\History;
+namespace App\AppCore\DomainModel\History;
 
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game;
-use App\Core\Domain\Model\TicTacToe\Game\Player\Player;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Game;
+use App\AppCore\DomainModel\Game\Player\Player;
 
 
 /**
@@ -17,7 +17,7 @@ class HistoryItem
     /** @var Player */
     private $player;
 
-    /** @var Tile */
+    /** @var \App\AppCore\DomainModel\Game\Board\Tile */
     private $tile;
 
     /** @var Game */
@@ -26,7 +26,7 @@ class HistoryItem
     /**
      * HistoryItem constructor.
      * @param Player $player
-     * @param Tile $tile
+     * @param \App\AppCore\DomainModel\Game\Board\Tile $tile
      * @param Game $game
      */
     public function __construct(Player $player = null, Tile $tile = null, Game $game = null)
@@ -45,7 +45,7 @@ class HistoryItem
     }
 
     /**
-     * @return Tile
+     * @return \App\AppCore\DomainModel\Game\Board\Tile
      */
     public function tile(): ?Tile
     {

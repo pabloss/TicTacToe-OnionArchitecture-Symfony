@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\AppCore\DomainModel\Game\Board;
 
-use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
+use App\AppCore\DomainModel\Game\Exception\OutOfLegalSizeException;
 
 /**
  * Class Tile

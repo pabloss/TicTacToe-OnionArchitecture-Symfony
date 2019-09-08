@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\Exception;
+namespace App\AppCore\DomainModel\Game\Exception;
 
 
 use Exception;
 
 /**
  * Class OutOfLegalSizeException
- * @package App\Core\Domain\Model\TicTacToe\Exception
+ * @package App\AppCore\DomainModel\Game\Exception
  */
 class OutOfLegalSizeException extends Exception
 {

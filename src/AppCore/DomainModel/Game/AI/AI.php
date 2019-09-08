@@ -1,20 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Domain\Model\TicTacToe\AI;
+namespace App\AppCore\DomainModel\Game\AI;
 
-use App\Core\Domain\Model\TicTacToe\Exception\OutOfLegalSizeException;
-use App\Core\Domain\Model\TicTacToe\Game\Board\Tile;
-use App\Core\Domain\Model\TicTacToe\Game\Game as TicTacToe;
-use function array_walk;
-use function count;
-use function floor;
-use function intval;
-use function rand;
+use App\AppCore\DomainModel\Game\Board\Tile;
+use App\AppCore\DomainModel\Game\Exception\OutOfLegalSizeException;
+use App\AppCore\DomainModel\Game\Game as TicTacToe;
 
 /**
  * Class AI
- * @package App\Core\Domain\Model\TicTacToe\AI
+ * @package App\AppCore\DomainModel\Game\AI
  */
 class AI
 {
@@ -47,7 +42,7 @@ class AI
 
     /**
      * @param $randomIndex
-     * @return Tile
+     * @return \App\AppCore\DomainModel\Game\Board\Tile
      * @throws OutOfLegalSizeException
      */
     private function tileFromIndex($randomIndex): Tile
