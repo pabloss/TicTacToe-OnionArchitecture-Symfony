@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\HistoryRepository")
  * @codeCoverageIgnore
  */
-class History implements EntityInterface
+class History
 {
     /**
      * @ORM\Id()
@@ -41,31 +41,21 @@ class History implements EntityInterface
      */
     private $tile;
 
-    public function getValueObject(): object
-    {
-        // TODO: Implement getValueObject() method.
-    }
-
-    public function setValueObject(object $valueObject): EntityInterface
-    {
-        // TODO: Implement setValueObject() method.
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
         if (null === $updatedAt) {
-            $this->createdAt = new DateTime();
+            $this->createdAt = new \DateTime();
         }
         return $this;
     }

@@ -23,7 +23,6 @@ final class Version20190211202114 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
             'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE player DROP symbol');
         $this->addSql('ALTER TABLE history CHANGE item item LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\'');
     }
 
@@ -34,6 +33,5 @@ final class Version20190211202114 extends AbstractMigration
             'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE history CHANGE item item VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
-        $this->addSql('ALTER TABLE player ADD symbol VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

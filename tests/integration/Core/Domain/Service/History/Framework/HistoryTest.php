@@ -119,7 +119,7 @@ class HistoryTest extends WebTestCase
 
         $this->entityManager = $kernel->getContainer()
             ->get('doctrine')
-            ->getManager();
+            ->getManager('tests');
     }
 
     /**
